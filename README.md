@@ -22,3 +22,5 @@ cargo new wonderful-world
 cd wonderful-world
 cargo run
 ```
+
+![./assets/screenshot_03.png](./assets/screenshot_03.png)
