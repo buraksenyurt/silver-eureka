@@ -1,6 +1,6 @@
 # Rust Programming Cookbook Çalışma Alanım
 
-Bir süre önce aldığım "Rust Programming Cookbook" kitabını çalışmak için açtığım repo. Kısa kısa notlar almayı ve örnekler üzerinden ilerlemeyi planlıyorum.
+Bir süre önce aldığım [Rust Programming Cookbook](https://amzn.to/3Bw5ysw) kitabını çalışmak için açtığım repo. Kısa kısa notlar almayı ve örnekler üzerinden ilerlemeyi planlıyorum.
 
 ## Ön Hazırlıklar
 
@@ -12,7 +12,9 @@ Geliştirmeler için Visual Studio Code kullanacağım. Rust eklentisi için com
 
 ![./assets/screenshot_02.png](./assets/screenshot_02.png)
 
-## Komut Satırı ile Temel İşlemler
+## day01
+
+### Komut Satırı ile Temel İşlemler
 
 ```bash
 # Terminalden aşağıdaki komut çalıştılır ve ilk proje oluşturulur
@@ -24,3 +26,13 @@ cargo run
 ```
 
 ![./assets/screenshot_03.png](./assets/screenshot_03.png)
+
+### Veri Türleri
+
+```bash
+cargo new data-types --lib
+cd data-types
+cargo test
+```
+
+![./assets/screenshot_04.png](./assets/screenshot_04.png)
