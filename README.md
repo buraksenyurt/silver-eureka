@@ -30,9 +30,21 @@ cargo run
 ### Veri Türleri
 
 ```bash
+# Bu sefer bir kütüphane oluşturuyoruz
 cargo new data-types --lib
 cd data-types
+# test fonksiyonları üstünden ilerliyoruz
 cargo test
 ```
 
 ![./assets/screenshot_04.png](./assets/screenshot_04.png)
+
+### Karar Yapıları ve Döngüler
+
+```bash
+cargo new flows --lib
+cd flows
+cargo test
+```
+
+![./assets/screenshot_05.png](./assets/screenshot_05.png)
