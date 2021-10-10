@@ -76,3 +76,16 @@ cargo run
 calculator'un rust-matlib'i kullanabilmesi için toml dosyasında gerekli dependency eklenmiştir. Ayrıca calculator projesinde basic isimli bir klasör vardır. Burası basic isimli modülü temsil eder.
 
 ![./assets/screenshot_06.png](./assets/screenshot_06.png)
+
+### Dokümantasyon Eklenmesi
+
+Çok basit anlamda markdown stili kullanılarak yardım dokümanı oluşturulabilyor. /// veya ///! ile bu işlemler gerçekleştirilebiliyor.
+
+```bash
+cd rust-matlib
+cargo doc
+```
+
+Sonrasında silver-eureka/day01/rust-matlib/target/doc/rust_matlib/index.html sayfası açılarak Help içeriği görülebilir.
+
+![./assets/screenshot_07.png](./assets/screenshot_07.png)
