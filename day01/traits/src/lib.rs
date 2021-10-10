@@ -48,7 +48,7 @@ pub trait ConfigurationBehaviors {
 impl ConfigurationBehaviors for ConfigurationService {
     fn write(&self, c: Configuration, mut to: &mut impl Write) -> std::io::Result<()> {
         for pair in c.pairs {
-            writeln!(&mut to, "{0}={1}", pair.0, pair.1)?;
+            writeln!(&mut to, "{0}:{1}", pair.0, pair.1)?;
         }
         Ok(())
     }
@@ -66,7 +66,7 @@ impl ConfigurationBehaviors for ConfigurationService {
             })
             .map(|row| {
                 // süzülen içeriği Tuple'a dönüştür
-                let parts = row.split("=").collect::<Vec<&str>>();
+                let parts = row.split(":").collect::<Vec<&str>>();
                 (parts[0].to_string(), parts[1].to_string())
             })
             .collect(); // Map edilen içeriği Vector nesnesine al
@@ -77,7 +77,7 @@ impl ConfigurationBehaviors for ConfigurationService {
 impl ValueGetter for Configuration {
     ///
     /// Key karşılığı olan Value bilgisini Configuration nesnesinden çeker
-    /// 
+    ///
     fn get(&self, s: &str) -> Option<String> {
         self.pairs.iter().find_map(|tuple| {
             if &tuple.0 == s {
@@ -91,8 +91,43 @@ impl ValueGetter for Configuration {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+    use std::io::Cursor;
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn should_connenction_pair_write() {
+        let sample = Configuration::new(vec![(
+            "localhost".to_string(),
+            "data source=localhost;instance=london;user id=sa;password=1234".to_string(),
+        )]);
+
+        let service = ConfigurationService::new();
+        let mut target = vec![];
+        assert!(service.write(sample, &mut target).is_ok());
+
+        assert_eq!(
+            String::from_utf8(target).unwrap(),
+            "localhost:data source=localhost;instance=london;user id=sa;password=1234\n"
+                .to_string()
+        );
+    }
+
+    #[test]
+    fn should_connection_pair_read() {
+        let service = ConfigurationService::new();
+        let some_pairs = &format!("{}\n{}", "username:scoth", "password:tiger").into_bytes();
+
+        // Cursor, Read trait'ini implemente ettiği için ConfigurationService için implemente edilen read trait tarafından da kullanılabilir.
+        let config = service
+            .read(&mut Cursor::new(some_pairs))
+            .expect("İçerik okunamadı");
+
+        assert_eq!(
+            config.pairs,
+            vec![
+                ("username".to_string(), "scoth".to_string()),
+                ("password".to_string(), "tiger".to_string())
+            ]
+        );
     }
 }
