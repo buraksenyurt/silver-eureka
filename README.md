@@ -89,3 +89,11 @@ cargo doc
 Sonrasında silver-eureka/day01/rust-matlib/target/doc/rust_matlib/index.html sayfası açılarak Help içeriği görülebilir.
 
 ![./assets/screenshot_07.png](./assets/screenshot_07.png)
+
+### Trait Kullanımı
+
+Abstract sınıflara benzetebileceğimiz trait enstrümanı ile aynı davranışı birden fazla struct'ın kullanması mümkün olabilir.
+
+```bash
+cargo new traits --lib
+```
