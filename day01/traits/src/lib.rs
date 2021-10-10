@@ -113,7 +113,7 @@ mod tests {
     }
 
     #[test]
-    fn should_connection_pair_read() {
+    fn should_pairs_read_works() {
         let service = ConfigurationService::new();
         let some_pairs = &format!("{}\n{}", "username:scoth", "password:tiger").into_bytes();
 
@@ -129,5 +129,12 @@ mod tests {
                 ("password".to_string(), "tiger".to_string())
             ]
         );
+    }
+
+    #[test]
+    fn should_get_value_works() {
+        let config = Configuration::new(vec![("is_online".to_string(), "true".to_string())]);
+        assert_eq!(config.get("is_online"), Some("true".to_string()));
+        assert_eq!(config.get("online"), None);
     }
 }
