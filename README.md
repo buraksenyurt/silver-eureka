@@ -48,3 +48,31 @@ cargo test
 ```
 
 ![./assets/screenshot_05.png](./assets/screenshot_05.png)
+
+### Sandık(Crate) ile Çalışmak
+
+Fonksiyon içeren bir modül oluşturup diğerinden kullanılması. Tipik yürütücü uygulama ve referans olarak kullandığı kütüphane senaryosu.
+
+```bash
+# Kütüphane oluşturulması
+cargo new rust-matlib --lib
+
+# ana uygulamanın oluşturulması
+cargo new calculator
+
+# ana uygulamada bir modül oluşturulması(klasör içinde mod isimli rust dosyası da oluşturulur)
+cd calculator
+mkdir basic
+cd basic
+touch mod.rs
+
+# rust-mathlib testlerini çalıştırmak için, o klasörde,
+cargo test
+
+# calculator'u çalıştırmak için o klasörde
+cargo run
+```
+
+calculator'un rust-matlib'i kullanabilmesi için toml dosyasında gerekli dependency eklenmiştir. Ayrıca calculator projesinde basic isimli bir klasör vardır. Burası basic isimli modülü temsil eder.
+
+![./assets/screenshot_06.png](./assets/screenshot_06.png)
