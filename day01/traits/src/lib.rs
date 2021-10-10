@@ -74,6 +74,21 @@ impl ConfigurationBehaviors for ConfigurationService {
     }
 }
 
+impl ValueGetter for Configuration {
+    ///
+    /// Key karşılığı olan Value bilgisini Configuration nesnesinden çeker
+    /// 
+    fn get(&self, s: &str) -> Option<String> {
+        self.pairs.iter().find_map(|tuple| {
+            if &tuple.0 == s {
+                Some(tuple.1.clone())
+            } else {
+                None
+            }
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
