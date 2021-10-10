@@ -46,6 +46,7 @@ pub trait ConfigurationBehaviors {
 
 // trait implementasyonları
 impl ConfigurationBehaviors for ConfigurationService {
+    // to ile gelen değişkenin Write davranışını implemente etmiş olmasını bekliyoruz
     fn write(&self, c: Configuration, mut to: &mut impl Write) -> std::io::Result<()> {
         for pair in c.pairs {
             writeln!(&mut to, "{0}:{1}", pair.0, pair.1)?;
@@ -53,6 +54,7 @@ impl ConfigurationBehaviors for ConfigurationService {
         Ok(())
     }
 
+    // from parametresi ile gelen değişkenin Read davranışını implemente etmiş olmasını bekliyoruz
     fn read(&self, from: &mut impl Read) -> std::io::Result<Configuration> {
         let mut buffer = String::new();
         from.read_to_string(&mut buffer)?; // Parametre ile taşınan String içeriği oku
@@ -117,7 +119,8 @@ mod tests {
         let service = ConfigurationService::new();
         let some_pairs = &format!("{}\n{}", "username:scoth", "password:tiger").into_bytes();
 
-        // Cursor, Read trait'ini implemente ettiği için ConfigurationService için implemente edilen read trait tarafından da kullanılabilir.
+        // Cursor, Read trait'ini implemente ettiği için ConfigurationService için implemente edilen read trait üstünden de kullanılabilir.
+        // Bu sebeple some_pairs parametre olarak geçebilmiştir.
         let config = service
             .read(&mut Cursor::new(some_pairs))
             .expect("İçerik okunamadı");

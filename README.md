@@ -92,8 +92,10 @@ Sonrasında silver-eureka/day01/rust-matlib/target/doc/rust_matlib/index.html sa
 
 ### Trait Kullanımı
 
-Abstract sınıflara benzetebileceğimiz trait enstrümanı ile aynı davranışı birden fazla struct'ın kullanması mümkün olabilir.
+Abstract sınıflara benzetebileceğimiz trait enstrümanı ile aynı davranışı birden fazla struct'ın kullanması mümkün olabilir. Örnekte bir key:value çiftinin okunması, yazılması ile ilgili davranış tanımlamaları yapılmakta ve uygulanmakta.
 
 ```bash
 cargo new traits --lib
 ```
+
+![./assets/screenshot_08.png](./assets/screenshot_08.png)
