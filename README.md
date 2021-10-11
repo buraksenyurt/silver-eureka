@@ -99,3 +99,15 @@ cargo new traits --lib
 ```
 
 ![./assets/screenshot_08.png](./assets/screenshot_08.png)
+
+### Sequence Tipleri
+
+Tek bir veri türünden oluşabilen ve boyutu değiştirilemeyen dizi, farklı türden veriler barındırabilen ama boyutu değiştirilemeyen Tuple ve generic tipleri kullanıp dinamik olarak boyutu ayarlanabilen Vector tiplerinin kullanım örnekleri.
+
+```bash
+cargo new sequences --lib
+cd sequences
+cargo test
+```
+
+![./assets/screenshot_09.png](./assets/screenshot_09.png)
