@@ -111,3 +111,18 @@ cargo test
 ```
 
 ![./assets/screenshot_09.png](./assets/screenshot_09.png)
+
+## day02
+
+### enum Kullanımı
+
+Pek çok dilde olduğu gibi Rust tarafında da sayıları anlamlı şekilde isimlendirmek için enum türünden faydalanılıyor ama fazlası da olabilir. Enum sabiti özelliklerinde farklı türleri kullanmak, enum sabitine fonksiyonellik kazandırmak, pattern matching ifadelerinde ele almak vs
+
+```bash
+mkdir day02
+cd day02
+cargo new using_enums --lib
+cd using_enums
+cargo test
+```
+![./assets/screenshot_10.png](./assets/screenshot_10.png)
