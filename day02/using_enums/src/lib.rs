@@ -55,21 +55,25 @@ mod tests {
 
     #[test]
     fn should_check_state_for_1() {
+        // state değerinin 1 olması halinde oluşan BusinessRetCode::Code halini test ediyoruz
+        // Dönen Code özelliğinin defination ve short_code alanları her ne olursa olsun test amacı gereği BusinessRetCode::Code halini kontrol etmek yeterli.
+        // ret_code bilgisi pattern matching ile kontrol ediliyor
         let state = 1;
         let ret_code = check(state);
         match ret_code {
             BusinessRetCode::Code {
                 defination: _,
                 short_code: _,
-            } => assert_eq!(state, 1),
-            BusinessRetCode::FileError(_) => assert_eq!(state, 99),
-            BusinessRetCode::Summary(_) => assert_eq!(state, 0),
-            BusinessRetCode::Unknown => assert!(state < 0),
+            } => assert_eq!(state, 1), //state değerinin 1 olması hali
+            BusinessRetCode::FileError(_) => assert_eq!(state, 99), // 99 olması hali
+            BusinessRetCode::Summary(_) => assert_eq!(state, 0), // 0 olması hali
+            BusinessRetCode::Unknown => assert!(state < 0), // 0 dan küçük olması hali
         }
     }
 
     #[test]
     fn should_check_state_for_0() {
+        // state değerinin 0 olması halinde oluşan BusinessRetCode::Summary halini test ediyoruz
         let state = 0;
         let ret_code = check(state);
         match ret_code {
@@ -85,6 +89,7 @@ mod tests {
 
     #[test]
     fn should_check_state_for_99() {
+        // state değerinin 99 olması halinde oluşan BusinessRetCode::FileError halini test ediyoruz
         let state = 99;
         let ret_code = check(state);
         match ret_code {
@@ -100,9 +105,10 @@ mod tests {
 
     #[test]
     fn should_check_state_for_any() {
+        // state bilgisinin -1 olma halini test ediyoruz.
+        // BusinessRetCode::Unknown koşuluna uyar
         let state = -1;
-        let ret_code = check(state);
-        match ret_code {
+        match check(state) {
             BusinessRetCode::Code {
                 defination: _,
                 short_code: _,
@@ -111,5 +117,15 @@ mod tests {
             BusinessRetCode::Summary(_) => assert_eq!(state, 0),
             BusinessRetCode::Unknown => assert!(state < 0),
         }
+    }
+
+    #[test]
+    fn should_write_works_for_vector_test() {
+        let mut target = vec![];
+        let _ = BusinessRetCode::Summary("Bir takım bilgiler".to_string()).write(&mut target); 
+        // enum sabitine uygulanan write metodu Write trait'ini uygulayan tipleri parametre alıyor
+        // Dolayısıyla BusinessRetCode değişkenini target isimli vector değişkenine yazıyoruz
+        // varsayılan olarak Summary özelliği Summary metnini içerdiğinden aşağıdaki test doğru olacak
+        assert_eq!(String::from_utf8(target).unwrap(), "Summary".to_string());
     }
 }
