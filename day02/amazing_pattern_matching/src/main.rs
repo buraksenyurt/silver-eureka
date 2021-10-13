@@ -23,13 +23,26 @@ fn main() {
     };
     println!("{}", match_with_destructuring(marko));
 
-    // Aşağıdaki Vehicle örneği için match_with_destructuring'teki son seçenek devreye girer
     let jeyna = Vehicle {
         pilot_no: 3,
         style: Design::Image("jeyna.png"),
         v_type: VehicleType::Experimental,
     };
     println!("{}", match_with_destructuring(jeyna));
+
+    let tomas = Vehicle {
+        pilot_no: 1003,
+        style: Design::Image("tomas.png"),
+        v_type: VehicleType::Civilian,
+    };
+    println!("{}", match_with_guarded(tomas));
+
+    let elizabeth = Vehicle {
+        pilot_no: 48,
+        style: Design::Image("eli.png"),
+        v_type: VehicleType::Armed,
+    };
+    println!("{}", match_with_guarded(elizabeth));
 }
 
 fn match_with_tuple(points: (i32, i32, i32, i32)) -> String {
@@ -79,11 +92,24 @@ fn match_with_destructuring(v: Vehicle) -> String {
             v_type: VehicleType::Civilian,
             style: Design::Image(p),
         } => format!("{} nolu pilot için {} logolu araç.", id, p),
-        Vehicle {
+        Vehicle { 
             // pilot id var ama Experimental ile Image ve Color hallerini ele almadığımız bir nesne gelirse
             pilot_no: id,            
             .. // geri kalanlarının olmaması hali
-        } => format!("{} nolu pilot için uygun tasarım oluşturulamadı.", id),
+        } => format!("{} nolu pilot için uygun tasarım oluşturulamadı.", id),        
+    }
+}
+
+// Çok keskin koşulların kontrolünde pattern matchin için aşağıdaki gibi bir kullanım da söz konusu olabilir
+fn match_with_guarded(v:Vehicle)->String{
+    match v {
+        Vehicle{ // Diğer değerler bir yana pilot numarasının 1000'den büyük olma hali
+            pilot_no:id,
+            ..
+        } if id>1000 =>"Pilot numarası 1000den büyük olamaz.".to_owned(),
+        Vehicle{ // Pilot numarası uygun ve diğerleri ne olursa olsun hali
+            ..
+        } =>"Hoşgeldin. Araç hazırlanıyor.".to_owned()
     }
 }
 
