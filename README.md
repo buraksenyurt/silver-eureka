@@ -1,6 +1,6 @@
 # Rust Programming Cookbook Çalışma Alanım
 
-Bir süre önce aldığım [Rust Programming Cookbook](https://amzn.to/3Bw5ysw) kitabını çalışmak için açtığım repo. Kısa kısa notlar almayı ve örnekler üzerinden ilerlemeyi planlıyorum.
+Bir süre önce aldığım [Rust Programming Cookbook](https://amzn.to/3Bw5ysw) kitabını çalışmak için açtığım bir çalışma alanıdır. İş hayatında sürekli .Net platformunda ve C# ile kod geliştirdiğimden Rust ile yazma alışkanlığım son derece zayıf. Önceden çalıştığım pek çok konuyu unutmuş durumdayım. Kitabın anlattığı kodları copy-paste yapmadan bakarak yazmayı, bu sayede parmaklarımı rust sözdizimine alıştırmayı ve kısa notlar tutarak önceden baktığım konuları biraz daha özümsemeyi amaçlıyorum.
 
 ## Ön Hazırlıklar
 
@@ -13,6 +13,8 @@ Geliştirmeler için Visual Studio Code kullanacağım. Rust eklentisi için com
 ![./assets/screenshot_02.png](./assets/screenshot_02.png)
 
 ## day01
+
+Kitabın birinci bölümüne ait çalışmalar.
 
 ### Komut Satırı ile Temel İşlemler
 
@@ -114,6 +116,8 @@ cargo test
 
 ## day02
 
+Kitabın ikinci bölümüne ait çalışmalar.
+
 ### enum Kullanımı
 
 Pek çok dilde olduğu gibi Rust tarafında da sayıları anlamlı şekilde isimlendirmek için enum türünden faydalanılıyor ama fazlası da olabilir. Enum sabiti özelliklerinde farklı türleri kullanmak, enum sabitine fonksiyonellik kazandırmak, pattern matching ifadelerinde ele almak vs
@@ -152,3 +156,15 @@ cargo test
 ```
 
 ![./assets/screenshot_11.png](./assets/screenshot_11.png)
+
+### Pattern Matching için Verimli Kullanım Senaryoları
+
+Pattern matching kabiliyetinin enum'larla sınırlı olmadığına dair örnek kodlar yer alıyor. _(literal, tuple, String(heap allocation sebebiyle diğer literallerden farklı ama kullanım şekli aynı) türleri ile kullanım, destructuring ve guard mevzusu)_
+
+```bash
+cargo new amazing_pattern_matching
+cd amazing_pattern_matching
+cargo run
+```
+
+![./assets/screenshot_12.png](./assets/screenshot_12.png)
