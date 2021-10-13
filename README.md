@@ -126,3 +126,29 @@ cd using_enums
 cargo test
 ```
 ![./assets/screenshot_10.png](./assets/screenshot_10.png)
+
+### Null Olmayan Güzel Bir Dünya
+
+Rust dilinde fonksiyonel dillerin bir geleneği olarak her girdinin karşılığında anlamlı bir çıktının üretilmesi amaçlanır. null tipi yoktur. Bunun yerine Option< T> ve Result<T,E> tipleri kullanılır. Bir hata oluşma ihtimali varsa Result enum sabiti tercih edilir. Bu enum türleri aşağıdaki gibidir.
+
+```rust
+pub enum Option<T> {
+    Some(T),
+    None,
+}
+
+pub enum Result<T,E>{
+    Ok(T),
+    Err(E),
+}
+```
+
+Örnekte Option tipinin farklı kullanım şekilleri ele alınmakta.
+
+```bash
+cargo new no_null --lib
+cd no_null
+cargo test
+```
+
+![./assets/screenshot_11.png](./assets/screenshot_11.png)
