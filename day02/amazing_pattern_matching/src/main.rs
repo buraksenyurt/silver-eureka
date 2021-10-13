@@ -10,6 +10,13 @@ fn main() {
     println!("{}", match_with_tuple((1, 3, 5, 7)));
 
     println!();
+    println!("☁️ -> {}",match_with_literal_string("☁️"));
+    println!("☀️ -> {}",match_with_literal_string("☀️"));
+    println!("⛈️ -> {}",match_with_literal_string("⛈️"));
+    println!("🌨️ -> {}",match_with_literal_string("🌨️"));
+    println!("🌈 -> {}",match_with_literal_string("🌈"));
+
+    println!();
     let dayson = Vehicle {
         pilot_no: 1,
         style: Design::Color(100, 100, 255),
@@ -43,6 +50,17 @@ fn main() {
         v_type: VehicleType::Armed,
     };
     println!("{}", match_with_guarded(elizabeth));
+}
+
+fn match_with_literal_string(status: &str) -> String{
+    match status {
+        "☁️" => "Bulutlu bir hava var.".to_owned(),
+        "☀️" => "Güneşli güzel bir gün :)".to_owned(),
+        "⛈️" => "Gök gürültülü sağnak.".to_owned(),
+        "🌨️" => "Kar atıştırabilir".to_owned(),
+        "🌈"=>"Gökkuşağı çıkma ihtimali yüksek ;)".to_owned(),
+        _ => "Belli değil".to_owned()
+    }
 }
 
 fn match_with_tuple(points: (i32, i32, i32, i32)) -> String {
