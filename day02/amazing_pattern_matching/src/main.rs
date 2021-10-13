@@ -1,13 +1,24 @@
 fn main() {
     println!("literal match örnekleri");
-    println!("15 => {}", literal_match(15));
-    println!("-80 => {}", literal_match(-80));
-    println!("76 => {}", literal_match(76));
-    println!("94 => {}", literal_match(94));
-    println!("0 => {}", literal_match(0));
+    println!("15 => {}", match_with_literal(15));
+    println!("-80 => {}", match_with_literal(-80));
+    println!("76 => {}", match_with_literal(76));
+    println!("94 => {}", match_with_literal(94));
+    println!("0 => {}", match_with_literal(0));
+
+    println!();
+    println!("{}", match_with_tuple((1, 3, 5, 7)));
 }
 
-fn literal_match(value: isize) -> String {
+fn match_with_tuple(points: (i32, i32, i32, i32)) -> String {
+    // tuple veri türü üstünde de pattern matching etkili şekilde kullanılabilir
+    // örneğin points isimli tuple'daki ilk ve son sayıları atlayıp diğerlerini kullanabiliriz
+    match points {
+        (_, second, third, _) => format!("{}...{}", second, third),
+    }
+}
+
+fn match_with_literal(value: isize) -> String {
     // basit bir literal değerini aşağıdaki gibi dallara ayırıp değerlendirebiliriz
     match value {
         0 => "Başlangıç".to_owned(),              // sıfırsa
