@@ -53,6 +53,7 @@ fn main() {
 }
 
 fn match_with_literal_string(status: &str) -> String{
+    // emojiler için https://emojipedia.org/ adresini kullandım. Beğendiğim emojiyi copy - paste ile buraya aldım.
     match status {
         "☁️" => "Bulutlu bir hava var.".to_owned(),
         "☀️" => "Güneşli güzel bir gün :)".to_owned(),
