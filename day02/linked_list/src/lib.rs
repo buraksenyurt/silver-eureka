@@ -1,5 +1,34 @@
 #[cfg(test)]
-mod tests {}
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_new_processlog_is_empty_test() {
+        let mut logs: ProcessLog = ProcessLog::new();
+        assert_eq!(logs.count, 0);
+        assert_eq!(logs.pop(), None);
+    }
+
+    #[test]
+    fn should_append_and_pop_works_test() {
+        let mut logs: ProcessLog = ProcessLog::new();
+        logs.append("Job started".to_owned());
+        logs.append("Data collected".to_owned());
+        logs.append("Prepearing...".to_owned());
+        logs.append("Reports created".to_owned());
+        logs.append("Job done".to_owned());
+        assert_eq!(logs.count, 5);
+        assert_eq!(logs.pop(), Some("Job started".to_owned()));
+        assert_eq!(logs.count, 4);
+        let log = logs.pop();
+        assert_eq!(log, Some("Data collected".to_owned()));
+        assert_eq!(logs.count, 3);
+        logs.pop();
+        logs.pop();
+        logs.pop();
+        assert_eq!(logs.count, 0);
+    }
+}
 
 /*
 Basit bir LIFO veri yapısı oluşturacağız. Liste yapısının her bir elemanı bir boğumu ifade edecek.
@@ -51,7 +80,7 @@ impl ProcessLog {
     }
 
     // Listeye yeni bir Node eklemek için kullanılır
-    pub fn push(&mut self, info: String) {
+    pub fn append(&mut self, info: String) {
         let new_node = Node::new(info); // gelen veri ile yeni bir Node nesnesi örneklenir
 
         match self.last.take() {
@@ -64,20 +93,22 @@ impl ProcessLog {
         self.last = Some(new_node); // Match ne olursa olsun son eleman yeni üretilen eleman olacaktır
     }
 
-    // Son eklenen elemanı listeden çekmek(aynı zamanda kaldırmak) için kullanılır
+    // İlk eklenen elemanı listeden çekmek(aynı zamanda kaldırmak) için kullanılır. İlk eleman çıkarılınca yeni ilk elaman sonraki olarak değişmeli ve diğer referans bağlantıları da buna göre güncellenmelidir
     pub fn pop(&mut self) -> Option<String> {
         self.first.take().map(|item| {
-            // ilk elemandan itibaren map çağrısı ile devam eden Node örneklerine bakılan bir iterasyon başlatılır. Bu iterasyon sondaki elemanı hariç tutarak ProcessLog'un first ve last konumlandırmalarını değiştirmek üzere işletilir. Tipik Pop işlevi.
-            if let Some(next) = item.borrow_mut().next.take() { // Eğer takip eden Node değeri varsa
-                self.first = Some(next); // Onu first değişkenine alır. İterasyon son elemana gelene kadar first değişmeye devam eder
-            } else { // Artık arkadan gelen bir Node kalmamışsa
-                self.last.take();  // ProcessLog'un son elemanı olarak kabul edilir
+            // ilk elemandan itibaren map çağrısı ile devam eden Node örneklerine bakılan bir iterasyon başlatılır.
+            if let Some(next) = item.borrow_mut().next.take() {
+                // Sonraki adreste bir Node var mı?
+                self.first = Some(next); // O zaman onu başa yerleştir
+            } else {
+                // Artık arkadan gelen bir Node yok
+                self.last.take(); // O zaman şu anki item, veri yapısının son elemanı olarak kabul edilir
             }
 
             self.count -= 1; // Eleman sayısı bir azaltılır
 
-            // iterasyonun son elemanının değeri alınır 
-            Rc::try_unwrap(item) 
+            // İlk girilen eleman değeri dönülür
+            Rc::try_unwrap(item)
                 .ok()
                 .expect("Bir sorun gördüm sanki. Gördüm, gördüm. Bi sorun gördüm.")
                 .into_inner()
