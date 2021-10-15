@@ -112,5 +112,13 @@ mod tests {
         list.append(45);
         assert_eq!(list.count, 4);
         assert_eq!(list.pop(), Some(23));
+        assert_eq!(list.count, 3);
+        let item = list.pop();
+        assert_eq!(item, Some(32));
+        assert_eq!(list.count, 2);
+        list.pop();
+        assert_eq!(list.pop(), Some(45));
+        assert_eq!(list.count, 0);
+        assert_eq!(list.pop(), None);
     }
 }
