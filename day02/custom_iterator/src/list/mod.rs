@@ -86,7 +86,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn should_new_list_iş_empty_test() {
+    fn should_new_list_is_empty_test() {
         let mut list: List<i32> = List::new();
         assert_eq!(list.count, 0);
         assert_eq!(list.pop(), None);

@@ -169,7 +169,7 @@ cargo run
 
 ![./assets/screenshot_12.png](./assets/screenshot_12.png)
 
-### Basit Bir Linked List Oluşturma
+### Basit Bir Linked List Oluşturmak
 
 Kitabın bir sonraki örneğinde Iterator deseni kullanılan bir örnek yer alıyor. Ancak örnek içerisinde generic türden bir bağlı liste _(Linked List)_ kullanılmakta. Önce bu veri yapısını inşa etmeyi öğrenmek gerekiyor. Bu kodda generic verisyona gitmeden bir sürecin sıralı loglarının bağlı liste olarak tutulduğu basit kurgu söz konusu. Her log bilgisi Node isimli bir struct ile temsil ediliyor. ProcessLog isimli veri yapısı Node örneklerini ardışıl olarak tutan bir bağlı liste veri yapısını temsil ediyor.
 
@@ -179,7 +179,9 @@ cd linked_list
 cargo test
 ```
 
-### Özel Yineleyiciler _(iterator)_ Oluşturma
+![./assets/screenshot_14.png](./assets/screenshot_14.png)
+
+### Özel Yineleyiciler _(iterator)_ Oluşturmak
 
 Örnekte basit bir liste veri yapısının elemanlarında ileri yönlü hareket etmek için iterator deseninden nasıl yararlanıldığı ele alınmaktadır. Bu amaçal Iterator ve IntoIterator isimli standart kütüphanedeki trait'lerin generic List veri yapısı için uyarlanması söz konusudur.
 
@@ -195,3 +197,5 @@ cd ..
 cd ..
 cargo test
 ```
+
+![./assets/screenshot_13.png](./assets/screenshot_13.png)
