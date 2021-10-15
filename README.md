@@ -168,3 +168,13 @@ cargo run
 ```
 
 ![./assets/screenshot_12.png](./assets/screenshot_12.png)
+
+### Basit Bir Linked List Oluşturma
+
+Kitabın bir sonraki örneğinde Iterator deseni kullanılan bir örnek yer alıyor. Ancak örnek içerisinde generic türden bir bağlı liste_(Linked List)_ kullanılmakta. Önce bu veri yapısını inşa etmeyi öğrenmek gerekiyor. Bu kodda generic verisyona gitmeden bir sürecin sıralı loglarının bağlı liste olarak tutulduğu basit kurgu söz konusu. Her log bilgisi Node isimli bir struct ile temsil ediliyor. ProcessLog isimli veri yapısı Node örneklerini ardışıl olarak tutan bir bağlı liste veri yapısını temsil ediyor.
+
+```bash
+cargo new linked_list --lib
+cd linked_list
+cargo test
+```
