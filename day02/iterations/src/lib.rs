@@ -32,4 +32,35 @@ mod tests {
             ]
         );
     }
+
+    #[test]
+    fn zip_test() {
+        let words = vec![
+            "shall".to_string(),
+            "we".to_string(),
+            "began".to_string(),
+            "!".to_string(),
+        ];
+        let word_counter = words.iter().map(get_letter_count);
+
+        // words vektöründeki herbir kelime için get_letter_count çağrılır.
+        // zip iki iterasyonda eş zamanlı ilerlenmesini sağlar.
+        // Yani words üstündeki ilerlerken paralelde her word için word_counter iterasyonunda da hareket eder.
+        // Sonuçlar collect ile (&String,usize) tuple'larından oluşan bir vector'e alınır
+        let words_report: Vec<(&String, usize)> = words.iter().zip(word_counter).collect();
+        assert_eq!(
+            words_report,
+            vec![
+                (&"shall".to_string(), 5),
+                (&"we".to_string(), 2),
+                (&"began".to_string(), 5),
+                (&"!".to_string(), 1)
+            ]
+        )
+    }
+
+    // map fonksiyonundan çağrılan fonksiyon
+    fn get_letter_count(word: &String) -> usize {
+        word.len()
+    }
 }
