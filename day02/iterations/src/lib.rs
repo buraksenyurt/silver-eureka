@@ -69,8 +69,50 @@ mod tests {
         assert_eq!(points.iter().fold(1, |point, count| point * count), 135135);
     }
 
+    use super::*;
+
+    #[test]
+    fn fiter_with_struct_test() {
+        let players = vec![
+            Player {
+                nickname: "barbarozsa".to_string(),
+                level: 5,
+            },
+            Player {
+                nickname: "rougue".to_string(),
+                level: 8,
+            },
+            Player {
+                nickname: "jorgensen".to_string(),
+                level: 3,
+            },
+            Player {
+                nickname: "klaussen".to_string(),
+                level: 6,
+            },
+        ];
+        // filter fonksiyonu ile iterasyondaki her bir eleman için sonucu bool olan bir başka fonksiyon(predicate) işletilir.
+        let weaks = players.iter().filter(|p| p.level <= 5); // level değeri 5ten küçük ve eşit olanlar
+        assert_eq!(weaks.count(), 2);
+
+        let increased = players
+            .iter()
+            .filter(|p| p.level <= 5) // level değeri 5ten küçük ve eşit olanların
+            .map(|p| p.nickname.to_string()) // isimlerini
+            .collect::<Vec<String>>(); // topladık
+        assert_eq!(
+            increased,
+            vec!["barbarozsa".to_string(), "jorgensen".to_string()]
+        );
+    }
+
     // map fonksiyonundan çağrılan fonksiyon
     fn get_letter_count(word: &String) -> usize {
         word.len()
     }
+}
+
+struct Player {
+    nickname: String,
+    level: usize,
 }
