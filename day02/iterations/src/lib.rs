@@ -59,6 +59,16 @@ mod tests {
         )
     }
 
+    #[test]
+    fn fold_test() {
+        // Aggregation fonksiyonlarından olan fold ile iterasyondaki elemanların herbirine bir işlem uygulanır ve bunun sonucu elde edilir.
+        let points = vec![3, 5, 7, 9, 11, 13];
+        let count = points.iter().fold(0, |point, count| point + count); // İlk parametredeki 0, fold işlem sonucunun ilk değeridir
+        assert_eq!(count, 48);
+        assert_eq!(points.iter().fold(0, |point, count| point * count), 0); // Dolayısıyla tüm değerleri birbiriyle çarpsak bile başlangıç sonucu 0 olduğundan sonuç 0 çıkar
+        assert_eq!(points.iter().fold(1, |point, count| point * count), 135135);
+    }
+
     // map fonksiyonundan çağrılan fonksiyon
     fn get_letter_count(word: &String) -> usize {
         word.len()
