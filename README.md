@@ -183,7 +183,7 @@ cargo test
 
 ### Özel Yineleyiciler _(iterator)_ Oluşturmak
 
-Örnekte basit bir liste veri yapısının elemanlarında ileri yönlü hareket etmek için iterator deseninden nasıl yararlanıldığı ele alınmaktadır. Bu amaçal Iterator ve IntoIterator isimli standart kütüphanedeki trait'lerin generic List veri yapısı için uyarlanması söz konusudur.
+Örnekte basit bir liste veri yapısının elemanlarında ileri yönlü hareket etmek için iterator deseninden nasıl yararlanıldığı ele alınmaktadır. Bu amaçal Iterator ve IntoIterator isimli standart kütüphanedeki trait'lerin generic List veri yapısı için uyarlanması söz konusudur. Bu uyarlama rust derleyicisi için anlamlıdır ki kendi veri türümüz üstünden next fonksiyonu çağırıldığında veya bir for döngüsü ile kullanıldığında nasıl hareket edeceğinin öğretilmesi gerekir
 
 ```bash
 cargo new custom_iterator --lib
@@ -199,3 +199,15 @@ cargo test
 ```
 
 ![./assets/screenshot_13.png](./assets/screenshot_13.png)
+
+### Yararlı Iterator Kullanımları
+
+Ardışıl eleman yapılarında iter metotu arkasından ulaşılabilen kullanışlı pek çok fonksiyon bulunmakta. next, map, fold, collect, zip, find, position, take vs Bu fonksiyonlar sadece nesne kümelerinde hareket etmek değil dönüştürme _(transformation)_, filtreleme, toplu hesaplama _(aggregation)_ gibi işlemler için de önemli. Örnekte bu fonksiyon kullanımlarına yer veriliyor.
+
+```bash
+cargo new iterations --lib
+cd iterations
+cargo test
+```
+
+![./assets/screenshot_15.png](./assets/screenshot_15.png)

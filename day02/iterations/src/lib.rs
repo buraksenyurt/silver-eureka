@@ -130,7 +130,7 @@ mod tests {
     }
 }
 
-struct Player {
-    nickname: String,
-    level: usize,
+pub struct Player {
+    pub nickname: String,
+    pub level: usize,
 }
