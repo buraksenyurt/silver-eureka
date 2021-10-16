@@ -106,6 +106,24 @@ mod tests {
         );
     }
 
+    #[test]
+    fn simple_filtering_test() {
+        let numbers = vec![1, 5, 10, 15, 4, 3, 28, 15, 55, 9, 60];
+        let count = numbers.iter().filter(|&n| n % 5 == 0).count(); // numbers ardışılında 5 ile bölünebilenlerin sayısı
+        assert_eq!(count, 6);
+
+        assert_eq!(numbers.iter().find(|&&n| n == 23), None); // sayılar arasında 23 var mı?
+        assert_eq!(numbers.iter().find(|&&n| n == 15), Some(&15)); // sayılar arasında 15 var mı?
+
+        let mut sub_numbers = numbers.iter().skip(3).take(5); // buda bir veri filtresi olarak düşünülebilir. numbers ardışılında ilk üç elemanı atlayıp kalan beş eleman alınır
+        assert_eq!(sub_numbers.next(), Some(&15));
+        assert_eq!(sub_numbers.next(), Some(&4));
+        assert_eq!(sub_numbers.next(), Some(&3));
+        assert_eq!(sub_numbers.next(), Some(&28));
+        assert_eq!(sub_numbers.next(), Some(&15));
+        assert_eq!(sub_numbers.next(), None);
+    }
+
     // map fonksiyonundan çağrılan fonksiyon
     fn get_letter_count(word: &String) -> usize {
         word.len()
