@@ -223,3 +223,25 @@ cargo test
 ```
 
 ![./assets/screenshot_16.png](./assets/screenshot_16.png)
+
+### Paylaşılan Ownership
+
+Rust dilinde bir garbage collector mekanizması yoktur. Bunun yerine sahiplenme _(ownership)_ ve ödünç alma _(borrowing)_ kavramları öne çıkar ve oldukça önemlidirler. Mevzu bir değişkenin yaşamı ile ilgilidir. Normal şartlarda scope'lar değişkenleri sahiplenirler ve scope dışına çıkılınca değişken artık kullanılamaz. Tabii sahiplikler iç scope'lara transfer edilebilir ve tekrar geri gelebilir. Geçici transferlerde ödünç alma kullanılır ancak bazı hallerde yönetimleri karmaşıktır. Kitabın bu kısmında paylaşılmış sahiplik ile ilgili örnek kodlar yer alıyor ve smart pointer kullanımının performans açısından önemi vurgulanıyor.
+
+```bash
+cargo new shared_ownership --lib
+cd shared_ownership
+
+# Örnekte benchmark testi yapıldığından rust'ın nightly build sürümü gerekiyor.
+rustup default nightly
+
+# test için
+cargo test
+
+# benchmark sonuçlarını görmek için
+cargo bench
+```
+
+![./assets/screenshot_17.png](./assets/screenshot_17.png)
+
+![./assets/screenshot_18.png](./assets/screenshot_18.png)
