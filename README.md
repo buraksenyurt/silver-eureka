@@ -211,3 +211,15 @@ cargo test
 ```
 
 ![./assets/screenshot_15.png](./assets/screenshot_15.png)
+
+### Unsafe Kodlama
+
+Rust'ın C diline yakınlaştığı yerlerden birisi de unsafe halidir. Unsafe modda iken derleyicinin uygulamayı kontrol eden güven mekanizması kapatılır. Unsafe sayılan fonksiyonların çağırılmasında, mutable işaretlenmiş statik değerlere erişmekte veya değiştirmekte, pointer referanslarının kaldırılmasında vs kullanılabilir.
+
+```bash
+cargo new easy_unsafe --lib
+cd easy_unsafe
+cargo test
+```
+
+![./assets/screenshot_16.png](./assets/screenshot_16.png)
