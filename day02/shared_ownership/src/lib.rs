@@ -1,13 +1,22 @@
+#![feature(test)]
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    extern crate test;
+    use test::{black_box, Bencher};
 
-    #[test] // #3
-    fn loop_test() {
-        let word = "rustician".to_owned();
-        for _ in 0..100 {
-            assert_eq!(get_length(word.clone()), 9);
-        }
+    #[bench] // #3
+    fn bench_test_for_clone(runner: &mut Bencher) {
+        // clone çağrımı maliyetlidir çünkü string'in birçok kopyası oluşturulur.
+        // Bu durumu analiz etmek için rust'ın nightly build'unu kullanıp benchmark modülünden yararlanıyoruz.
+        // Terminalden cargo bench şeklinde çalıştırılır.
+        
+        // Test için büyük bir string oluşturulur
+        let word: String = (0..100_000_000).map(|_| 'r').collect(); 
+        runner.iter(|| {
+            black_box(get_length(word.clone())); // clone fonksiyonunun çağırıldığı bir black_box test çalışıtırılır.
+        });
     }
 
     #[test] // #2
