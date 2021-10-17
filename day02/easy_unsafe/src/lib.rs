@@ -13,7 +13,22 @@ mod tests {
     #[test]
     fn should_split_fn_fails_test() {
         let mut numbers = vec![3, 5, 6, 15, 2, 4, 8, 10];
-        assert_eq!(split(&mut numbers, 2), &[&[3, 5, 6, 15], &[2, 4, 8, 10]]); // Burası ilginçtir. 8/2 = 4 parçalı elemanların dönüşünü bekliyoruz. Lakin bu şekilde 8 elemanı da ele almış olacağız. 
+        assert_eq!(split(&mut numbers, 2), &[&[3, 5, 6, 15], &[2, 4, 8, 10]]); // Burası ilginçtir. 8/2 = 4 parçalı elemanların dönüşünü bekliyoruz. Lakin bu şekilde 8 elemanı da ele almış olacağız. Dolayısıyla pek beklemediğimiz değerlerin çekildiğini göreceğiz.
+    }
+
+    #[test]
+    fn reading_memory_test() {
+        let bytes = unsafe {
+            std::mem::transmute::<&str, &[u8]>("Rust zevkli ama öğrenilmesi zor bir dil sanki")
+        };
+        assert_eq!(
+            bytes,
+            &[
+                82, 117, 115, 116, 32, 122, 101, 118, 107, 108, 105, 32, 97, 109, 97, 32, 195, 182,
+                196, 159, 114, 101, 110, 105, 108, 109, 101, 115, 105, 32, 122, 111, 114, 32, 98,
+                105, 114, 32, 100, 105, 108, 32, 115, 97, 110, 107, 105
+            ]
+        );
     }
 }
 
