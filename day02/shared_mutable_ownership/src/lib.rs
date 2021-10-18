@@ -55,4 +55,33 @@ mod tests {
             }
         });
     }
+
+    // Aşağıdaki fonksiyonlar sembolik olarak gelen vector sonuna bir değer eklemektedir.
+    // Bunu vector'lerin olduğu yerde de yapabilirdik ancak örneklerin amacı değiştirilebilir veri sahipliğinin farklı yollarla ele alınması.
+    // Bu amaçla change_rc fonksiyonunda RefCell,
+    // change_c fonksiyonunda Cell
+    // change_cow fonksiyonunda Cow kullanımları yer alıyor.
+    fn change_rc(something: i32, data: &RefCell<Vec<i32>>) {
+        data.borrow_mut().push(something);
+    }
+
+    fn change_c(something: i32, data: &Cell<Vec<i32>>) {
+        let mut values = data.take();
+        values.push(something);
+        data.set(values);
+    }
+
+    #[test]
+    fn refcell_test() {
+        let data_cell = RefCell::new(vec![1, 2, 3, 4]);
+        change_rc(5, &data_cell);
+        assert!(data_cell.borrow().eq(&vec![1, 2, 3, 4, 5]));
+    }
+
+    #[test]
+    fn cell_test() {
+        let data_cell = Cell::from(vec![1, 2, 3, 4]);
+        change_c(7, &data_cell);
+        assert_eq!(data_cell.into_inner(), vec![1, 2, 3, 4, 7]);
+    }
 }
