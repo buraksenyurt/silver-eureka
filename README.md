@@ -268,4 +268,10 @@ cargo bench
 
 Test sonuçlar enteresan değil mi? Standart yöntem en performanslısı gibi görünüyor.
 
+Normal test sonuçları, 
+
 ![./assets/screenshot_19.png](./assets/screenshot_19.png)
+
+ve borrow sonrası borrow_mut kullanılması sırasında oluşan ihlal sonucu panic durumu.
+
+![./assets/screenshot_21.png](./assets/screenshot_21.png)
