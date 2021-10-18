@@ -103,4 +103,15 @@ mod tests {
         assert_eq!(data_cow, vec![1, 2, 3, 4, 8]); //data_cow içeriği change_cow içinde değiştirilmişti.
         assert!(!eq(&data[..], &*data_cow)); // change_cow çağrısı sonucu sadece data_cow değişir, data aynı şekilde kalır.
     }
+
+    #[test]
+    //#[should_panic] // Test sonucundaki hatayı göstermek için yorum dışı bıraktık.
+    fn fail_with_cell_test() {
+        // RefCell kullanımlarında borrow check (ödünç alma kontrolü) ihlali varsa bir panic oluşur.
+        let some_ref = RefCell::new(vec![1, 2, 3, 4]);
+        let _borrowed = some_ref.borrow(); // Sarmalanmış değer değiştirilemez şekilde ödünç veriliyor.
+        change_rc(9, &some_ref); // Burada bir sorun yok. some_ref içeriği change_rc içinde değiştirilebilir çünkü aynı anda birden fazla değişmez referans ödünç alınabilir.
+        change_rc(10, &some_ref); // Bu satırda ise panic oluşacak çünkü change_rc içinde borrow_mut çağrısı söz konusu ve değişmez referansı değiştirilebilir olarak almaya kalkıyoruz.
+                                  // _ borrowed satırını kapatıp testi denersek bir sorun olmadığını ve panic oluşmadığını görebiliriz.
+    }
 }
