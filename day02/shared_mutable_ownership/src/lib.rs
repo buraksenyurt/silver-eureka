@@ -71,9 +71,15 @@ mod tests {
         data.set(values);
     }
 
+    fn change_cow(something: i32, data: &mut Cow<[i32]>) {
+        data.to_mut().push(something);
+    }
+
     #[test]
     fn refcell_test() {
-        let data_cell = RefCell::new(vec![1, 2, 3, 4]);
+        let numbers = vec![1, 2, 3, 4];
+        let data_cell = RefCell::new(numbers);
+        assert!(data_cell.borrow().eq(&vec![1, 2, 3, 4]));
         change_rc(5, &data_cell);
         assert!(data_cell.borrow().eq(&vec![1, 2, 3, 4, 5]));
     }
@@ -83,5 +89,18 @@ mod tests {
         let data_cell = Cell::from(vec![1, 2, 3, 4]);
         change_c(7, &data_cell);
         assert_eq!(data_cell.into_inner(), vec![1, 2, 3, 4, 7]);
+    }
+
+    use std::ptr::eq;
+
+    #[test]
+    fn cow_test() {
+        let data = vec![1, 2, 3, 4];
+        let mut data_cow = Cow::from(&data);
+        assert!(eq(&data[..], &*data_cow)); // veri içerikleri eşittir
+        change_cow(8, &mut data_cow); // data_cow diğer metota referans edilir ve orada içeriği değişir
+        assert_eq!(data, vec![1, 2, 3, 4]);
+        assert_eq!(data_cow, vec![1, 2, 3, 4, 8]); //data_cow içeriği change_cow içinde değiştirilmişti.
+        assert!(!eq(&data[..], &*data_cow)); // change_cow çağrısı sonucu sadece data_cow değişir, data aynı şekilde kalır.
     }
 }
