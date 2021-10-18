@@ -224,7 +224,7 @@ cargo test
 
 ![./assets/screenshot_16.png](./assets/screenshot_16.png)
 
-### Paylaşılan Ownership
+### Paylaşımlı Sahiplik _(Shared Ownership)_
 
 Rust dilinde bir garbage collector mekanizması yoktur. Bunun yerine sahiplenme _(ownership)_ ve ödünç alma _(borrowing)_ kavramları öne çıkar ve oldukça önemlidirler. Mevzu bir değişkenin yaşamı ile ilgilidir. Normal şartlarda scope'lar değişkenleri sahiplenirler ve scope dışına çıkılınca değişken artık kullanılamaz. Tabii sahiplikler iç scope'lara transfer edilebilir ve tekrar geri gelebilir. Geçici transferlerde ödünç alma kullanılır ancak bazı hallerde yönetimleri karmaşıktır. Kitabın bu kısmında paylaşılmış sahiplik ile ilgili örnek kodlar yer alıyor ve smart pointer kullanımının performans açısından önemi vurgulanıyor.
 
@@ -245,3 +245,27 @@ cargo bench
 ![./assets/screenshot_17.png](./assets/screenshot_17.png)
 
 ![./assets/screenshot_18.png](./assets/screenshot_18.png)
+
+### Değiştirilebilir Paylaşımlı Sahiplik _(Mutable)_
+
+Salt okunabilir verileri sahipliği paylaşarak yönetmek adına bir önceki bölümdeki gibi Rc _(Reference Counting)_ kullanımı yeterlidir. Ancak değeri değiştirilebilir verilerde Refcell, Cell, Cow _(Clone on Write) gibi enstrümanlar ile veriyi referans olarak paylaşmak tercih edilir. Örnekte bu tiplerin nasıl kullanıldığı ve veri değiştirme operasyonlarındaki performans metrikleri ele alınmakta.
+
+```bash
+cargo new shared_mutable_ownership --lib
+cd shared_mutable_ownership
+
+# Örnekte benchmark testi yapıldığından rust'ın nightly build sürümü gerekiyor.
+rustup default nightly
+
+# test için
+cargo test
+
+# benchmark sonuçlarını görmek için
+cargo bench
+```
+
+![./assets/screenshot_20.png](./assets/screenshot_20.png)
+
+Test sonuçlar enteresan değil mi? Standart yöntem en performanslısı gibi görünüyor.
+
+![./assets/screenshot_19.png](./assets/screenshot_19.png)
