@@ -42,4 +42,17 @@ mod tests {
             }
         });
     }
+
+    #[bench] // #4 Clone-on-Write(Cow) kullanımı ile test ölçümleri için
+    fn mutation_with_cow_bench(runner: &mut Bencher) {
+        // Cow tipi yazma üzerine klonlama işlevi sağlayan bir akıllı işaretçidir.
+        // Ödünç alınan verileri taşıyıp değiştirilemez(immutable) erişim sağlayabilir.
+        // Eğer bir mutasyon veya sahiplik gerekiyorsa verileri klonlar(lazy clonning).
+        let mut data_ref = Cow::from(vec![]);
+        runner.iter(|| {
+            for _ in 0..1_000_000 {
+                data_ref.to_mut().push(1);
+            }
+        });
+    }
 }
