@@ -275,3 +275,21 @@ Normal test sonuçları,
 ve borrow sonrası borrow_mut kullanılması sırasında oluşan ihlal sonucu panic durumu.
 
 ![./assets/screenshot_21.png](./assets/screenshot_21.png)
+
+### Referanslar için Yaşam Ömrü Doğrulaması _(Lifetimes Validations)_
+
+Kitabın izleyen bölümünde referansların lifetime belirteçleri ile kullanımına yer veriliyor lakin lifetime mevzusunu biraz unutmuş gibiyim. Öncesinde ne olduğunu hatırlamak üzere izleyen örneğe başvuruyorum. Her referansın scope bazında bir yaşam ömrü _(lifetime)_ vardır. Bunu belli haller dışında açıkça belirtmemize gerek yoktur ancak içiçe scope kullanımları, referansların fonksiyonlara taşınması gibi hallerde Rust'ın ödünç alma kontrol mekanizması _(borrow cheker)_ çalışır ve doğru görünen kod derlenmez. Bu durumda programcının açıkça _(explicit)_ lifetime kapsamını belirlemesi yani referansa dipnot _(annotation)_ eklemesi gerekir.
+
+```bash
+cargo new lifetimes --lib
+cd lifetimes --lib
+cargo test
+```
+
+borrow cheker mekanizmasının #1 senaryosunda tespit ettiği ihlal durumu
+
+![./assets/screenshot_22.png](./assets/screenshot_22.png)
+
+fonksiyona lifetime belirtmeden referans geçtiğimiz #3 nolu senaryodaki ihlal durumu.
+
+![./assets/screenshot_23.png](./assets/screenshot_23.png)
