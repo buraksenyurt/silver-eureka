@@ -61,6 +61,7 @@ mod tests {
     // Bu amaçla change_rc fonksiyonunda RefCell,
     // change_c fonksiyonunda Cell
     // change_cow fonksiyonunda Cow kullanımları yer alıyor.
+    // Cell ve RefCell veriyi heap'a taşıyan ve erişmek için pointer(ya da C#çası referans) kullandıkların ekstra sıçramalara ihtiyaç duyarlar.
     fn change_rc(something: i32, data: &RefCell<Vec<i32>>) {
         data.borrow_mut().push(something);
     }
