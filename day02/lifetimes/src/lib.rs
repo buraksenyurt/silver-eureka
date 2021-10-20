@@ -78,17 +78,36 @@ mod tests {
         }
     }
 
-    #[test] // #5 Winner değişkenini fonksiyon çağrısının yapıldığı iç scope dışına aldık.
-            // ama daha da önemlisi word_2 değişkeninin iç scope dışında geçersiz hale gelmesine neden olacak şekilde from ile oluşturup as_str ile taşıdık.
-            // scope dışında word_2 nin ömrü sonlanıyor. Borrow cheker ise 'a bildirimi nedeniyle hem parametre hem de dönüş referansının aynı yaşam ömrüne sahip olmasını bekliyor.
-    fn different_lifetimes_violation_test() {
-        let word_1 =
-            "Bir berber bir berbere gel bereber berberistanda bir berber dükkanı açalım demiş";
-        let winner;
-        {
-            let word_2=String::from("Şu yoğurdu nane ile birlikte sarımsaklasak da mı saklasak nane ile sarımsaklamasak da mı saklamasak. Nanesiz sarımsaklasak da mı saklamasak?");
-            winner = who_wins_with_lt(word_1, word_2.as_str());
-        }
-        assert_eq!(winner.len(), 148);
+    // #[test] // #5 Winner değişkenini fonksiyon çağrısının yapıldığı iç scope dışına aldık.
+    //         // ama daha da önemlisi word_2 değişkeninin iç scope dışında geçersiz hale gelmesine neden olacak şekilde from ile oluşturup as_str ile taşıdık.
+    //         // scope dışında word_2 nin ömrü sonlanıyor. Borrow cheker ise 'a bildirimi nedeniyle hem parametre hem de dönüş referansının aynı yaşam ömrüne sahip olmasını bekliyor.
+    // fn different_lifetimes_violation_test() {
+    //     let word_1 =
+    //         "Bir berber bir berbere gel bereber berberistanda bir berber dükkanı açalım demiş";
+    //     let winner;
+    //     {
+    //         let word_2=String::from("Şu yoğurdu nane ile birlikte sarımsaklasak da mı saklasak nane ile sarımsaklamasak da mı saklamasak. Nanesiz sarımsaklasak da mı saklamasak?");
+    //         winner = who_wins_with_lt(word_1, word_2.as_str());
+    //     }
+    //     assert_eq!(winner.len(), 148);
+    // }
+
+    #[test] // #6
+    fn struct_holds_ref_test() {
+        let incoming = String::from("damdan van dam");
+        let level = 80;
+        let van_dam = Player {
+            name: incoming.as_str(),
+            level: &level,
+        };
+        assert_eq!(van_dam.level, &80);
+        assert_eq!(van_dam.name.len(), 14);
+    }
+
+    // Bir struct türünün kendi değerlerini referans olarak tutmasını lifetime bildirimleri ile sağlayabiliriz.
+    // #6 nolu test tarafında kullanılır.
+    struct Player<'a> {
+        name: &'a str,
+        level: &'a i32,
     }
 }
