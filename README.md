@@ -293,3 +293,7 @@ borrow cheker mekanizmasının #1 senaryosunda tespit ettiği ihlal durumu
 fonksiyona lifetime belirtmeden referans geçtiğimiz #3 nolu senaryodaki ihlal durumu.
 
 ![./assets/screenshot_23.png](./assets/screenshot_23.png)
+
+fonksiyon dönüş referansı ile parametrelerin yaşam ömürlerinin uyuşmamasını ele alan #5 senaryosundaki durum.
+
+![./assets/screenshot_24.png](./assets/screenshot_24.png)
