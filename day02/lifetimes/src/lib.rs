@@ -28,20 +28,33 @@ mod tests {
     }
 
     #[test] // #3 Bu senaryoda generic lifetime senaryosu öncesi problemin ne olduğuna bakılıyor
-    // Hata alınması Rust derleyici açısında normal ve gereklidir.
-    // who_wins fonksiyonuna iki string referansı gider ama hangisinin döneceğini bilemez. (koşula giren string uzunluklarının dinamik geldiğini düşünecek olursak)
-    // Ayrıca borrow cheker mekanizması da bu durumu analiz edemez nitekim gelen referanslar ile dönen referansın yaşam ömürlerin arasında ilişkiyi bilemez.
-    // Bu sebeple who_wins fonksiyonu değiştirilmeli ve lifetime için dipnot bırakılmaı bir başka deyişler fonksiyon parametre ve dönüş referansları için borrow cheker'ın bu kontrolü atlamasını sağlamalıyız.
+            // Hata alınması Rust derleyici açısında normal ve gereklidir.
+            // who_wins fonksiyonuna iki string referansı gider ama hangisinin döneceğini bilemez. (koşula giren string uzunluklarının dinamik geldiğini düşünecek olursak)
+            // Ayrıca borrow cheker mekanizması da bu durumu analiz edemez nitekim gelen referanslar ile dönen referansın yaşam ömürlerin arasında ilişkiyi bilemez.
+            // Bu sebeple who_wins fonksiyonu değiştirilmeli ve lifetime için dipnot bırakılmaı bir başka deyişler fonksiyon parametre ve dönüş referansları için borrow cheker'ın bu kontrolü atlamasını sağlamalıyız.
     fn need_for_generic_lifetimes_test() {
         let word_1 =
             "Bir berber bir berbere gel bereber berberistanda bir berber dükkanı açalım demiş";
         let word_2="Şu yoğurdu nane ile birlikte sarımsaklasak da mı saklasak nane ile sarımsaklamasak da mı saklamasak. Nanesiz sarımsaklasak da mı saklamasak?";
-        let winner = who_wins(word_1, word_2);
-        assert_eq!(winner.len(), 140);
+        // let winner = who_wins(word_1, word_2);
+        let winner = who_wins_with_lt(word_1, word_2);
+        assert_eq!(winner.len(), 148);
     }
 
-    // who_wins fonksiyon string değişkenler için referanslarını alır ki bu son derece doğaldır nitekim büyük String içeriklerin sahipliğini onları yolladığımız fonksiyonun alması önerilmez.
-    fn who_wins(my_word: &str, your_word: &str) -> &str {
+    // // who_wins fonksiyon string değişkenler için referanslarını alır ki bu son derece doğaldır nitekim büyük String içeriklerin sahipliğini onları yolladığımız fonksiyonun alması önerilmez.
+    // fn who_wins(my_word: &str, your_word: &str) -> &str {
+    //     if your_word.len() > my_word.len() {
+    //         // ve hangisinin uzunluğu büyükse o referansı fonksiyonun çağırıldığı yere döndürür. Gayet masumane değil mi?
+    //         your_word
+    //     } else {
+    //         my_word
+    //     }
+    // }
+
+    // lifetime bildirimleri 'a gibi yapılır. a yerine başka bir şeyde yazılabilir ama genelde 'a 'b gibi tercih ediliyor. .Net tarafındaki generic T,K gibi düşünebiliriz.
+    // lifetime bildirimleri fonksiyonun imzasına konan ek bildirimlerdir ve Rust derleyicisi için bilgi sağlar.
+    // 'a parametre olarak gelen referanslardan en küçük yaşam süresi olana göre hareket eder ve dönüş referansı için de aynı yaşam süresini kullanır.
+    fn who_wins_with_lt<'a>(my_word: &'a str, your_word: &'a str) -> &'a str {
         if your_word.len() > my_word.len() {
             // ve hangisinin uzunluğu büyükse o referansı fonksiyonun çağırıldığı yere döndürür. Gayet masumane değil mi?
             your_word
