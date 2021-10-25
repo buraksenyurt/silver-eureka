@@ -297,3 +297,15 @@ fonksiyona lifetime belirtmeden referans geçtiğimiz #3 nolu senaryodaki ihlal 
 fonksiyon dönüş referansı ile parametrelerin yaşam ömürlerinin uyuşmamasını ele alan #5 senaryosundaki durum.
 
 ![./assets/screenshot_24.png](./assets/screenshot_24.png)
+
+### Referanslar için Yaşam Ömrü Doğrulaması Bölüm 2
+
+Bir önceki örnekle referans türlerinin yaşam sürelerini yönetmeyi hatırladıktan sonra tekrar kitabın ilgili bölümündeki örneğe döndüm. Referans kullanmanın bir sebebi de bellekte sürekli yer ayırıp kopyalama işlemleri nedeniyle oluşacak performans kayıplarının önüne geçmektir. Bununla ilgili kitap düşündürücü bir soru soruyor. Referans edilen orjinal değer scope dışına çıktığında, referansa ne olur? İşte bu noktada lifetimes belirteçleri ile derleyiciye yol göstermek gerekiyor. Örnekte temel bir istatistik hesaplaması için kullanılan Struct veri yapısında lifetimes bilgisinin nasıl kullanıldığı gösterilmekte.
+
+```bash
+cargo new lifetimes_2 --lib
+cd lifetimes_2
+cargo test
+```
+
+![./assets/screenshot_25.png](./assets/screenshot_25.png)
