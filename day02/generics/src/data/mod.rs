@@ -4,14 +4,44 @@ use std::ops::Index; // değişmez(immutable) içeriklerde indeksleme operasyonl
 
 const DEFAULT_SIZE: usize = 4; // listemizin varsayılan koşullardaki başlangıç kapasitesini belirttiğimiz sabit
 
-type Item<T> = Option<T>;
+type Item<T> = Option<T>; // generic Option türünden bir tip tanımladık. Bu listemizin tutacağı eleman dizisinin veri türü olacak.
 
 // generic veri modelimiz
 pub struct List<T>
 where
     T: Sized + Clone, // T tipinin boyutlandırılabilir ve kopyalanabilir olması için Rust'ın varsayılan Sized ve Clone Trait'lerini uygulaması gerekir
 {
-    buffer: Box<[Item<T>]>,
-    capacity: usize,
-    pub length: usize,
+    buffer: Box<[Item<T>]>, // Heap'te generic Item nesnelerinden oluşan bir diziyi referans eden field.
+    capacity: usize,        // Kapasite bilgisi
+    pub length: usize,      // Kaç eleman taşıdığımız bilgisi
+}
+
+// Generic listemiz için gerekli fonksiyon uyarlamaları.
+// Burada da T tipi için Sized ve Clone Trait kıstaslarımız var.
+impl<T> List<T>
+where
+    T: Sized + Clone,
+{
+    // Default Constructor olarak düşünebiliriz.
+    pub fn new() -> List<T> {
+        List {
+            buffer: vec![None; DEFAULT_SIZE].into_boxed_slice(), // Başlangıçta DEFAULT_SIZE sabitinde belirttiğimiz kapasitede bir vektör tanımlıyoruz. Vector içeriğini generic box türüne çevirir.
+            capacity: DEFAULT_SIZE,                              // İlk kapasitemiz belli
+            length: 0,                                           // eleman sayımız tabii ki 0
+        }
+    }
+
+    // Kapasitenin varsayılan olarak iki kart artırılmasını baz alana büyüme fonksiyonu
+    fn increase(&mut self, min_capacity: usize) {
+        let old_capacity = self.buffer.len(); // var olan kapasiteyi bir alalım
+        let mut new_capacity = old_capacity + (old_capacity >> 1); // yeni kapasiteyi artıralım
+
+        new_capacity = cmp::max(new_capacity, min_capacity);
+        new_capacity = cmp::min(new_capacity, usize::max_value());
+        let current = self.buffer.clone(); // güncel eleman dizisini koplayıyoruz
+        self.capacity = new_capacity; // Yeni kapasite atanıyor
+
+        self.buffer = vec![None; new_capacity].into_boxed_slice(); // Yeni elemanları vector dizisini box dizisine çevirerek atıyoruz.
+        self.buffer[..current.len()].clone_from_slice(&current);
+    }
 }
