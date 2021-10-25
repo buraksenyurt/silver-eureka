@@ -31,6 +31,26 @@ where
         }
     }
 
+    // yeni bir eleman eklemek için kullanılan generic fonksiyon
+    pub fn add(&mut self, value: T) {
+        if self.length == self.capacity {
+            // eğer eleman sayısı kapasite ile anyı ise,
+            self.increase(self.length + 1); // artıralım
+        }
+        self.buffer[self.length] = Some(value); // gelen veriyi sona ekleyelim
+        self.length += 1; // eleman sayımızı bir artıralım
+    }
+
+    // Belli bir konumdaki elemanı elde etmek için kullanılan fonksiyon
+    pub fn get(&mut self, index: usize) -> Item<T> {
+        if self.length > index {
+            // istenen pozisyon uygun bir aralıkta ise
+            self.buffer[index].clone() // bir klonunu oluşturup geri ver
+        } else {
+            None // yoksa Option sabitinin None değerini döndür
+        }
+    }
+
     // Kapasitenin varsayılan olarak iki kart artırılmasını baz alana büyüme fonksiyonu
     fn increase(&mut self, min_capacity: usize) {
         let old_capacity = self.buffer.len(); // var olan kapasiteyi bir alalım
