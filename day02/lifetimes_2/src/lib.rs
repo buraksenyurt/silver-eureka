@@ -1,9 +1,40 @@
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+    fn should_statistician_numbers_in_range_test() {
+        assert!(Statistician::new(&vec![]).is_none());
+        assert!(Statistician::new(&vec![1.0, 2.0, 3.0, 4.0]).is_none());
+        assert!(Statistician::new(&vec![1.0, 2.0, 1.0, 3.0, 2.0, 5.0]).is_some());
+    }
+
+    #[test]
+    fn should_median_works_test() {
+        let values = &vec![1.0, 2.0, 1.0, 3.0, 2.0, 5.0];
+        let fisher = Statistician::new(values).unwrap();
+        assert_eq!(fisher.median(), 2.0);
+    }
+
+    #[test]
+    fn should_variance_works_test() {
+        let values = &vec![1.0, 2.0, 1.0, 3.0, 2.0, 5.0];
+        let fisher = Statistician::new(values).unwrap();
+        assert_eq!(fisher.variance(), 1.888888888888889);
+    }
+
+    #[test]
+    fn should_standart_deviation_works_test() {
+        let values = &vec![1.0, 2.0, 1.0, 3.0, 2.0, 5.0];
+        let fisher = Statistician::new(values).unwrap();
+        assert_eq!(fisher.std_deviation(), 1.3743685418725535);
+    }
+
+    #[test]
+    fn should_mean_works_test() {
+        let values = &vec![1.0, 2.0, 1.0, 3.0, 2.0, 5.0];
+        let fisher = Statistician::new(values).unwrap();
+        assert_eq!(fisher.mean(), 2.3333333333333335);
     }
 }
 
@@ -44,7 +75,7 @@ impl<'a> Statistician<'a> {
     // medyan değerini bulan fonksiyon
     pub fn median(&self) -> f64 {
         let mut _numbers = self.numbers.to_vec(); // veri yapısındaki numbers'ın bir klonu oluşturulup vektör dizisi haline getiriliyor
-        _numbers.sort_by(|x, y| x.partial_cmp(y).unwrap()); // 
+        _numbers.sort_by(|x, y| x.partial_cmp(y).unwrap()); //
         let m = _numbers.len() / 2;
         if _numbers.len() % 2 == 0 {
             _numbers[m]
