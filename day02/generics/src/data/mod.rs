@@ -52,7 +52,7 @@ where
     }
 
     // Kapasitenin varsayılan olarak iki kart artırılmasını baz alana büyüme fonksiyonu
-    fn increase(&mut self, min_capacity: usize) {
+    pub fn increase(&mut self, min_capacity: usize) {
         let old_capacity = self.buffer.len(); // var olan kapasiteyi bir alalım
         let mut new_capacity = old_capacity + (old_capacity >> 1); // yeni kapasiteyi artıralım
 

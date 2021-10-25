@@ -55,6 +55,47 @@ mod tests {
         }
         assert_eq!(numbers.get(max + 1), None); // çok doğal olarak üst sınırın bir ötesinde hiçbir eleman olmamalı
     }
+
+    // indeks operasyonunun çalışmasının testi
+    #[test]
+    fn should_index_trait_works() {
+        // tamsayılardan oluşan bir List nesnesi
+        let mut numbers = List::new();
+        numbers.add(10);
+        numbers.add(11);
+        numbers.add(12);
+        assert_eq!(numbers[1], Some(11)); // 1 nolu indisteki elemana erişiyoruz
+
+        // Bu sefer String veri türlerinden oluşan bir List nesnesi
+        let mut names = List::new();
+        names.add("Damm");
+        names.add("Van Damm");
+        names.add("Cloud Van Damm");
+        names.add("Jean Cloud Van Damm");
+        assert_eq!(names[3], Some("Jean Cloud Van Damm")); // 3 nolu
+        assert_eq!(names[4], None); // ve 4 nolu indisteki elemanlara erişiyoruz
+    }
+
+    // clone fonksiyonunun işlerliğinin testi
+    #[test]
+    fn should_clone_fn_works() {
+        let mut numbers = List::new();
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+        let mut numbers2 = numbers.clone();
+        numbers2.add(4);
+        numbers2.add(5);
+        numbers2.add(6);
+        assert_eq!(numbers[0], Some(1));
+        assert_eq!(numbers[1], Some(2));
+        assert_eq!(numbers[2], Some(3));
+        assert_eq!(numbers[3], None);
+
+        assert_eq!(numbers2.length, 6);
+        assert_eq!(numbers2[1], Some(2));
+        assert_eq!(numbers2[4], Some(5));
+    }
 }
 
 // #1
