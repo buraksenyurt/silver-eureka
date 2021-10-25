@@ -44,6 +44,7 @@ mod tests {
         assert_eq!(result[1], "Boba the Fat -> The Empire Strikes Back");
     }
 
+    // #3
     #[test]
     fn should_debug_trait_works_test() {
         let notify = Notification {
@@ -55,11 +56,35 @@ mod tests {
         // log fonksiyonuna notification veri yapısı türünden bir değişken gönderebilmemiz için Debug trait'inin uygulanması gerekir
         assert_eq!(log(notify), "Notification { owner: \"Boba the Fat\", note: \"The Empire Strikes Back\", is_argent: true }");
     }
+
+    // #4
+    #[test]
+    fn should_loggable_works_for_notification() {
+        let notify = Notification {
+            owner: String::from("Boba the Fat"),
+            note: String::from("The Empire Strikes Back"),
+            is_argent: true,
+        };
+        assert_eq!(notify.log(), "Notification { owner: \"Boba the Fat\", note: \"The Empire Strikes Back\", is_argent: true }");
+    }
 }
+
+// #4 Şimdi aşağıdaki trait tanımına bakalım
+// trait bound yazılışı kullanılan interface, Debug ve Sized isimli Trait'leri de devralır
+pub trait Loggable: Debug + Sized {
+    fn log(self) -> String {
+        format!("{:?}", &self)
+    }
+}
+
+// #4 Şu andaNotification veri modelini Loggable arayüzü ile donattık. Yani bir Notification değişkeni üstünden
+// Debug ve Sized türevli Loggable trait'inin içerdiği log fonksiyonunu çağırabileceğiz
+impl Loggable for Notification {}
 
 // #3
 // Şimdi aşağıdaki Trait'i göz önüne alalım
 // T tipinin Rust sisteminde önceden tanımlı olan Debug davranışını sergileyebilir olması bekleniyor
+// Bu sebeple Notification sınıfına türetme usülü bir bildirimi eklenecek.
 pub fn log<T: Debug>(item: T) -> String {
     format!("{:?}", item)
 }
@@ -101,7 +126,7 @@ pub struct BlogEntry {
 }
 
 // Bir başka örnek veri modeli (Bir duyuru metnini temsil etsin)
-#[derive(Debug)] // #3 kullanımının çalışması için eklenmesi gereken Trait bildirimi
+#[derive(Debug)] // #3 kullanımının çalışması için eklenmesi gereken direktif
 pub struct Notification {
     pub owner: String,
     pub note: String,
