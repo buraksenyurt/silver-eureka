@@ -96,6 +96,31 @@ mod tests {
         assert_eq!(numbers2[1], Some(2));
         assert_eq!(numbers2[4], Some(5));
     }
+
+    // 2 boyutlu generic liste örneğinin testi
+    #[test]
+    fn should_two_dimensions_works() {
+        let mut numbers = List::new(); // numbers isimli bir generic liste oluşturduk
+        let mut another_numbers = List::new(); // burada da başka bir generic liste var
+        another_numbers.add(18);
+        another_numbers.add(19);
+        another_numbers.add(20);
+        numbers.add(another_numbers); // bu durumda 0 indisine yerleşen another_numbers isimli başla bir generic liste söz konusu.
+
+        let mut other_numbers = List::new();
+        other_numbers.add(51);
+        other_numbers.add(52);
+        other_numbers.add(53);
+        numbers.add(other_numbers);
+
+        // numbers isimli generic listenin 0ncı indisi another_numbers isimli başka bir generic liste ;)
+        assert_eq!(numbers.get(0).unwrap().get(1), Some(19));
+        assert_eq!(numbers[0].as_ref().unwrap()[1], Some(19));
+
+        // numbers isimli generic listenin 1nci indisinde duran other_numbers isimli generic listenin 2nci elemanları
+        assert_eq!(numbers.get(1).unwrap().get(2), Some(53));
+        assert_eq!(numbers[1].as_ref().unwrap()[2], Some(53));
+    }
 }
 
 // #1
