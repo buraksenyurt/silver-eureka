@@ -19,8 +19,38 @@ mod tests {
             note: String::from("The Empire Strikes Back"),
             is_argent: true,
         };
-        assert_eq!(notify.get_summary(),"Boba the Fat -> The Empire Strikes Back");
+        assert_eq!(
+            notify.get_summary(),
+            "Boba the Fat -> The Empire Strikes Back"
+        );
     }
+
+    #[test]
+    fn should_collect_summaries_works_test() {
+        let entry=BlogEntry{
+            title:String::from("Monolitik Sistemlerde Teknik Borçlanma ile Mücadele"),
+            author:String::from("Burak Selim Şenyurt"),
+            content:String::from("Yazılımcı olmanın bir gerçeği de üretim ortamından gelen problemler ile uğraşmaktır belki de. Çalışmakta olduğumuz sistemlerin giderek büyümesi, iş kurallarının zamanla karmaşıklaşması, nasıl yapılır nereye bakılır bilgisinin ayrılan iş gücü nedeniyle eksilmesi, entegrasyon noktalarının çoğalması ve daha birçok sebepten ötürü bu kaçınılmazdır. Her birimiz yazılım yaşam süresi boyunca farklı tipte mimariler üzerinde çalışırız. Örneğin 2021 yılının ilk çeyreğinde hazırladığım ve yedi yüzden fazla kişinin katıldığı “Teknik Borç Farkındalık Anketi” isimli çalışmanın sonuçlarına göre beşimizden dördünün katmanlı mimari olarak adlandırdığımız monolitik sistemlerde görev aldığını söyleyebiliriz. ")
+        };
+        let notify = Notification {
+            owner: String::from("Boba the Fat"),
+            note: String::from("The Empire Strikes Back"),
+            is_argent: true,
+        };
+        let result: Vec<String> = collect_summaries(entry, notify);
+        assert_eq!(result[0],"Monolitik Sistemlerde Teknik Borçlanma ile Mücadele -> Burak Selim Şenyurt -> Yazılımcı olmanın bir gerçeği de üretim ...");
+        assert_eq!(result[1], "Boba the Fat -> The Empire Strikes Back");
+    }
+}
+
+// #1
+// Şimdi Summary trait'ini parametre olarak alıp kullanan bir fonksiyon olduğunu düşünelim.
+// item_a ve item_b Summary trait'ini implemente eden veri yapıları olmalıdır
+pub fn collect_summaries(item_a: impl Summary, item_b: impl Summary) -> Vec<String> {
+    let mut result: Vec<String> = vec![];
+    result.push(item_a.get_summary());
+    result.push(item_b.get_summary());
+    result
 }
 
 // Önce kendi trait tipimizi oluşturalım
