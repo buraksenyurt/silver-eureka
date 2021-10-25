@@ -4,6 +4,7 @@ mod data;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use data::*;
 
     #[test]
     fn should_complex_numbers_works_test() {
@@ -29,6 +30,30 @@ mod tests {
         assert_eq!(number_3.real_root(), &9_i8);
         assert_eq!(number_3.virtual_root(), &923.9394_f64);
         assert_eq!(number_3.to_str(), "9+(923.9394)i");
+    }
+
+    // Varsayılan generic bir liste oluşturup ona 1000 eleman ekleyen fonksiyon testi
+    #[test]
+    fn should_add_to_list_fn_works_test() {
+        let mut numbers = List::new();
+        for i in 0..1_000 {
+            numbers.add(i as i32);
+        }
+        assert_eq!(numbers.length, 1_000);
+    }
+
+    #[test]
+    fn should_get_fn_works() {
+        let mut numbers = List::new(); // Varsayılan bir liste oluşturulur
+        let max: usize = 100;
+        for i in 0..max {
+            // listeye 100 eleman eklenir
+            numbers.add(i as i32);
+        }
+        for i in 0..max {
+            assert_eq!(numbers.get(i), Some(i as i32)); // test gereği listenin o anki elemanı i ile aynı olmalıdır
+        }
+        assert_eq!(numbers.get(max + 1), None); // çok doğal olarak üst sınırın bir ötesinde hiçbir eleman olmamalı
     }
 }
 
