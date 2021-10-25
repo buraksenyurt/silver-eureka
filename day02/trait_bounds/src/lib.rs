@@ -2,10 +2,24 @@
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+    fn should_summary_behavior_works_test() {
+        let entry=BlogEntry{
+            title:String::from("Monolitik Sistemlerde Teknik Borçlanma ile Mücadele"),
+            author:String::from("Burak Selim Şenyurt"),
+            content:String::from("Yazılımcı olmanın bir gerçeği de üretim ortamından gelen problemler ile uğraşmaktır belki de. Çalışmakta olduğumuz sistemlerin giderek büyümesi, iş kurallarının zamanla karmaşıklaşması, nasıl yapılır nereye bakılır bilgisinin ayrılan iş gücü nedeniyle eksilmesi, entegrasyon noktalarının çoğalması ve daha birçok sebepten ötürü bu kaçınılmazdır. Her birimiz yazılım yaşam süresi boyunca farklı tipte mimariler üzerinde çalışırız. Örneğin 2021 yılının ilk çeyreğinde hazırladığım ve yedi yüzden fazla kişinin katıldığı “Teknik Borç Farkındalık Anketi” isimli çalışmanın sonuçlarına göre beşimizden dördünün katmanlı mimari olarak adlandırdığımız monolitik sistemlerde görev aldığını söyleyebiliriz. ")
+        };
+        let summary_of_entry = entry.get_summary();
+        assert_eq!(summary_of_entry, "Monolitik Sistemlerde Teknik Borçlanma ile Mücadele -> Burak Selim Şenyurt -> Yazılımcı olmanın bir gerçeği de üretim ...");
+
+        let notify = Notification {
+            owner: String::from("Boba the Fat"),
+            note: String::from("The Empire Strikes Back"),
+            is_argent: true,
+        };
+        assert_eq!(notify.get_summary(),"Boba the Fat -> The Empire Strikes Back");
     }
 }
 
@@ -25,20 +39,20 @@ pub struct BlogEntry {
 // Bir başka örnek veri modeli (Bir duyuru metnini temsil etsin)
 pub struct Notification {
     pub owner: String,
-    pub content: String,
+    pub note: String,
     pub is_argent: bool,
 }
 
 // Summary davranışını bu iki tip için uygulayalım
 impl Summary for BlogEntry {
     fn get_summary(&self) -> String {
-        let short_content: String = self.content.chars().take(100).collect();
-        format!("{} {} {}", self.title, self.author, short_content)
+        let short_content: String = self.content.chars().take(40).collect();
+        format!("{} -> {} -> {}...", self.title, self.author, short_content)
     }
 }
 
 impl Summary for Notification {
     fn get_summary(&self) -> String {
-        format!("{} {}", self.owner, self.content)
+        format!("{} -> {}", self.owner, self.note)
     }
 }
