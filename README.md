@@ -309,3 +309,21 @@ cargo test
 ```
 
 ![./assets/screenshot_25.png](./assets/screenshot_25.png)
+
+### Trait Bounds
+
+Rust derleyicisine belli bir tipin sahip olduğu ve başka tiplerle ortaklaşa paylaşabileceği davranışları söylemek için bunu soyutlaştırmamızı sağlayan trait enstrümanından yararlanıldığını biliyoruz. Birde trait bounds meselesi var. Örnek bununla ilgili.
+
+```bash
+cargo new trait_bounds --lib
+cd trait_bounds
+cargo test
+```
+
+#3 numaralı pratikte Debug Trait bildirimi yapılmadığında derleyicinin verdiği hata aşağıdaki gibidir.
+
+![./assets/screenshot_26.png](./assets/screenshot_26.png)
+
+Son çıktı.
+
+![./assets/screenshot_27.png](./assets/screenshot_27.png)
