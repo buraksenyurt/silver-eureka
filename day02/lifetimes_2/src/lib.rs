@@ -36,6 +36,16 @@ mod tests {
         let fisher = Statistician::new(values).unwrap();
         assert_eq!(fisher.mean(), 2.3333333333333335);
     }
+
+    #[test]
+    fn should_all_same_values_no_variance_test() {
+        let values = &vec![1.0, 1.0, 1.0, 1.0, 1.0, 1.0];
+        let fisher = Statistician::new(values).unwrap();
+        assert_eq!(fisher.variance(), 0.0);
+        assert_eq!(fisher.std_deviation(), 0.0);
+        assert_eq!(fisher.mean(), 1.0);
+        assert_eq!(fisher.median(), 1.0);
+    }
 }
 
 // Örnekte standart sapma ve ortalamaya göre varyans(değişiklik) hesaplaması ile ilgili enstrümanlar kullanılıyor.
