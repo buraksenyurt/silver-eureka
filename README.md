@@ -327,3 +327,21 @@ cargo test
 Son çıktı.
 
 ![./assets/screenshot_27.png](./assets/screenshot_27.png)
+
+### Generic Veri Türleri
+
+Kitabın bu reçetesinde generic bir veri yapısı nasıl yapılır konusu ele alınmakta. Örnekte ilk olarak bir kompleks sayı veri tipini generic olarak tasarlayıp kullanmaktayız. Ardından generic bir liste türü tasarlıyoruz. Generic liste için data isimli bir modül kullanmaktayız.
+
+```bash
+cargo new generics --lib
+cd generics
+cd src
+mkdir data
+cd data
+touch mod.rs
+cd ..
+cd ..
+cargo test
+```
+
+![./assets/screenshot_28.png](./assets/screenshot_28.png)
