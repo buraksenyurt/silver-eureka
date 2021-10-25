@@ -65,3 +65,32 @@ where
         self.buffer[..current.len()].clone_from_slice(&current);
     }
 }
+
+// indeks ve koplayama davranışlarının desteklenmesi için listemize Index ve Clone Trait'lerini nasıl kullanacağını öğretmemiz gerekiyor.
+impl<T> Clone for List<T>
+where
+    T: Sized + Clone,
+{
+    fn clone(&self) -> Self {
+        List {
+            capacity: self.capacity,
+            length: self.length,
+            buffer: self.buffer.clone(),
+        }
+    }
+}
+
+impl<T> Index<usize> for List<T>
+where
+    T: Sized + Clone,
+{
+    type Output = Item<T>;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        if self.length > index {
+            &self.buffer[index]
+        } else {
+            &None
+        }
+    }
+}
