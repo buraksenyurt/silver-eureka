@@ -1,4 +1,5 @@
 use std::fmt::Display;
+mod data;
 
 #[cfg(test)]
 mod tests {
