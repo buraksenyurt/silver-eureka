@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 authors=["Burak Selim Şenyurt"]
 homepage="https://www.buraksenyurt.com"
+licens="GPL"
 repository="https://github.com/buraksenyurt/silver-eureka"
 description="crates.io için bir paket nasıl hazırlanırın ele alındığı öğrenme amaçlı modüldür."
 categories=[
