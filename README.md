@@ -394,3 +394,36 @@ cargo build
 _cargo build_ işlemi sonrası çalıştırlabilir binary dosyaları target klasörü altında konuşlanacaktır.
 
 ![./assets/screenshot_30.png](./assets/screenshot_30.png)
+
+### crates.io ile Çalışmak
+
+Dilersek kendi kod sandıklarımızı _(crate)_ herkesin erişimine açabiliriz. Bunun için ilgili paketleri uygun şekilde crates.io sitesine yüklemek yeterlidir. İlk olarak [crates.io](crates.io) sayfasına gidilir ve var olan github hesabı ile login olunur. Sonrasında __Account Settings__ kısmına gelinir ve API erişimi sağlanabilmesi için yeni bir token istenir. Sonuç itibariyle sistemimizde cargo aracını kullanarak crates.io ile çalışmak için bir şekilde kendimizi doğrulatmalıyız. Bu işlemi terminalden aşağıdaki komutu vererek yapabiliriz.
+
+```bash
+cargo login [buraya sizin için üretilen token eklenecek]
+
+# sonrasında yeni bir crate oluşturarak ilerleyebiliriz
+cargo new event-queue --lib
+cd event-queue
+cargo test
+
+# crates.io' da görünmesi amacıyla bir Readme.md dosyası da eklenir.
+# sonrasında paketin oluşturulması için aşağıdaki komut kullanılır.
+# Bu işlem öncesinde commit edilmemiş kod kalmamalı ve ayrıca cargo.toml dosyasında paket için gerekli tüm bilgiler yer almalıdır.
+cargo package
+
+# Ardında paket crates.io ortamına yollanır.
+cargo publish
+```
+
+Uygulamanın test sonuçları;
+
+![./assets/screenshot_31.png](./assets/screenshot_31.png)
+
+Eksik commit varsa;
+
+![./assets/screenshot_32.png](./assets/screenshot_32.png)
+
+Package oluşturma ve publish işlemleri başarılı oluşursa;
+
+![./assets/screenshot_33.png](./assets/screenshot_33.png)
