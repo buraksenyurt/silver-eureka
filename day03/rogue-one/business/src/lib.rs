@@ -15,18 +15,18 @@ mod tests {
 
 #[derive(Debug)]
 pub struct Player {
-    nickname: String,
-    level: i32,
+    pub nickname: String,
+    pub level: u32,
 }
 impl Player {
-    pub fn new(n: String, l: i32) -> Player {
+    pub fn new(n: String, l: u32) -> Player {
         Player {
             nickname: n,
             level: l,
         }
     }
 
-    pub fn increase_level(&mut self, point: i32) -> &Player {
+    pub fn increase_level(&mut self, point: u32) -> &Player {
         self.level += point;
         self
     }
