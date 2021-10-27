@@ -35,6 +35,45 @@ mod tests {
         event_queue.enqueue(event_3);
         assert_eq!(event_queue.count(), 3);
     }
+
+    #[test]
+    fn should_dequeue_fn_works_test() {
+        let mut event_queue = EventQueue::new();
+        let event_1 = Event::new("Product_Created".to_string(), SystemTime::now());
+        event_queue.enqueue(event_1);
+        let event_2 = Event::new("Basket_Refreshed".to_string(), SystemTime::now());
+        event_queue.enqueue(event_2);
+        let some_event = event_queue.dequeue();
+        assert_eq!(some_event.name, "Product_Created");
+        assert_eq!(event_queue.count(), 1);
+        let other_event = event_queue.dequeue();
+        assert_eq!(other_event.name, "Basket_Refreshed");
+        assert_eq!(event_queue.count(), 0);
+    }
+
+    #[test]
+    fn should_peek_fn_works_test() {
+        let mut event_queue = EventQueue::new();
+        let event_1 = Event::new("Product_Created".to_string(), SystemTime::now());
+        event_queue.enqueue(event_1);
+        let event_2 = Event::new("Basket_Refreshed".to_string(), SystemTime::now());
+        event_queue.enqueue(event_2);
+        let e = event_queue.peek();
+        assert_eq!(e.unwrap().name, "Product_Created");
+        event_queue.dequeue();
+        event_queue.dequeue();
+        assert_eq!(event_queue.peek(), None);
+    }
+
+    #[test]
+    #[should_panic]
+    fn should_dequeue_fn_panic_test() {
+        let mut event_queue = EventQueue::new();
+        let event_1 = Event::new("Product_Created".to_string(), SystemTime::now());
+        event_queue.enqueue(event_1);
+        event_queue.dequeue();
+        event_queue.dequeue();
+    }
 }
 
 use std::time::SystemTime;
@@ -45,6 +84,7 @@ use std::time::SystemTime;
 ///
 /// * `name` - Olayın adı.
 /// * `time` - Olayın zamanı.
+#[derive(Debug, PartialEq)]
 pub struct Event {
     pub name: String,
     pub time: SystemTime,
@@ -97,7 +137,7 @@ impl EventQueue {
         let e = self.events.first();
         match e {
             Some(_) => e,
-            None => None,
+            _ => None,
         }
     }
 }
