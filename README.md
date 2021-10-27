@@ -345,3 +345,52 @@ cargo test
 ```
 
 ![./assets/screenshot_28.png](./assets/screenshot_28.png)
+
+## day03
+
+Kitabın üçüncü bölümüne ait çalışmalar. Bu bölümde cargo aracı ile proje yönetimine ait reçetelere yer verilmekte.
+
+### Workspace ile Çalışmak
+
+cargo aracı her şeyi klasör yapısına göre ele alınır. Klasik bir .net projesindeki Solution için Rust tarafında klasör mantığına göre tasarlanan workspace' ler kullanılır. Özellikle çok sayıda crate içeren projelerde workspace oluşturarak ilerlenir.
+
+```bash
+# day03 klasöründen işlemlere devam edilir
+
+# Bir Workspace oluşturulur
+mkdir -p rogue-one
+cd rogue-one
+
+# main fonksiyonunu içeren ana proje oluşturulur
+cargo new program
+
+# program tarafından kullanılacak bir crate kütüphanesi oluşturulur
+cargo new utility --lib
+
+# yine örnek bir kütüphane daha eklenir
+cargo new business --lib
+
+# cargo komutunu workspace içindeki diğer projeler için tek noktadan kullanabilmek istiyorsak
+# workspace root klasöründe bir cargo.toml dosyası açıp içeriğini ilgili projelerle donatmalıyız
+# örnek için rogue-one klasöründe.
+touch cargo.toml
+
+# sonrasında rogue-one klasöründe run, test ve build gibi komutları kullanabiliriz
+
+# main fonksiyonunun olduğu program çalışır
+cargo run
+
+# workspace projesinde ne kadar test varsa koşulur
+cargo test
+# dilersek workspace içerisindeki sadece belli bir projenin testlerini işlettirebiliriz.
+cargo test -p business
+
+# build işlemi için
+cargo build
+```
+
+![./assets/screenshot_29.png](./assets/screenshot_29.png)
+
+_cargo build_ işlemi sonrası çalıştırlabilir binary dosyaları target klasörü altında konuşlanacaktır.
+
+![./assets/screenshot_30.png](./assets/screenshot_30.png)
