@@ -7,7 +7,7 @@ homepage="https://www.buraksenyurt.com"
 repository="https://github.com/buraksenyurt/silver-eureka"
 description="crates.io için bir paket nasıl hazırlanırın ele alındığı öğrenme amaçlı modüldür."
 categories=[
-    "data-structures"
+    "datastructures"
 ]
 keywords=[
     "tutorial",
