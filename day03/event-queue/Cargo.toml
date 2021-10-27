@@ -7,14 +7,14 @@ homepage="https://www.buraksenyurt.com"
 repository="https://github.com/buraksenyurt/silver-eureka"
 description="crates.io için bir paket nasıl hazırlanırın ele alındığı öğrenme amaçlı modüldür."
 categories=[
-    "datastructures"
+    "data-structures"
 ]
 keywords=[
     "tutorial",
     "experimental",
     "dummy",
     "queue",
-    "data structure"
+    "data-structure"
 ]
 readme="README.md"
 maintenance = { status = "experimental" }
