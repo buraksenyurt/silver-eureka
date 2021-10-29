@@ -27,6 +27,27 @@ mod tests {
         assert_eq!(p.level, 94);
         assert_eq!(p.region, "Red Squad");
     }
+
+    #[test]
+    fn should_valid_dates_test() {
+        let some_date: &str = "12.04.1976";
+        assert_eq!(is_valid_date(some_date), Some("12.04.1976"));
+        let some_date: &str = "12.04.196";
+        assert_eq!(is_valid_date(some_date), None);
+    }
+}
+
+static DATE_EXPRESSION: &str = r"(?x)((?P<day>\d{2}).(?P<month>\d{2}).(?P<year>\d{4}))";
+// yyyy-mm-dd için basit bir regex formatını sabit olarak tanımladık
+// Gelen string değerinin yukarıdaki regex ifadesine uyup uymadığını kontrol eden fonksiyondur
+pub fn is_valid_date(s: &str) -> Option<&str> {
+    let date_regex = Regex::new(DATE_EXPRESSION).unwrap(); // Regex crate'inden bir nesne örneklenir
+
+    // is_some'ın true dönüp dönmeme haline göre Option ile sonucu dönmekteyiz
+    match date_regex.captures(&s).is_some() {
+        true => Some(s),
+        _ => None,
+    }
 }
 
 use regex::Regex; // regex işlemleri için kullanılan yardımcı crate
