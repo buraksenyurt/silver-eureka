@@ -1,8 +1,19 @@
 [package]
 name = "external-libraries"
+description = "haric kütüphanelerin nasıl kullanıldığına dair bir örnektir"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+regex = { git = "https://github.com/rust-lang/regex" } # github kaynaklı bir kütüphane bildirimi
+# regex = "1.5" # yandaki gibi de eklenebilir
+
+# serde isimli bir kütüphaneyi bildirdik. derive özelliğin taşımasını istiyoruz.
+serde = {version="1",features="[derive]"}
+serde_json = "*" # * ile herhangi bir versiyonu kullanabileceğimizi dile getirdik
+
+[dev-dependencies] # Sadece development safhasında çalışacak bağımlılıkları bildirmek için kullanılır. Bunlar publish sonrası çıktıya dahil edilmezler.
+criterion = "0.3.5" # Versiyonlama major.minor.patch formatındadır.
+
+[[bench]] # benchmark testleri için bir bildirim
+name="sort_performance" # benchs klasöründe bu isimde bir performans ölçüm modülü var
