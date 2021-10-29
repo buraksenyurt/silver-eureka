@@ -427,3 +427,29 @@ Eksik commit varsa;
 Package oluşturma ve publish işlemleri başarılı oluşursa;
 
 ![./assets/screenshot_33.png](./assets/screenshot_33.png)
+
+### Dış Kütüphanelerin Kullanımı
+
+Pek çok programlama platformunda olduğu gibi Rust için bir paket yönetim sistemi mevcut. Cargo bunu sağlamakta. Önceki örnekte bir crate tasarlayıp crates.io sitesine yüklemiştik. Bu tip bağımlılıkları _(dependencies)_ projelerimizde kullanmak için cargo.toml dosyasında gerekli düzenlemleri yapmak gerekiyor. Kullanılacak kütüphaneleri crates.io'dan veya github gibi kaynaklardan alabiliriz. Kitabın ilgili bölümünde buna ait bir örnek geliştirilmekte.
+
+```bash
+cargo new external-libraries --lib
+cd external-libraries
+
+# toml dosyasına [[bench]] kısmı eklendikten sonra
+mkdir benches
+cd benches
+touch fibonacci_performance.rs
+
+cd ..
+cargo test
+
+# benchmark testleri için
+cargo bench
+```
+
+Test sonuçları;
+![./assets/screenshot_34.png](./assets/screenshot_34.png)
+
+Benchmark sonuçları;
+![./assets/screenshot_35.png](./assets/screenshot_35.png)
