@@ -9,7 +9,7 @@ regex = { git = "https://github.com/rust-lang/regex" } # github kaynaklı bir k�
 # regex = "1.5" # yandaki gibi de eklenebilir
 
 # serde isimli bir kütüphaneyi bildirdik. derive özelliğin taşımasını istiyoruz.
-serde = {version="1",features="[derive]"}
+serde = {version="1",features=["derive"]}
 serde_json = "*" # * ile herhangi bir versiyonu kullanabileceğimizi dile getirdik
 
 [dev-dependencies] # Sadece development safhasında çalışacak bağımlılıkları bildirmek için kullanılır. Bunlar publish sonrası çıktıya dahil edilmezler.
