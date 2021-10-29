@@ -16,4 +16,5 @@ serde_json = "*" # * ile herhangi bir versiyonu kullanabileceğimizi dile getird
 criterion = "0.3.5" # Versiyonlama major.minor.patch formatındadır.
 
 [[bench]] # benchmark testleri için bir bildirim
-name="sort_performance" # benchs klasöründe bu isimde bir performans ölçüm modülü var
+name="fibonacci_performance" # benchs klasöründe bu isimde bir performans ölçüm modülü var
+harness = false
