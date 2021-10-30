@@ -506,6 +506,34 @@ Testlerin tamamının tek bir thread içinde koşturulması;
 
 Rust dilinin güçlü olduğu yerlerden birisi de eş zamanlılık ve paralel çalıştırma işleridir. Sahiplenme _(Ownership)_ ve ödünç alma _(borrowing)_ yetenekleri özellikle veritabanı dünyasında sıklıkla karşılaşılan veri odaklı anormalliklerin _(data races)_ benzerlerinin program tarafında yaşanmasını önler. Bunun en büyük sebeplerinden birisi aksi belirtilmedikçe değişkenlerin değiştirilemez _(immutable)_ olması ve değiştirilebilir _(mutable)_ değişkenler söz konusu olduğunda da bu değişken verisine sadece bir tek referans verilmesinin sağlanmasıdır. Bu tip kısıtlar Rust tarafındaki Concurrency yetkinliklerinin diğer dillere göre nispeten daha kolay ele alınmasını sağlamakta. Kitabın bu bölümünde Concurrency ile ilgili çeşitli örneklere yer verilmekte.
 
+İlave bilgiler;
+
+- Race Conditions: thread'lerin veri veya kaynaklara tutarsız sırada erişmesi.
+- Deadlocks; iki thread'in birbirini beklemesi ve işlerini bitirmek için birbirlerinin sahip olduğu kaynaklar üzerinde işlem yapmaya çalışması.
+- Rust standart kütüphanesi 1:1 thread modelini destekler. Bir sistem programlama dili olduğundan green-threading model olarak da anılan M:N için çeşitli crate desteği vardır.
+
+### Temel Operasyonlar
+
+Kitabın sonraki bölümünde önce thread kullanımı için temel bir örnek yapmak iyi olabilir.
+
+```bash
+cargo new thread-fundamentals
+cd thread-fundamentals
+cargo run
+```
+
+İlk çalışmada dikkat edilmesi gereken nokta içerideki thread daha işini bitirmeden ana thread'in _(main fonksiyonu)_ sonlanmasıdır.
+
+![./assets/screenshot_44.png](./assets/screenshot_44.png)
+
+İkinci çalışmada _(case2 fonksiyonu)_ ana thread'in diğer thread'in işleyişini bitirmesi join çağrısı ile sağlanır. Bir süre iki thread'den değerler alınır sonra kalan thread'in işleyişinin tamamlanması beklenir.
+
+![./assets/screenshot_45.png](./assets/screenshot_45.png)
+
+join fonksiyonu ile bekletmenin yapıldığı yer de önemlidir. Örneğin 14ncü satırdaki join çağrısını ana thread'in işleteceği for döngüsü önüne(8nci satır) alırsak farklı bir sonuç elde ederiz. Önce t1'in bitmesi beklenir sonrasında ana thread'in işleri yapılmaya başlanır.
+
+![./assets/screenshot_46.png](./assets/screenshot_46.png)
+
 ### Veriyi Yeni Thread'lere Taşımak
 
 İlk örnekte spawn fonksiyonu ile oluşturulan thread'lerde veri paylaşımı konusu ele alınmakta.
