@@ -501,3 +501,29 @@ nocapture ile println! makro çıktılarının görülmesi;
 Testlerin tamamının tek bir thread içinde koşturulması;
 
 ![./assets/screenshot_40.png](./assets/screenshot_40.png)
+
+## Concurrency
+
+Rust dilinin güçlü olduğu yerlerden birisi de eş zamanlılık ve paralel çalıştırma işleridir. Sahiplenme _(Ownership)_ ve ödünç alma _(borrowing)_ yetenekleri özellikle veritabanı dünyasında sıklıkla karşılaşılan veri odaklı anormalliklerin _(data races)_ benzerlerinin program tarafında yaşanmasını önler. Bunun en büyük sebeplerinden birisi aksi belirtilmedikçe değişkenlerin değiştirilemez _(immutable)_ olması ve değiştirilebilir _(mutable)_ değişkenler söz konusu olduğunda da bu değişken verisine sadece bir tek referans verilmesinin sağlanmasıdır. Bu tip kısıtlar Rust tarafındaki Concurrency yetkinliklerinin diğer dillere göre nispeten daha kolay ele alınmasını sağlamakta. Kitabın bu bölümünde Concurrency ile ilgili çeşitli örneklere yer verilmekte.
+
+### Veriyi Yeni Thread'lere Taşımak
+
+İlk örnekte spawn fonksiyonu ile oluşturulan thread'lerde veri paylaşımı konusu ele alınmakta.
+
+```bash
+cargo new simple-threads
+cd simple-threads
+cargo run
+```
+
+Başlangıçta ana thread içinden başlatılan başka bir thread'in işini bitirmesi bekleniyor.
+
+![./assets/screenshot_41.png](./assets/screenshot_41.png)
+
+İkinci senaryoda içinde thread başlatan bir fonksiyona main içinden tanımlı değişkenler gönderiyoruz. Bu değişkenleri diğer thread'te kullanmak istediğimizde ise borrow checker mekanizması devreye giriyor ve aşağıdaki hatayı alıyoruz.
+
+![./assets/screenshot_42.png](./assets/screenshot_42.png)
+
+Hatanın çözümünde spawn fonksiyonunda move kullanılması yeterli. move ile thread için söz konusu olan varsayılan ödünç alma davranışını değiştirip ana scope'tan thread'in açıldığı scope'a taşınabilmesine izin veriyoruz. Taşınabilecek değişkenlerin Copy trait'ini uygulamış olmaları önemli.
+
+![./assets/screenshot_43.png](./assets/screenshot_43.png)
