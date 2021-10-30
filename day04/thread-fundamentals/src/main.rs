@@ -5,13 +5,13 @@ use std::time::Duration;
 fn main() {
     //case_1();
     let t1 = case_2(); // case_2 fonksiyonu JoinHandle döndürür.
-
+    t1.join().unwrap(); // 14ncü satırdaki join çağrısını ana thread'in işleteceği for döngüsü önüne alırsak.
     // ana thread içinde çalışan bir döngü
     for i in 1..5 {
         println!("Main\t\t{}", i);
         thread::sleep(Duration::from_millis(100)); // sembolik bir duraksatma (100 milisaniye)
     }
-    t1.join().unwrap(); // Ana thread'i t1'in işaret ettiği thread işleyişini bitirene kadar bekletecektir.
+    //t1.join().unwrap(); // Ana thread'i t1'in işaret ettiği thread işleyişini bitirene kadar bekletecektir.
 }
 
 fn case_2() -> thread::JoinHandle<()> {
