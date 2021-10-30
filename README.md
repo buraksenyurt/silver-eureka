@@ -449,7 +449,39 @@ cargo bench
 ```
 
 Test sonuçları;
+
 ![./assets/screenshot_34.png](./assets/screenshot_34.png)
 
 Benchmark sonuçları;
+
 ![./assets/screenshot_35.png](./assets/screenshot_35.png)
+
+### Test İpuçları
+
+Şu ana kadarki kodlarda ağırlıklı olarak test yazıldı. Sıradaki reçetede testlerle ilgili farklı özelliklere de yer verilmiş.
+
+```bash
+cargo new more-test --lib
+cd more-test
+
+# testleri koşturmak için normalde aşağıdaki komut veriliyor
+cargo test
+
+# sadece belli bir testin koşulmasını aşağıdaki komutla sağlayabiliriz
+cargo test tests::sum_of_two_works_test
+
+# test fonksiyonlarından terminale bilgi verilen print çağrılarını da görmek için aşağıdaki komutu kullanabiliriz
+cargo test -- --nocapture
+```
+
+_cargo test_ çalışmasında ilk dikkat çekici nokta testlerin eş zamanlı olarak başlatılması ve paralel koşmalarıdır. Bu nedenle toplam çalışma süresi en çok beklenen thread süresi kadar sürmüştür. Ayrıca _[ignore]_ ile işaretlenen test atlanmıştır.
+
+![./assets/screenshot_36.png](./assets/screenshot_36.png)
+
+Sadece belli bir testin koşulması;
+
+![./assets/screenshot_37.png](./assets/screenshot_37.png)
+
+nocapture ile println! makro çıktılarının görülmesi;
+
+![./assets/screenshot_38.png](./assets/screenshot_38.png)
