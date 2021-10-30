@@ -472,6 +472,14 @@ cargo test tests::sum_of_two_works_test
 
 # test fonksiyonlarından terminale bilgi verilen print çağrılarını da görmek için aşağıdaki komutu kullanabiliriz
 cargo test -- --nocapture
+
+# çalıştırmak istediğimiz testleri içinde geçen kelimelere göre filtreleyerek koşturabiliriz
+cargo test seconds
+
+# Paralel koşan testlerin thread sayılarını kontrol edebiliriz. 
+# Örneğin hepsinin tek bir thread içinde koşmasını istersek aşağıdaki terminal komutunu kullanabiliriz.
+# 1 yerine kaç thread açılmasını istersek yazabiliriz.
+cargo test -- --test-threads 1
 ```
 
 _cargo test_ çalışmasında ilk dikkat çekici nokta testlerin eş zamanlı olarak başlatılması ve paralel koşmalarıdır. Bu nedenle toplam çalışma süresi en çok beklenen thread süresi kadar sürmüştür. Ayrıca _[ignore]_ ile işaretlenen test atlanmıştır.
@@ -485,3 +493,11 @@ Sadece belli bir testin koşulması;
 nocapture ile println! makro çıktılarının görülmesi;
 
 ![./assets/screenshot_38.png](./assets/screenshot_38.png)
+
+İçinde seconds kelimesi geçen testlerin koşturulması;
+
+![./assets/screenshot_39.png](./assets/screenshot_39.png)
+
+Testlerin tamamının tek bir thread içinde koşturulması;
+
+![./assets/screenshot_40.png](./assets/screenshot_40.png)
