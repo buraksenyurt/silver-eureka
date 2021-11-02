@@ -570,3 +570,16 @@ cargo run
 Toplam işlem süresi ve oluşan thread numaralarının ele alındığı çalışma çıktısı.
 
 ![./assets/screenshot_47.png](./assets/screenshot_47.png)
+
+### İş Parçacıkları Arası Haberleşme için Kanal _(Channel)_ Kullanımı
+
+Kitabın bu reçetesinde thread'ler arasında deadlock gibi sorunlara sebebiyet vermeden mesaj alışverişinde bulunabilmek için kanallardan nasıl yararlanıldığı örneklenmte. İlk örnekte üç adet mesaj yayıcı söz konusu.
+
+```bash
+cargo new thread-channels
+cd thread-channels
+
+cargo run
+```
+
+![./assets/screenshot_48.png](./assets/screenshot_48.png)
