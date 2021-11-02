@@ -10,40 +10,47 @@ use std::thread;
 use std::time::Duration;
 
 fn main() {
+    // #1
     // Önce basit bir streaming kanalı oluşturulur
     // Bir gönderici ve bir alıcı mevcuttur.
     let (s, r): (Sender<Symbol>, Receiver<Symbol>) = mpsc::channel();
 
-    let pingpong_sender = s.clone(); // bir sender kopyası aldık
+    // let pingpong_sender = s.clone(); // bir sender kopyası aldık
 
-    // thread başlatıyoruz
-    // içinde sonsuz bir döngü söz konusu
-    thread::spawn(move || loop {
-        thread::sleep(Duration::from_secs(1));
-        // send metodu ile Symbol tipinden bir enum sabitini kanala yolluyoruz.
-        pingpong_sender
-            .send(Symbol::PingPong(random::<usize>() % 10)) //rastgele sayının 10lu modunu enum sabitine parametre olarak veriyoruz. Kaç tane sembol üreteceğimizi belirtecek.
-            .unwrap();
-    });
+    // // thread başlatıyoruz
+    // // içinde sonsuz bir döngü söz konusu
+    // thread::spawn(move || loop {
+    //     thread::sleep(Duration::from_secs(1));
+    //     // send metodu ile Symbol tipinden bir enum sabitini kanala yolluyoruz.
+    //     pingpong_sender
+    //         .send(Symbol::PingPong(random::<usize>() % 10)) //rastgele sayının 10lu modunu enum sabitine parametre olarak veriyoruz. Kaç tane sembol üreteceğimizi belirtecek.
+    //         .unwrap();
+    // });
 
-    // yeni bir sender kopyası aldık
-    let bowling_sender = s.clone();
-    // içinde sonsuz döngü barındıran yeni bir thread açıyoruz
-    thread::spawn(move || loop {
-        thread::sleep(Duration::from_secs(1));
-        // bowling_sender bu kez Bowling türünden bir enum sabitini kanala gönderiyor
-        bowling_sender
-            .send(Symbol::Bowling(random::<usize>() % 10))
-            .unwrap();
-    });
+    // // yeni bir sender kopyası aldık
+    // let bowling_sender = s.clone();
+    // // içinde sonsuz döngü barındıran yeni bir thread açıyoruz
+    // thread::spawn(move || loop {
+    //     thread::sleep(Duration::from_secs(1));
+    //     // bowling_sender bu kez Bowling türünden bir enum sabitini kanala gönderiyor
+    //     bowling_sender
+    //         .send(Symbol::Bowling(random::<usize>() % 10))
+    //         .unwrap();
+    // });
 
-    let rugby_sender = s.clone();
-    thread::spawn(move || loop {
-        thread::sleep(Duration::from_secs(1));
-        rugby_sender
-            .send(Symbol::Rugby(random::<usize>() % 10))
-            .unwrap();
-    });
+    // let rugby_sender = s.clone();
+    // thread::spawn(move || loop {
+    //     thread::sleep(Duration::from_secs(1));
+    //     rugby_sender
+    //         .send(Symbol::Rugby(random::<usize>() % 10))
+    //         .unwrap();
+    // });
+
+    // #2 Üstteki kullanımlar fonksiyona taşındı
+    let pingpong = Symbol::PingPong(random::<usize>() % 10);
+    supporter(s.clone(), pingpong);
+    supporter(s.clone(), Symbol::Bowling(random::<usize>() % 10));
+    supporter(s.clone(), Symbol::Rugby(random::<usize>() % 10));
 
     // burada receiver ile kanala gelen mesajları almaya başlıyoruz.
     // recv() çağrısı ana thread'i blokluyor.
@@ -63,6 +70,14 @@ fn main() {
     }
 }
 
+fn supporter(sender: Sender<Symbol>, symbol: Symbol) {
+    thread::spawn(move || loop {
+        thread::sleep(Duration::from_secs(1));
+        sender.send(symbol).unwrap();
+    });
+}
+
+#[derive(Copy, Clone)]
 enum Symbol {
     PingPong(usize),
     Bowling(usize),
