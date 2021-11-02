@@ -555,3 +555,18 @@ Başlangıçta ana thread içinden başlatılan başka bir thread'in işini biti
 Hatanın çözümünde spawn fonksiyonunda move kullanılması yeterli. move ile thread için söz konusu olan varsayılan ödünç alma davranışını değiştirip ana scope'tan thread'in açıldığı scope'a taşınabilmesine izin veriyoruz. Taşınabilecek değişkenlerin Copy trait'ini uygulamış olmaları önemli.
 
 ![./assets/screenshot_43.png](./assets/screenshot_43.png)
+
+### Çoklu İş Parçacıkları _(Threads)_ Oluşturmak
+
+Büyük ölçekli veri kaynakları üzerinden paralel olarak işlemler çalıştırmak önemlidir. Bu amaçla sıkılıkla kullanılan yöntemlerden birisi de map/reduce tekniğidir. İzleyen kod parçasında birden fazla iş parçacığının birlikte ele alınması konusu incelenmekte.
+
+```bash
+cargo new multiple-threads
+cd multiple-threads
+
+cargo run
+```
+
+Toplam işlem süresi ve oluşan thread numaralarının ele alındığı çalışma çıktısı.
+
+![./assets/screenshot_47.png](./assets/screenshot_47.png)
