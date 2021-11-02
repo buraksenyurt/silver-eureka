@@ -39,8 +39,6 @@ fn main() {
         .flat_map(|t| t.join().unwrap())
         .collect::<Vec<i32>>();
 
-    let data_set: Vec<i32> = data_set.into_iter().flat_map(|e| e).collect();
-
     println!(
         "Toplam Süre\t{:?}\nVeri\t\t{:?}\nSonuç\t\t{:?}",
         start.elapsed(), // Geçen zamanı sn cinsinden aldık
