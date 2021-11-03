@@ -47,7 +47,8 @@ fn collector(shared_data: Arc<Mutex<Vec<Number>>>) -> thread::JoinHandle<()> {
             data.push(Number::Odd)
         }
         // Sonsuz döngü vektör uzunluğu 10a gelince sonlanıyor
-        //
+        // Bu kontrol birlikte çalışan tüm iş parçacıkları için geçerli olacaktır.
+        // Çünkü tüm iş parçacıkları aynı vektore bakıyor ve aynı değişimleri görüyorlar.
         if data.len() > 10 {
             break;
         }

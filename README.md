@@ -583,3 +583,17 @@ cargo run
 ```
 
 ![./assets/screenshot_48.png](./assets/screenshot_48.png)
+
+### İş Parçacıklarında Ortak Nesne Kullanımı
+
+Pek çok çözümde n sayıda iş parçacığının aynı veri kümesi üzerinde çalışması ve doğal olarak verinin durumunun _(state)_ sürekli değişimi söz konusudur. Kitabın sıradaki reçetesinde bu konu incelenmekte. Örnekte aynı vektör içeriğine veri yazan birden fazla thread'in işleyişi ele alınmaktadır.
+
+```bash
+cargo new sharing-mutable-states
+cd sharing-mutable-states
+cargo run
+```
+
+Örnekte çalışan 4 iş parçacığı aynı vektöre Odd ve Even değerlerini sırsayıla ekleyecektir. Her bir iş parçacığı vektördeki son değişimleri bilir. Vektör eleman sayısı 10'a geldiğinde iş parçacığında yer alan sonsuz döngüden ve iş parçacığından çıkılır. Her bir iş parçacığı için geriye kalan bir ekleme işlemi daha söz konusudur. Bu nedenle vektör 14 elemanlı olarak oluşur.
+
+![./assets/screenshot_49.png](./assets/screenshot_49.png)
