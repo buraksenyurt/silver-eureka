@@ -597,3 +597,26 @@ cargo run
 Örnekte çalışan 4 iş parçacığı aynı vektöre Odd ve Even değerlerini sırsayıla ekleyecektir. Her bir iş parçacığı vektördeki son değişimleri bilir. Vektör eleman sayısı 10'a geldiğinde iş parçacığında yer alan sonsuz döngüden ve iş parçacığından çıkılır. Her bir iş parçacığı için geriye kalan bir ekleme işlemi daha söz konusudur. Bu nedenle vektör 14 elemanlı olarak oluşur.
 
 ![./assets/screenshot_49.png](./assets/screenshot_49.png)
+
+### Process Başlatma ve Çoklu Process Kullanımı
+
+İşletim sistemlerinde uygulamalar process'ler içerisinde çalışır. Rust ile de harici process'leri kod içerisinde başlatmak mümkündür ki bunlar alt process'ler de olabilir. Kitabın bu bölümünde başlatılan bir process'in girdilerinden elde edilen çıktıların başka bir process'e girdi olarak verilmesi de örneklenemkte. Ama öncesinde temel process çağırımlarına bakmak lazım. İlk denemede kobay ve hiçbir işe yaramayan ama terminalden komut alarak çıktı üreten bir programın, bir rust kodu içerisinden çalıştırılması söz konusu. Reçetede dikkatimi çeken bir ifade de günümüz orkestra aktörlerinden Kubernetes, Docker Swarm, Mesos'a bir cümle ile atıfta bulunulmuş olması. Bu tip container sistemleri sebebiyle child process'lerin yönetiminin de önemli hale geldiğine değiniliyor.
+
+```bash
+# Sembolik olarak komut satırından parametre olarak gelen şehrin hava durumu bilgisini verecek bir binary'miz olsun.
+cargo new weather
+cd weather
+cargo run
+
+cargo new simple-process
+cd simple-process
+cargo run
+```
+
+Weather isimli exe'nin terminalden örnek çalıştırılması.
+
+![./assets/screenshot_50.png](./assets/screenshot_50.png)
+
+Weather isimli uygulamayı kendi içinden çağırıp çıktısını alan diğer uygulamanın örnek çalışması.
+
+![./assets/screenshot_51.png](./assets/screenshot_51.png)
