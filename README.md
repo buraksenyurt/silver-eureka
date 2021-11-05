@@ -597,7 +597,6 @@ cargo run
 Örnekte çalışan 4 iş parçacığı aynı vektöre Odd ve Even değerlerini sırayla ekler. Her bir iş parçacığı vektördeki son değişimleri bilir. Vektör eleman sayısı 10'a geldiğinde iş parçacığında yer alan sonsuz döngüden ve iş parçacığından çıkılır. Her bir iş parçacığı için geriye kalan bir ekleme işlemi daha söz konusudur. Bu nedenle vektör 14 elemanlı olarak oluşur.
 
 ![./assets/screenshot_49.png](./assets/screenshot_49.png)
-<<<<<<< HEAD
 
 ### Process Başlatma ve Çoklu Process Kullanımı
 
@@ -621,5 +620,3 @@ Weather isimli exe'nin terminalden örnek çalıştırılması.
 Weather isimli uygulamayı kendi içinden çağırıp çıktısını alan diğer uygulamanın örnek çalışması.
 
 ![./assets/screenshot_51.png](./assets/screenshot_51.png)
-=======
->>>>>>> 6b20bb19ae3d733158465764c75bee2148dbeaee
