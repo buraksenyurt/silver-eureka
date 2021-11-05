@@ -5,13 +5,13 @@ mod tests {
     #[test]
     fn should_sum_regular_works_test() {
         let result = sum_regular(&[3, 4, 7, 9, 16]);
-        assert_eq!(result, 160);
+        assert_eq!(result, 411);
     }
 
     #[test]
     fn should_sum_parallel_works_test() {
         let result = sum_parallel(&[3, 4, 7, 9, 16]);
-        assert_eq!(result, 160);
+        assert_eq!(result, 411);
     }
 }
 // veriyi paralel işleme üzerine başarılı rust crate'lerinden birisi olan rayon kullanılmakta
