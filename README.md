@@ -630,3 +630,28 @@ Weather isimli uygulamayı kendi içinden çağırıp çıktısını alan diğer
 cat ile pipeline'a bilgi yazıp onu okuyan alt processler örneğini bir bash terminalde denemek gerekiyor. _(Linux olduğu için)_
 
 ![./assets/screenshot_52.png](./assets/screenshot_52.png)
+
+### Paralel Çalıştırma
+
+Bu reçetede sıralı yürütülen işleri paralel çalışacak hale getirmek üzerinde durulmuş ve Rayon [Rayon-Rs](https://github.com/rayon-rs/rayon) isimli bir crate'in kullanımı örneklenmiş. Ayrıca sonuçları karşılaştırmak için benchmark testleri yapılmış. Örnekte bir sayı dizisindeki sayıların karelerinin toplamı ele alınıyor. Ancak iterasyon hem normal hem de rayon paketi sayesinde paralel işletilmekte. Küçük veri kümesi üzerinde çok fark yok ancak tersi durumda süre farkı oluşuyor.
+
+```bash
+cargo new parallelism --lib
+cd parallelism
+cargo test
+
+# benchmark ölçümleri içinse
+mkdir benches
+cd benches
+touch benchmarks.rs
+cd ..
+cargo bench
+```
+
+Test çıktıları;
+
+![./assets/screenshot_53.png](./assets/screenshot_53.png)
+
+Benchmark sonuçlar _(100.000.000 luk rastgele int kümesi için)_
+
+![./assets/screenshot_54.png](./assets/screenshot_54.png)
