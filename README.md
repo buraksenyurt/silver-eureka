@@ -608,8 +608,14 @@ cargo new weather
 cd weather
 cargo run
 
+# Bu da weather uygulamasını process olarak çağırıp sonucunu alacak olan program
 cargo new simple-process
 cd simple-process
+cargo run
+
+# Kendi içinde processleri haberleştiren diğer örnek
+cargo new multi-process
+cd multi-process
 cargo run
 ```
 
@@ -620,3 +626,7 @@ Weather isimli exe'nin terminalden örnek çalıştırılması.
 Weather isimli uygulamayı kendi içinden çağırıp çıktısını alan diğer uygulamanın örnek çalışması.
 
 ![./assets/screenshot_51.png](./assets/screenshot_51.png)
+
+cat ile pipeline'a bilgi yazıp onu okuyan alt processler örneğini bir bash terminalde denemek gerekiyor. _(Linux olduğu için)_
+
+![./assets/screenshot_52.png](./assets/screenshot_52.png)
