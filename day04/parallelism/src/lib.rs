@@ -17,7 +17,7 @@ mod tests {
     #[test]
     fn should_regular_quick_sort_works_test() {
         let mut numbers = vec![32, 23, 8, 5, 9, 1, 10, 90, 3, 2];
-        qsort(&mut numbers);
+        qsort_regular(&mut numbers);
         assert_eq!(numbers, vec![1, 2, 3, 5, 8, 9, 10, 23, 32, 90]);
     }
 }
@@ -34,12 +34,13 @@ pub fn sum_parallel(input: &[i32]) -> i32 {
     input.par_iter().map(|&i| i * i).sum() // burada ise rayon ile gelen par_iter fonksiyonu çağırılmakta. Bu iterasyonun paralel ele alınması için kullanılıyor.
 }
 
-pub fn qsort(v: &mut [i32]) {
+// İzleyen fonksiyonlar quicksort sıralaması için kullanılmakta.
+pub fn qsort_regular(v: &mut [i32]) {
     if v.len() > 1 {
         let middle = partition(v);
         let (low, high) = v.split_at_mut(middle);
-        qsort(low);
-        qsort(high);
+        qsort_regular(low);
+        qsort_regular(high);
     }
 }
 
