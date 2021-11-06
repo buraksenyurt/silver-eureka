@@ -20,6 +20,13 @@ mod tests {
         qsort_regular(&mut numbers);
         assert_eq!(numbers, vec![1, 2, 3, 5, 8, 9, 10, 23, 32, 90]);
     }
+
+    #[test]
+    fn should_parallel_quick_sort_works_test() {
+        let mut numbers = vec![32, 23, 8, 5, 9, 1, 10, 90, 3, 2];
+        qsort_parallel(&mut numbers);
+        assert_eq!(numbers, vec![1, 2, 3, 5, 8, 9, 10, 23, 32, 90]);
+    }
 }
 // veriyi paralel işleme üzerine başarılı rust crate'lerinden birisi olan rayon kullanılmakta
 use rayon::prelude::*;
@@ -35,6 +42,8 @@ pub fn sum_parallel(input: &[i32]) -> i32 {
 }
 
 // İzleyen fonksiyonlar quicksort sıralaması için kullanılmakta.
+// Parametre olarak gelen i32 türlü bir sayı dizisinin sıralanması için kullanılıyor.
+// bunu sıralı çalışan versiyon olarak düşünebiliriz.
 pub fn qsort_regular(v: &mut [i32]) {
     if v.len() > 1 {
         let middle = partition(v);
@@ -44,6 +53,19 @@ pub fn qsort_regular(v: &mut [i32]) {
     }
 }
 
+// Bu ise Rayon modülünün Join fonksiyonu ile paralel çalışan sürümü
+// Performans farkı için benchmark sonuçlarına bakmak lazım
+pub fn qsort_parallel(v: &mut [i32]) {
+    if v.len() > 1 {
+        let middle = partition(v);
+        let (low, high) = v.split_at_mut(middle);
+        // join ile qsort_regular çağrılarını low ve high dilimleri için paralelleştiriyoruz.
+        rayon::join(|| qsort_regular(low), || qsort_regular(high));
+    }
+}
+
+// pivot değerine göre sayı dizisini dolaşıp elemanları küçük eşit olma durumuna göre
+// sola veya sağa yerleştiriyor
 pub fn partition(v: &mut [i32]) -> usize {
     let pivot = v.len() - 1;
     let mut i = 0;
