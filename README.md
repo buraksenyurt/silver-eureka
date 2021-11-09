@@ -655,3 +655,29 @@ Test çıktıları;
 Benchmark sonuçlar _(100.000.000 luk rastgele int kümesi için)_
 
 ![./assets/screenshot_54.png](./assets/screenshot_54.png)
+
+### Kısa Bir Mola _(Ownership Mevzusunu Hatırlamak)_
+
+Arada bir Rust'ın temel bilgilerini hatırlamakta yarar var. Ownership konusu bunlardan birisi. İyi hatırlamak lazım. İzleyen örnek bu amaçla yazıldı.
+
+```bash
+cargo new remember-ownership
+cd remember-ownership
+cargo run
+```
+
+İlk durum. Drop konusu.
+
+![./assets/screenshot_55.png](./assets/screenshot_55.png)
+
+İkinci durum. Move.
+
+![./assets/screenshot_56.png](./assets/screenshot_56.png)
+
+Üçüncü durum. Fonksiyon parametrelerinde move durumu.
+
+![./assets/screenshot_57.png](./assets/screenshot_57.png)
+
+Beşinci durum. Kendi struct türümüzde Copy, Clone trait'lerini uygulamadığımızda move operasyonlarının sonucu. _(Beklendiği üzere)_
+
+![./assets/screenshot_58.png](./assets/screenshot_58.png)
