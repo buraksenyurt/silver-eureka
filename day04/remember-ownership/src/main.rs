@@ -50,7 +50,15 @@ fn main() {
         Çok doğal olarak bu ayrım kendi veri yapılarımız(struct) için de geçerlidir -> #5nci örnek.
     */
 
-    case_4_move();
+    //case_4_move();
+
+    /*
+        #5
+
+        built-in olan ve maliyeti düşük veri türleri Copy, Clone trait'lerini uyguladıklarından move operasyonları sonrası borrow ihlallerine takılmazlar.
+        struct, kendi veri yapılarımızı tanımlamak için kullanılır ve varsayılan olarak Copy trait'leri uygulanmadığında move operasyonlarından sonra kullanılmaz hale gelirler.
+    */
+    case_5_copy();
 }
 
 fn case_1_drop() {
@@ -95,6 +103,18 @@ fn case_4_move() {
     println!("{} + {} = {}", first_value, second_value, total);
 }
 
+fn case_5_copy() {
+    let location1 = Point {
+        x:1.12,
+        y:1.25,
+        z:1.23
+    };
+    // Aşağıdaki yeniden atama (reassignment) sonrası location2 kullanılamaz.
+    // Ama Copy, Clone trait'lerini uygulamadığı için.
+    let location2 = location1;
+    println!("{}\n{}", location1.x, location2.x);
+}
+
 // Kobay bir fonksiyon.
 // parametre olarak gelen x ve y değerlerini toplar
 fn sum_of_two(x: i32, y: i32) -> i32 {
@@ -114,6 +134,20 @@ fn sum_of_square(numbers: Vec<i32>) -> i32 {
 struct Article {
     title: String,
     id: i32,
+}
+
+// Copy ve Clone davranışlarını varsayılan halleri ile uygulattık
+// Bu durumda move operasyonlarında değerler kopyalanarak taşınacaktır.
+// struct'lar stack bellek bölgesinde yaşadıklarından maliyet açısından masraflı değillerdir.
+// Yine de varsayılan move kurallarına tabilerdir. Biz trait uygulayarak aksini söylemedikçe.
+// Elbette aşağıdaki yapıda dikkat çeken bir nokta alanların da Copy trait uygulanmış built-in tipler olmasıdır.
+// Aynı şeyi Article Struct'ı için denersek farklı bir sorunla karşılaşırız. 
+// String, ne kadar yer kapladığı bilenemeyecek bir tür olduğundan Rust bu işe sıcak bakmayacak ve Copy trait'ini uygulatmayacaktır.
+#[derive(Copy, Clone)]
+struct Point {
+    x: f32,
+    y: f32,
+    z: f32,
 }
 
 // Drop trait'ini implemente ettik
