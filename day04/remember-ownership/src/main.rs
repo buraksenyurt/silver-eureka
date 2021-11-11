@@ -74,6 +74,21 @@ fn main() {
         & operatörünü metot parametlerinde de kullanabiliriz.
     */
     case_7_ampersand_parameter();
+
+    /*
+
+        #8
+
+        Metotlara yapılan parametre aktarımlarını özetleyelim.
+
+        - Eğer değişken Copy trait'ini uygulamış ve ödünç alınmamışsa(borrow) ilgili metoda değer olarak taşınır.
+        - Eğer değişken Copy trait'ini uygulamış ve birisi tarafından ödünç alınmışsa ilgili metoda referans olarak taşınır.
+        - Eğer değişken Copy trait'ini uygulamamışsa mutlak suretle ödünç alınmalıdır(& ile bunu sağlamıştık). Ancak bu şekilde referans olarak metoda taşınabilir.
+
+        Aşağıdaki metot bu kuralları özetlemek üzere yazılmıştır.
+
+    */
+    case_8_basic_rules();
 }
 
 fn case_1_drop() {
@@ -145,6 +160,36 @@ fn case_7_ampersand_parameter() {
     let points = vec![1, 4, 8, 12];
     let result = sum_of_square2(&points);
     println!("{:?}\nSayıların kareleri toplamı {}", points, result);
+}
+
+fn case_8_basic_rules() {
+    // 32 sayısı i32 türünden kabul edilecektir ve bu tür Copy trait'ini uygulamaktadır.
+    let some_number = 32;
+    // Aşağıdaki kullanımda move operasyonu söz konusudur. Değer kopyalanarak taşınır ve some_number tekrar kullanılamaz.
+    let is_positive_by_value = send_by_value(some_number);
+    // Bu kullanımda ise referans olarak taşınması söz konusudur. Dolayısıyla yeniden kullanılabilir
+    let is_positive_by_ref = send_by_reference(&some_number);
+
+    // Vektörler bilindiği üzere Copy davranışı sergilemezler
+    let numbers = vec![];
+    // Doğal olarak metoda referans olarak taşınırlar
+    let is_empty = send_vec_by_reference(&numbers);
+
+    println!("{}", is_positive_by_value);
+    println!("{}", is_positive_by_ref);
+    println!("Vektör Sayıları {:?} is_empty: {}", numbers, is_empty);
+}
+
+fn send_by_reference(number: &i8) -> bool {
+    number.is_positive()
+}
+
+fn send_by_value(number: i8) -> bool {
+    number.is_positive()
+}
+
+fn send_vec_by_reference(numbers: &Vec<i8>) -> bool {
+    numbers.is_empty()
 }
 
 struct Location {
