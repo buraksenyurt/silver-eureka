@@ -681,3 +681,7 @@ cargo run
 Beşinci durum. Kendi struct türümüzde Copy, Clone trait'lerini uygulamadığımızda move operasyonlarının sonucu. _(Beklendiği üzere)_
 
 ![./assets/screenshot_58.png](./assets/screenshot_58.png)
+
+Dokuzuncu durum. String literal'de lifetime durumuna dikkat etmezsek.
+
+![./assets/screenshot_59.png](./assets/screenshot_59.png)
