@@ -73,7 +73,7 @@ fn main() {
 
         & operatörünü metot parametlerinde de kullanabiliriz.
     */
-    case_7_ampersand_parameter();
+    //case_7_ampersand_parameter();
 
     /*
 
@@ -88,7 +88,15 @@ fn main() {
         Aşağıdaki metot bu kuralları özetlemek üzere yazılmıştır.
 
     */
-    case_8_basic_rules();
+    //case_8_basic_rules();
+
+    /*
+        #9
+
+        String türündeki değişkenler ödünç alınan referanslardır.
+        Ancak bir metottan döndürüldüklerinden yaşam sürelerine dikkat edilmelidir.
+    */
+    case_9_lifetimes_for_string();
 }
 
 fn case_1_drop() {
@@ -178,6 +186,26 @@ fn case_8_basic_rules() {
     println!("{}", is_positive_by_value);
     println!("{}", is_positive_by_ref);
     println!("Vektör Sayıları {:?} is_empty: {}", numbers, is_empty);
+}
+
+fn case_9_lifetimes_for_string() {
+    let master = "Jan Kulot Van Dam";
+    let prentice = "Obi Van Kınobi";
+
+    println!(
+        "Bakalım hangisi daha uzun kelimeymiş?\n{}",
+        get_longest(master, prentice)
+    );
+}
+
+// Fonksiyon son derece masumane.
+// Parametre olarak gelen iki string içerikten hangisi uzunsa onun referansını geriye döndürmek istiyor
+fn get_longest(word1: &str, word2: &str) -> &str {
+    if word1.bytes().len() > word2.bytes().len() {
+        word1
+    } else {
+        word2
+    }
 }
 
 fn send_by_reference(number: &i8) -> bool {
