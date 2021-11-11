@@ -58,7 +58,17 @@ fn main() {
         built-in olan ve maliyeti düşük veri türleri Copy, Clone trait'lerini uyguladıklarından move operasyonları sonrası borrow ihlallerine takılmazlar.
         struct, kendi veri yapılarımızı tanımlamak için kullanılır ve varsayılan olarak Copy trait'leri uygulanmadığında move operasyonlarından sonra kullanılmaz hale gelirler.
     */
-    case_5_copy();
+    // case_5_copy();
+
+    /*
+
+        #6
+
+        5nci çözümde copy,clone trait'leri ile move operasyonlarında borrow ihlallerine takılmamıştık.
+        Bir başka alternatif yol & operatörü ile değişkenin ödünç verilmesidir.
+
+    */
+    case_6_borrow_with_ampersand();
 }
 
 fn case_1_drop() {
@@ -105,14 +115,26 @@ fn case_4_move() {
 
 fn case_5_copy() {
     let location1 = Point {
-        x:1.12,
-        y:1.25,
-        z:1.23
+        x: 1.12,
+        y: 1.25,
+        z: 1.23,
     };
     // Aşağıdaki yeniden atama (reassignment) sonrası location2 kullanılamaz.
     // Ama Copy, Clone trait'lerini uygulamadığı için.
     let location2 = location1;
     println!("{}\n{}", location1.x, location2.x);
+}
+
+fn case_6_borrow_with_ampersand() {
+    let black_hole = Location { high: 100, low: 10 };
+    // let rabbit_hole = black_hole; // bu kullanım yine ödünç alma ihlallerine takılacaktır.
+    let rabbit_hole = &black_hole; // Bu kullanımda ise 
+    println!("{}\n{}", black_hole.high, rabbit_hole.high);
+}
+
+struct Location {
+    high: i32,
+    low: i32,
 }
 
 // Kobay bir fonksiyon.
@@ -141,7 +163,7 @@ struct Article {
 // struct'lar stack bellek bölgesinde yaşadıklarından maliyet açısından masraflı değillerdir.
 // Yine de varsayılan move kurallarına tabilerdir. Biz trait uygulayarak aksini söylemedikçe.
 // Elbette aşağıdaki yapıda dikkat çeken bir nokta alanların da Copy trait uygulanmış built-in tipler olmasıdır.
-// Aynı şeyi Article Struct'ı için denersek farklı bir sorunla karşılaşırız. 
+// Aynı şeyi Article Struct'ı için denersek farklı bir sorunla karşılaşırız.
 // String, ne kadar yer kapladığı bilenemeyecek bir tür olduğundan Rust bu işe sıcak bakmayacak ve Copy trait'ini uygulatmayacaktır.
 #[derive(Copy, Clone)]
 struct Point {
