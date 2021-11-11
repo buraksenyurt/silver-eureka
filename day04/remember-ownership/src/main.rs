@@ -194,13 +194,26 @@ fn case_9_lifetimes_for_string() {
 
     println!(
         "Bakalım hangisi daha uzun kelimeymiş?\n{}",
-        get_longest(master, prentice)
+        //get_longest(master, prentice)
+        // Metoda yollanan parametrelerle dönüş referansının yaşam sürelerini eşitleyecek şekilde tasarladığımızdan problem üstteki satırda oluşan problem oluşmayacaktır.
+        get_longest_lt(master, prentice)
     );
 }
 
-// Fonksiyon son derece masumane.
-// Parametre olarak gelen iki string içerikten hangisi uzunsa onun referansını geriye döndürmek istiyor
-fn get_longest(word1: &str, word2: &str) -> &str {
+// // Fonksiyon son derece masumane.
+// // Parametre olarak gelen iki string içerikten hangisi uzunsa onun referansını geriye döndürmek istiyor
+// // Ancak derleme sırasında lifetime hatasına düşüyoruz.
+// // Çözüm get_longest_lt fonksiyonundaki gibi yaşam süresini açıkça belirtmekle mümkün.
+// // Tabii get_longest kullanılmasa bile kodda açık bıraktığımızda derleyici kızacaktır.
+// fn get_longest(word1: &str, word2: &str) -> &str {
+//     if word1.bytes().len() > word2.bytes().len() {
+//         word1
+//     } else {
+//         word2
+//     }
+// }
+
+fn get_longest_lt<'a>(word1: &'a str, word2: &'a str) -> &'a str {
     if word1.bytes().len() > word2.bytes().len() {
         word1
     } else {
