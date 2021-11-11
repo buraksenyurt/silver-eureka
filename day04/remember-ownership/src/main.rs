@@ -61,14 +61,19 @@ fn main() {
     // case_5_copy();
 
     /*
-
         #6
 
         5nci çözümde copy,clone trait'leri ile move operasyonlarında borrow ihlallerine takılmamıştık.
         Bir başka alternatif yol & operatörü ile değişkenin ödünç verilmesidir.
-
     */
-    case_6_borrow_with_ampersand();
+    // case_6_borrow_with_ampersand();
+
+    /*
+        #7
+
+        & operatörünü metot parametlerinde de kullanabiliriz.
+    */
+    case_7_ampersand_parameter();
 }
 
 fn case_1_drop() {
@@ -128,8 +133,18 @@ fn case_5_copy() {
 fn case_6_borrow_with_ampersand() {
     let black_hole = Location { high: 100, low: 10 };
     // let rabbit_hole = black_hole; // bu kullanım yine ödünç alma ihlallerine takılacaktır.
-    let rabbit_hole = &black_hole; // Bu kullanımda ise 
+    let rabbit_hole = &black_hole; // Bu kullanımda ise
     println!("{}\n{}", black_hole.high, rabbit_hole.high);
+}
+
+// dikkat edileceği üzere points vektörü ilgili metoda & operatörü ile aktarılır. Yani referansı yollanır.
+// Bu sebeple ödünç alma ihlali oluşmaz.
+// Hatırlanacağı üzere vec türü dinamik boyutlu bir enstrüman olduğundan ve bellekte ne kadar yer tutacağı bilinmeyeceğinden Copy trait'ini uygulamaz.
+// Ancak & ile referansını taşıma şansımız söz konusudur.
+fn case_7_ampersand_parameter() {
+    let points = vec![1, 4, 8, 12];
+    let result = sum_of_square2(&points);
+    println!("{:?}\nSayıların kareleri toplamı {}", points, result);
 }
 
 struct Location {
@@ -145,6 +160,17 @@ fn sum_of_two(x: i32, y: i32) -> i32 {
 
 // izleyen fonksiyonu parametre olarak gelen vektördeki sayıların kareleri toplamını bulur
 fn sum_of_square(numbers: Vec<i32>) -> i32 {
+    let mut sum = 0;
+    for n in numbers {
+        sum += n * n
+    }
+    sum
+}
+
+// izleyen fonskiyon bir üsttekinden farklıdır.
+// parametrede & operatörü kullanılmıştır.
+// Yani gelen vektörün referansı içeriye alınmaktadır.
+fn sum_of_square2(numbers: &Vec<i32>) -> i32 {
     let mut sum = 0;
     for n in numbers {
         sum += n * n
