@@ -104,7 +104,15 @@ fn main() {
         Bir veri yapısı tanımlamak için kullandığımız struct içinde string literal kullandığımızda da lifetime kullanmamız gerekir.
         İzleyen fonksiyonda bu durum ele alınmakta.
     */
-    case_10_lifetimes_for_struct();
+    // case_10_lifetimes_for_struct();
+
+    /*
+        #11
+
+        Çok okuyucu, tek yazıcı durumu. Multiple Readers or Single Writer.
+        İzleyen fonksiyonda bu duruma irdeleniyor.
+    */
+    case_11_readers_writers();
 }
 
 fn case_1_drop() {
@@ -214,6 +222,25 @@ fn case_10_lifetimes_for_struct() {
         title: "Rust Web Programming",
     };
     println!("({})-{}", book.id, book.title);
+}
+
+fn case_11_readers_writers() {
+    // Aşağıdaki kullanımda herhangi bir sıkıntı yok.
+    // w, mutable bir vektör ve r onun referansına sahip.
+    let mut w = vec![0, 2, 4, 8, 16, 32, 64, 128, 256];
+    let r = &w;
+    println!("{:?}. Uzunluğu {}", w, r.len());
+    w.push(512);
+
+    // Şimdi de aşağıdaki duruma bakalım.
+    // Bu kullanımda, mutable olan w2 push ile değiştirilmek isteniyor.
+    // Lakin onu referans eden immutable türde bir okuyucu da var.
+    // Bu nedenle ilgili kod derlenmiyor.
+    // Alınan hata şöyle : cannot borrow `w2` as mutable because it is also borrowed as immutable
+    let mut w2 = vec![0, 2, 4, 8, 16, 32, 64, 128, 256];
+    let r2 = &w2;
+    w2.push(512);
+    println!("{:?}. Uzunluğu {}", w2, r2.len());
 }
 
 // // Bir kitabı temsile eden dummy struct
