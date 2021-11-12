@@ -232,15 +232,37 @@ fn case_11_readers_writers() {
     println!("{:?}. Uzunluğu {}", w, r.len());
     w.push(512);
 
-    // Şimdi de aşağıdaki duruma bakalım.
-    // Bu kullanımda, mutable olan w2 push ile değiştirilmek isteniyor.
-    // Lakin onu referans eden immutable türde bir okuyucu da var.
-    // Bu nedenle ilgili kod derlenmiyor.
-    // Alınan hata şöyle : cannot borrow `w2` as mutable because it is also borrowed as immutable
+    // // Şimdi de aşağıdaki duruma bakalım.
+    // // Bu kullanımda, mutable olan w2 push ile değiştirilmek isteniyor.
+    // // Lakin onu referans eden immutable türde bir okuyucu da var.
+    // // Bu nedenle ilgili kod derlenmiyor.
+    // // Alınan hata şöyle : cannot borrow `w2` as mutable because it is also borrowed as immutable
+    // let mut w2 = vec![0, 2, 4, 8, 16, 32, 64, 128, 256];
+    // let r2 = &w2;
+    // w2.push(512);
+    // println!("{:?}. Uzunluğu {}", w2, r2.len());
+
+    // Üstte oluşan durumun çözümü aşağıdadır.
+    // Önce push ile mutable değişken üstünde gerekli işlem yapılmış sonrasında okuyucuya referansı verilmiştir.
+    // Yani r2, w2'yi okuyabilmek için referansını ödünç alabilecek pozisyondadır.
     let mut w2 = vec![0, 2, 4, 8, 16, 32, 64, 128, 256];
-    let r2 = &w2;
     w2.push(512);
+    let r2 = &w2;
     println!("{:?}. Uzunluğu {}", w2, r2.len());
+
+    // Aşağıda üste oluşan hataya neden olacak bir durum izah edilmektedir.
+    // iter immutable bir iterasyon sunar. Döngüyü okuyucu olarak düşünürsek push operasyonları sonlanmadan iter'i kullanamayız.
+    let mut w3 = vec![0, 2, 4, 8, 16, 32, 64, 128, 256];
+    // for n in w3.iter() {
+    //     w3.push(n * 2);
+    // }
+
+    // Problemi çözmek için mutable iterasyon kullanmayı deneyebiliriz.
+    // Fakat bu durumda temel borrow kurallarından birisine takılırız: cannot borrow `w3` as mutable more than once at a time
+    for n in w3.iter_mut() {
+        w3.push(*n * 2);
+    }
+    println!("{:?}", w3);
 }
 
 // // Bir kitabı temsile eden dummy struct
