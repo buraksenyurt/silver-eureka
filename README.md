@@ -685,3 +685,30 @@ Beşinci durum. Kendi struct türümüzde Copy, Clone trait'lerini uygulamadığ
 Dokuzuncu durum. String literal'de lifetime durumuna dikkat etmezsek.
 
 ![./assets/screenshot_59.png](./assets/screenshot_59.png)
+
+Onuncu durum. Bir struct içinde string literal kullanıp lifetime belirtmediğimiz durumda.
+
+![./assets/screenshot_60.png](./assets/screenshot_60.png)
+
+Onbirinci durum. Mutable bir değişkeni okuyan immutable bir değişken kullanıldığı durum.
+
+![./assets/screenshot_61.png](./assets/screenshot_61.png)
+
+Yine 11nci duruma örnek bir hata çıktısı. _(iter_)
+
+![./assets/screenshot_62.png](./assets/screenshot_62.png)
+
+Ve bir kez daha 11nci duruma ait örnek hata çıktısı. _(iter _ mut kullansak da)_
+
+![./assets/screenshot_63.png](./assets/screenshot_63.png)
+
+Bu ara tekrardan şu sonuçlara varabiliriz.
+
+- Bir değer ataması _(value assignment)_ yaptığımızda onu bir değişkene _(variable)_ bağlarız. Değerin tek sahibi _(owner)_ bu değişken olur.
+- Bir değerin sahibi kapsam _(scope)_ dışına çıkınca bellekten düşürülür _(drop)_
+- Bir değeri yeniden atadığımızda _(reasignment)_ taşınması _(move)_ veya sahipliğinin _(ownership)_ el değiştirmesi söz konusu olur.
+- Bir değer taşıması söz konusu olduğunda eski atanan bir daha asla kullanılamaz.
+- Ödünç _(borrow)_ alınan bir referans, temel değerden daha uzun süre yaşayamaz.
+- Bir referansın sahibi kimse, değişken önüne _&_ operatörü konulup yeniden atama yoluyla ödünç alınıp _(borrowing)_ kullanılabilir.
+- lifetime parametreleri _(sıklıkla 'a şeklinde yazılır)_ ödünç alınan bir referansın kapsamını temsil eder.
+- Rust derleyicisi birden fazla değişken okurunun veya tek bir değişken yazarının faal olarak kullanılmasına izin verir ve ikisinin de aynı anda etkinleşmesine müsaade etmez. Ancak senkron geçişlerle kullanım sağlanabilir.
