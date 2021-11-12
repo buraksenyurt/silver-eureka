@@ -712,3 +712,15 @@ Bu ara tekrardan şu sonuçlara varabiliriz.
 - Bir referansın sahibi kimse, değişken önüne _&_ operatörü konulup yeniden atama yoluyla ödünç alınıp _(borrowing)_ kullanılabilir.
 - lifetime parametreleri _(sıklıkla 'a şeklinde yazılır)_ ödünç alınan bir referansın kapsamını temsil eder.
 - Rust derleyicisi birden fazla değişken okurunun veya tek bir değişken yazarının faal olarak kullanılmasına izin verir ve ikisinin de aynı anda etkinleşmesine müsaade etmez. Ancak senkron geçişlerle kullanım sağlanabilir.
+
+### Paylaşımlı Değişmez Haller _(Shared Immutable States)_
+
+Kısa bir hatırlatma arasından sonra tekrar kitaba dönebilirim. Sıradaki örnek bir kanal oluşturulup farklı thread'ler içerisinde klonları oluşturulan sender ve receiver değişkenlerinin aynı fonksiyona parametre olarak yollanması halinde oluşan _"...cannot be shared between threads safely"_ durumunu anlatmakta.
+
+```bash
+cargo new shared-immutable-states
+cd shared-immutable-states
+cargo test
+```
+
+![./assets/screenshot_64.png](./assets/screenshot_64.png)
