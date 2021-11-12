@@ -96,7 +96,15 @@ fn main() {
         String türündeki değişkenler ödünç alınan referanslardır.
         Ancak bir metottan döndürüldüklerinden yaşam sürelerine dikkat edilmelidir.
     */
-    case_9_lifetimes_for_string();
+    // case_9_lifetimes_for_string();
+
+    /*
+        #10
+
+        Bir veri yapısı tanımlamak için kullandığımız struct içinde string literal kullandığımızda da lifetime kullanmamız gerekir.
+        İzleyen fonksiyonda bu durum ele alınmakta.
+    */
+    case_10_lifetimes_for_struct();
 }
 
 fn case_1_drop() {
@@ -200,11 +208,31 @@ fn case_9_lifetimes_for_string() {
     );
 }
 
+fn case_10_lifetimes_for_struct() {
+    let book = Book {
+        id: 1,
+        title: "Rust Web Programming",
+    };
+    println!("({})-{}", book.id, book.title);
+}
+
+// // Bir kitabı temsile eden dummy struct
+// struct Book {
+//     id: i32,
+//     title: &str,
+// }
+
+// title'ın ömrünün olabildiğince uzun olması için lifetime parametresi kullanılır.
+struct Book<'a> {
+    id: i32,
+    title: &'a str,
+}
+
 // // Fonksiyon son derece masumane.
-// // Parametre olarak gelen iki string içerikten hangisi uzunsa onun referansını geriye döndürmek istiyor
+// // Parametre olarak gelen iki string içerikten hangisi uzunsa onun referansını geriye döndürmek istiyor.
 // // Ancak derleme sırasında lifetime hatasına düşüyoruz.
 // // Çözüm get_longest_lt fonksiyonundaki gibi yaşam süresini açıkça belirtmekle mümkün.
-// // Tabii get_longest kullanılmasa bile kodda açık bıraktığımızda derleyici kızacaktır.
+// // Tabii get_longest kullanılmasa bile fonksiyonu tuttuğumuz için derleyici yine de kızacaktır.
 // fn get_longest(word1: &str, word2: &str) -> &str {
 //     if word1.bytes().len() > word2.bytes().len() {
 //         word1
