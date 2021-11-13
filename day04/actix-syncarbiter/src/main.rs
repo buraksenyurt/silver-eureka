@@ -36,14 +36,12 @@ fn main() -> std::io::Result<()> {
         // Paralel olarak 4 tane sender çalışacak.
         // Bu nedenle her 5 saniyede 4 sıcaklık göstergesi ekrana yansıyacak.
         let sender = SyncArbiter::start(4, || LogWriter);
-        
+
         for i in 0..20 {
             let event_id = i as u64;
             let data=read_engine_temperature(); 
             sender.do_send(TempData(event_id,data));
         }
-
-        System::current().stop();
     });
 
     system.run()
