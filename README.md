@@ -724,3 +724,36 @@ cargo test
 ```
 
 ![./assets/screenshot_64.png](./assets/screenshot_64.png)
+
+### Asenkron Mesajlaşmada Actor Kullanımı
+
+Büyük yazılım sistemlerini mikroservis gibi yapılara döndürdüğümüzde oluşan onlarca servis için mesajlaşmalar önem kazanıyor. Bunun gibi çeşitli process veya fonksiyonların mesajlaşması denince akla gelen enstrüman Actor Model _(Akka)_ Esasında bu modelin ilk kullanıldığı yer Erlang dili. Günümüzde Javascript'in Web Worker'ları akka'nın temel ilkeleri üzerine inşa edilmiş. Hatta akka için yazılımış ayrı çatılar da mevcut _(Akka.net gibi)_ Actor olarak nitelendirilen şey esasında bir bilgisayar prosesi. Ayrıca ona nasıl mesaj yollanacağına dair bir adres de bulunuyor. Bu adresi mail adresine de benzetebiliriz sanıyorum ki. Bir aktörün birden fazla adresi de olabilir. Hatta bir adrese birden fazla aktörü de bağlayabiliriz. Düşününce yoğun trafik alan bir uygulamanın ölçeklenmesinde aktör sayısının yetersiz kaldığı durumda bu taktik epeyce işe yarar. Aslında aktörlerin görevi bellidir. Veri saklamak, diğer aktörlerden mesaj almak, diğer aktörlere mesaj göndermek ve son olarak alt aktör _(child actor)_ nesneleri oluşturmak. Bir aktörün sahip olduğu veri _(ki nesnenin state'idir aynı zamanda)_ başka bir aktör tarafından doğrudan değiştirilemez. Değişiklik için aktöre mesaj gönderilmesi ve bunun sorulması gerekir. Aktörler arasındaki mesajlaşma ilke olarak asenkron gerçekleşir ve dolayısıyla mesajların senkron halde gitmesinin bir garantisi yoktur ki bu durum senkronluğun önemli olduğu senaryolarda akka'nın ideal olmayacağını gösterir. Aktörler t anında yanlızca bir mesajı işlemek üzere tasarlanmıştır. Diğer yandan çocuk aktörler oluşturup kendilerin gelen bir mesajı işlenmek üzere alt aktörlere dağıtabilirler. Bu ilkeler açısından bakıldığında bir programın asenkron işleyen parçalarının haberleşmesinde aktör modelinden yararlanılabileceğini söyleyebiliriz. Rust tarafında da asenkron mesajlaşmalar için actor model kullanılabiliyor. Kitabın bu kısmında _actix_ paketinden nasıl yararlanılacağı örnek senaryo üzerinden anlatılmış.
+
+```bash
+# ilk olarak temek bir actix örneği yapalım.
+cargo new hello-actix
+cd hello-actix
+cargo run
+
+# İkinci bir uygulama örneği.
+cargo new async-with-actix
+cd async-with-actix
+cargo run
+
+# Aktörlerin paralel çalışmasının ele alındığı örnek için
+cargo new actix-syncarbiter
+cd actix-syncarbiter
+cargo run
+```
+
+İlk örnekte actix'in hello world'ü yer alıyor.
+
+![./assets/screenshot_65.png](./assets/screenshot_65.png)
+
+İkinci örneğin çalışma zamanı görüntüsü.
+
+![./assets/screenshot_66.png](./assets/screenshot_66.png)
+
+SyncArbiter ile reçetenin belirttiği örneğin çıktısı. _actix kütüphanesinden bazı değişiklikler nedeniyle kitaptaki örnek çalışmadı. Biraz değişiklik yapmak gerekti._
+
+![./assets/screenshot_67.png](./assets/screenshot_67.png)
