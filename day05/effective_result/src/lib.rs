@@ -25,6 +25,26 @@ mod tests {
         assert_eq!(find_suspicies2(query, ""), Some(0)); // Aslında burada da None dönmesini isteriz ama Some(0) dönmüştür. Dolayısıyla hata yönetimini daha iyi yapmamız gerekmektedir.
         assert_eq!(find_suspicies2("", "delete from"), None); // Sorun devam ediyor. delete from ifadesini arayacağım metin yine yok. Bu durum aslında bir hata(Error) olarak yorumlanmalı.
     }
+
+    #[test]
+    fn best_practice_test() {
+        let query = "Select * from players;1=1";
+        let wanted = "&";
+        let found = find_suspicies3(query, wanted);
+
+        // Artık fonksiyon çağrısında olası hata durumlarını daha iyi yönettiğimiz bir konumdayız.
+
+        assert_eq!(found, Err(FindSuspiciesError::NotFound)); //Birşey bulunamaması da bizim için bir Error olması gerektiğinde NotFound ile karşıladık
+        assert_eq!(find_suspicies3(query, ";1=1"), Ok(21)); // Birşey bulunursa değerini almak istedik.
+        assert_eq!(
+            find_suspicies3(query, ""),
+            Err(FindSuspiciesError::EmptyWanted) // Aranacak birşey olmaması da bir hataydı.
+        );
+        assert_eq!(
+            find_suspicies3("", "delete from"),
+            Err(FindSuspiciesError::EmptyContent) // ve aranan bir şey olmaması da.
+        );
+    }
 }
 
 /*
@@ -51,5 +71,30 @@ pub fn find_suspicies2(content: &str, wanted: &str) -> Option<usize> {
 /*
     En iyi pratik:
 
-
+    Üstteki iki fonksiyonda göz ardı edilen durumlar content veya wanted'ın boş gönderilmesi halleridir.
+    Bu hallerde fonksiyondan hata dönülmemektedir.
+    Hata durumunu fonksiyon tüketicisine bildirmek için aşağıdaki yol izlenebilir.
 */
+
+// Beklenen hata durumunu kaynağını ile birlikte ifade eden bir Enum tanımlanır
+#[derive(Debug, PartialEq)] // assert çağrılarındaki karşılaştırma işlemlerinde kullanabilmek için eklendi.
+pub enum FindSuspiciesError {
+    EmptyContent,
+    EmptyWanted,
+    NotFound,
+}
+
+// Yeni fonksiyonumuz geriye Result döner.
+// Eğer çağıran tarafa bildirmek istediğimiz bir hata varsa bunu FindSuspiciesError enum'ı ile sağlayabiliriz.
+pub fn find_suspicies3(content: &str, wanted: &str) -> Result<usize, FindSuspiciesError> {
+    // Eğer content değişkeninin uzunluğu sıfır veya küçükse
+    if content.len() <= 0 {
+        Err(FindSuspiciesError::EmptyContent) // Bir Error nesnesi oluşturulur ve değer olarak FindSuspiciesError::EmptyContent dönülür
+    } else if wanted.len() <= 0 {
+        Err(FindSuspiciesError::EmptyWanted) // wanted değişkeninin uzunluğu 0 veya küçükse
+    } else {
+        content
+            .find(wanted)
+            .map_or(Err(FindSuspiciesError::NotFound), |n| Ok(n)) // diğer durumda da find metodunun sonucuna bakılır. O bir şey bulamadığı durumda FindSuspiciesError::NotFound dönülür. Aksi durumda aranan içeriğin başladığı yer.
+    }
+}
