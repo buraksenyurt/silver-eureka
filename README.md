@@ -789,3 +789,21 @@ cargo new lot-of-error --lib
 cd lot-of-error
 cargo test
 ```
+
+### Result Tipinin Verimli Kullanımı
+
+Dönüş türlerinde genellikle Option veya Result tiplerinden yararlanılır. Özellikle olası hata durumlarının değerlendirilmesi gereken hallerde Result türü öne çıkar. Result veri yapısı aşağıdaki şekilde tanımlanmıştır. 
+
+```rust
+enum Result<T, E> {
+   Ok(T),
+   Err(E),
+}
+```
+Örnekte Result türünün verimli kullanımına odaklanılmakta.
+
+```bash
+cargo new effective_result --lib
+cd effective_result
+cargo test
+```
