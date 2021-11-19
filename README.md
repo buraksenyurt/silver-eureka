@@ -807,3 +807,5 @@ cargo new effective_result --lib
 cd effective_result
 cargo test
 ```
+
+![./assets/screenshot_69.png](./assets/screenshot_69.png)
