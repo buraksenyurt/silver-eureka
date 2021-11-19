@@ -12,7 +12,7 @@ Geliştirmeler için Visual Studio Code kullanacağım. Rust eklentisi için com
 
 ![./assets/screenshot_02.png](./assets/screenshot_02.png)
 
-## day01
+## day01 - Başlangıç Adımları
 
 Kitabın birinci bölümüne ait çalışmalar.
 
@@ -114,7 +114,7 @@ cargo test
 
 ![./assets/screenshot_09.png](./assets/screenshot_09.png)
 
-## day02
+## day02 - Biraz Daha
 
 Kitabın ikinci bölümüne ait çalışmalar.
 
@@ -346,7 +346,7 @@ cargo test
 
 ![./assets/screenshot_28.png](./assets/screenshot_28.png)
 
-## day03
+## day03 - Paket Yönetimi ve Cargo ile Çalışmak
 
 Kitabın üçüncü bölümüne ait çalışmalar. Bu bölümde cargo aracı ile proje yönetimine ait reçetelere yer verilmekte.
 
@@ -502,7 +502,7 @@ Testlerin tamamının tek bir thread içinde koşturulması;
 
 ![./assets/screenshot_40.png](./assets/screenshot_40.png)
 
-## Concurrency
+## day04 - Concurrency
 
 Rust dilinin güçlü olduğu yerlerden birisi de eş zamanlılık ve paralel çalıştırma işleridir. Sahiplenme _(Ownership)_ ve ödünç alma _(borrowing)_ yetenekleri özellikle veritabanı dünyasında sıklıkla karşılaşılan veri odaklı anormalliklerin _(data races)_ benzerlerinin program tarafında yaşanmasını önler. Bunun en büyük sebeplerinden birisi aksi belirtilmedikçe değişkenlerin değiştirilemez _(immutable)_ olması ve değiştirilebilir _(mutable)_ değişkenler söz konusu olduğunda da bu değişken verisine sadece bir tek referans verilmesinin sağlanmasıdır. Bu tip kısıtlar Rust tarafındaki Concurrency yetkinliklerinin diğer dillere göre nispeten daha kolay ele alınmasını sağlamakta. Kitabın bu bölümünde Concurrency ile ilgili çeşitli örneklere yer verilmekte.
 
@@ -757,3 +757,35 @@ cargo run
 SyncArbiter ile reçetenin belirttiği örneğin çıktısı. _actix kütüphanesinden bazı değişiklikler nedeniyle kitaptaki örnek çalışmadı. Biraz değişiklik yapmak gerekti._
 
 ![./assets/screenshot_67.png](./assets/screenshot_67.png)
+
+## day05 - Hata Yönetimi
+
+Kitabın _Handling Errors and Other Results_ bölümüne ait çalışmalar.
+
+Rust dilinde hatalar olağan akışın bir parçası olarak görülür. Çok sık rastladığımız Option ve Result gibi türlerler her şeyin bir dönüşü olması istenir. Bunun yanından thread'in devam etmemesi ve anında kesilmesi gereken durumlar için panic! makrosundan yararlanılır.
+
+### Panic Sorumluluğunu Almak
+
+Cevap vermeyen sunucu, işletim sistemi problemleri, geçersiz konfigurasyon dosyaları vb durumlarda çalışmakta olan thread'in devam etmesinin bir yolu yoktur. Bu durumlar Rust tarafında panic olarak değerlendirilir. Bu bölümde _panic!_ makrosunun temel kullanımlarına yer verilmiş.
+
+```bash
+# Buradan itibaren örnekler day05 klasörü altında icra edilemkteler
+
+cargo new hello-panic --lib
+cd hello-panic
+cargo test
+```
+
+Bilinçli panic! makro çağrısı sonrası kodların işletilmedinin gösterildiği duruma ait ekran görüntüsü.
+
+![./assets/screenshot_68.png](./assets/screenshot_68.png)
+
+### Birden Fazla Hatanın Ele Alınması
+
+Kitabın bu bölümünde birden fazla hatanın ele alınması gerektiği durumlarda nasıl ilerleneceğine dair bir örneğe yer verilmiş. Örnekte kullanıcı tanımlı hata yapıları hazırlanıyor ve bunlara Error ile Display trait'leri uygulanıyor.
+
+```bash
+cargo new lot-of-error --lib
+cd lot-of-error
+cargo test
+```
