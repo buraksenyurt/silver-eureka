@@ -825,3 +825,37 @@ cargo test
 ```
 
 ![./assets/screenshot_69.png](./assets/screenshot_69.png)
+
+### Diğer Hata Kontrol Pratikleri
+
+Hata yönetimi ile ilgili diğer konuların toplandığı örnek. Result değerlerindeki hata bilgilerinde pattern matching kullanımı, ? operatörü ile kodun yalınlaştırılması, panic! makrosuna açıkça başvurulması, unwrap_or_else ile closure kullanımı, unwrap ve expect fonksiyonları gibi pratikler ele alınmıştır.
+
+```bash
+cargo new error-handling
+cd error-handling
+cargo run
+```
+
+Örneğin çalışma zamanı çıktılarına ait ekran görüntüleri.
+
+case 1'den,
+
+![./assets/screenshot_70.png](./assets/screenshot_70.png)
+
+case 2'den
+
+![./assets/screenshot_71.png](./assets/screenshot_71.png)
+
+case 4'ten
+
+![./assets/screenshot_72.png](./assets/screenshot_72.png)
+
+![./assets/screenshot_73.png](./assets/screenshot_73.png)
+
+case 5'ten
+
+![./assets/screenshot_74.png](./assets/screenshot_74.png)
+
+case 6'dan
+
+![./assets/screenshot_75.png](./assets/screenshot_75.png)
