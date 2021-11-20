@@ -762,11 +762,16 @@ SyncArbiter ile reçetenin belirttiği örneğin çıktısı. _actix kütüphane
 
 Kitabın _Handling Errors and Other Results_ bölümüne ait çalışmalar.
 
-Rust dilinde hatalar olağan akışın bir parçası olarak görülür. Çok sık rastladığımız Option ve Result gibi türlerler her şeyin bir dönüşü olması istenir. Bunun yanından thread'in devam etmemesi ve anında kesilmesi gereken durumlar için panic! makrosundan yararlanılır.
+Rust dilinde hatalar olağan akışın bir parçası olarak görülür ve iki ana kategoride değerlendirilirler: düzeltilebilecek olanlar _(recoverable) ve kurtarılamayacaklar _(unrecoverable)_. Söz gelimi açılmak istenen bir dosyanın bulunamaması düzeltilmesi mümkün bir hata türüdür. Sorun kullanıcıya bildirilebilir ve yeniden denetilebilir. Fakat bir dizinin olmayan indisindeki elemana erişmeye çalışmak kurtarılabilir türden değildir. Dikkat edileceği üzere bazı dillerde bu tip bir ayrıma pek rastlanmaz ve tümü exception handling gibi mekanizmalarca ele alınır. Rust dilinde exception mekanizması bulunmaz. Bunun yerine Result<T,E>, Option gibi türlerle her şeyin bir dönüşünün olması istenir. Kurtarılabilir hata senaryolarında Result<T,Err> tipinin kullanımı son derece yaygındır lakin kurtarılamayan hata senaryoları için panic durumu devreye girer. Bir panik hali panic! makrosunun doğrudan çağırılmasyıla bilinçli olarak da oluşturulabilir. Panik oluşması halinde sistemin çalışması anında kesilir ve geriye doğru gidilerek bellek üzerinde ayrılan tüm kaynakların temizlenmesi süreci başlatılır. Bu, stack üstüne alınan ne kadar veri ve onunla ilgili fonksiyon varsa tek tek ilgilenilmesi anlamına da gelir. Maliyet açısından düşük kaynak tüketemi olan programlarda bu temizleme operasyonunu hemen atlayıp işletim sistemine bırakmak da mümkündür. Bunun için toml dosyasına aşağıdaki gibi bir ek yapmak yeterli olur.
+
+```rust
+[profile.release]
+panic = 'abort'
+```
 
 ### Panic Sorumluluğunu Almak
 
-Cevap vermeyen sunucu, işletim sistemi problemleri, geçersiz konfigurasyon dosyaları vb durumlarda çalışmakta olan thread'in devam etmesinin bir yolu yoktur. Bu durumlar Rust tarafında panic olarak değerlendirilir. Bu bölümde _panic!_ makrosunun temel kullanımlarına yer verilmiş.
+Cevap vermeyen sunucu, işletim sistemi problemleri, geçersiz konfigurasyon dosyaları vb durumlarda çalışmakta olan thread'in devam etmesinin bir yolu kalmayabilir. Bu durumlar Rust tarafında kurtarılamayan _(unrecoverable)_ hatalar olup panic olarak değerlendirilir. Bu reçetede _panic!_ makrosunun temel kullanımlarına yer verilmiş.
 
 ```bash
 # Buradan itibaren örnekler day05 klasörü altında icra edilemkteler
@@ -776,13 +781,13 @@ cd hello-panic
 cargo test
 ```
 
-Bilinçli panic! makro çağrısı sonrası kodların işletilmedinin gösterildiği duruma ait ekran görüntüsü.
+Bilinçli panic! makro çağrısı sonrası kodların işletilmediğinin gösterildiği duruma ait ekran görüntüsü.
 
 ![./assets/screenshot_68.png](./assets/screenshot_68.png)
 
 ### Birden Fazla Hatanın Ele Alınması
 
-Kitabın bu bölümünde birden fazla hatanın ele alınması gerektiği durumlarda nasıl ilerleneceğine dair bir örneğe yer verilmiş. Örnekte kullanıcı tanımlı hata yapıları hazırlanıyor ve bunlara Error ile Display trait'leri uygulanıyor.
+Sıradaki reçetede birden fazla hatanın ele alınması gerektiği durumlarda nasıl ilerleneceğine dair bir örneğe yer verilmiş. Örnekte kullanıcı tanımlı hata yapıları hazırlanıyor ve bunlara Error ile Display trait'leri uygulanıyor.
 
 ```bash
 cargo new lot-of-error --lib
@@ -792,7 +797,7 @@ cargo test
 
 ### Result Tipinin Verimli Kullanımı
 
-Dönüş türlerinde genellikle Option veya Result tiplerinden yararlanılır. Özellikle olası hata durumlarının değerlendirilmesi gereken hallerde Result türü öne çıkar. Result veri yapısı aşağıdaki şekilde tanımlanmıştır. 
+Fonksiyonların dönüş türlerinde genellikle Option veya Result türlerinden yararlanılır. Özellikle olası hata durumlarının değerlendirilmesi gereken hallerde Result<T,Err> türü öne çıkar. Result veri yapısı aşağıdaki şekilde tanımlanmıştır. 
 
 ```rust
 enum Result<T, E> {
@@ -800,7 +805,8 @@ enum Result<T, E> {
    Err(E),
 }
 ```
-Örnekte Result türünün verimli kullanımına odaklanılmakta.
+
+Reçetede Result türünün verimli kullanımına ait örneklere yer verilmekte.
 
 ```bash
 cargo new effective_result --lib
