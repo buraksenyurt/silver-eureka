@@ -785,6 +785,16 @@ Bilinçli panic! makro çağrısı sonrası kodların işletilmediğinin göster
 
 ![./assets/screenshot_68.png](./assets/screenshot_68.png)
 
+Panik senaryolarında çalışma zamanında geçilen yerleri görmek ve için RUST_BACKTRACE isimli çevre değişkenin 1 değeri verilerek ilerlenebilir _(Bir nevi stack trace olarak düşünebiliriz sanırım)_ Windows tarafında powershell'de aşağıdaki komut ile bu işlem gerçekleştirilebilir.
+
+```powershell
+# Panik ile ilgili detay açmak için
+$env:RUST_BACKTRACE=1; cargo run
+
+# Tekrar eski konumuna döndürmek için
+$env:RUST_BACKTRACE=0;
+```
+
 ### Birden Fazla Hatanın Ele Alınması
 
 Sıradaki reçetede birden fazla hatanın ele alınması gerektiği durumlarda nasıl ilerleneceğine dair bir örneğe yer verilmiş. Örnekte kullanıcı tanımlı hata yapıları hazırlanıyor ve bunlara Error ile Display trait'leri uygulanıyor.
