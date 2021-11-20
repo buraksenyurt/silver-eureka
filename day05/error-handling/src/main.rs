@@ -71,15 +71,25 @@ fn main() {
         Bu nedenle case_5_propogating_error içeriğini çok daha yalın bir hali yazılabilir.
 
     */
-    let content = case_6_question_mark_shortcut("none.txt");
-    match content {
-        Ok(c) => println!("{}", c),
-        Err(e) => println!("Dosyadan okuma işleminde bir hata var. {:?}\n", e),
-    };
+    // let content = case_6_question_mark_shortcut("none.txt");
+    // match content {
+    //     Ok(c) => println!("{}", c),
+    //     Err(e) => println!("Dosyadan okuma işleminde bir hata var. {:?}\n", e),
+    // };
 
-    let content = case_6_question_mark_shortcut("names.txt").unwrap();
-    println!("Names dosya içeriği\n\n{}", content);
+    // let content = case_6_question_mark_shortcut("names.txt").unwrap();
+    // println!("Names dosya içeriği\n\n{}", content);
 
+    /*
+
+        Hata Yönetimi - 7
+
+        panic! makrosunun kullanılacağı anlamlı yerlerden birisi de doğrulama(validation) işlemleridir.
+        Aşağıdaki senaryoda SpaceShip isimli bir veri yapısı kullanılmakta ve new fonksiyonu ile oluşturulurken parametre değerlerinde olan ihlaller panik ile cezalandırılmaktadır.
+    */
+
+    let enterprise = SpaceShip::new(1, "USS Enterprise".to_string(), 10);
+    println!("{}", enterprise.description());
     println!("\nProgramın sonu"); // Üst fonksiyondaki bilinçli panic hali gerçekleşirse(olmayan dosyanın açılması durumu) bu satıra zaten gelinmeyecektir.
 }
 
@@ -159,6 +169,7 @@ fn case_5_propogating_error(file_name: &str) -> Result<String, io::Error> {
     }
 }
 
+#[allow(dead_code)]
 fn case_6_question_mark_shortcut(file_name: &str) -> Result<String, io::Error> {
     let mut content = String::new();
     // Aşağıdaki çağrılara dikkat.
@@ -166,4 +177,36 @@ fn case_6_question_mark_shortcut(file_name: &str) -> Result<String, io::Error> {
     // Bu operatör ile case_5 fonksiyonundaki işlevselliğin aynısı sağlanmakta.
     File::open(file_name)?.read_to_string(&mut content)?;
     Ok(content)
+}
+
+// Case 7
+struct SpaceShip {
+    id: i32,
+    name: String,
+    capacity: i32,
+}
+
+impl SpaceShip {
+    pub fn new(id: i32, name: String, capacity: i32) -> SpaceShip {
+        // Örneğin yeni bir Spaceship değişkeni üretilirken girilen parametre değerlerine göre panik oluşturulması sağlanabilir.
+        if id < 0 {
+            // id değeri negatif olursa panik düğmesine basılsın.
+            panic!("Uzay gemisi kimlik numarası negatif sayı olamaz!");
+        } else if capacity < 50 || capacity > 100 {
+            // capacity uygun aralıkta değilse panik düğmesine basılsın.
+            panic!(
+                "Uzay gemisi için girilen {} kapasitesi izin verilen aralıkta değil.",
+                capacity
+            );
+        } else if name.len() < 5 || name.len() > 20 {
+            // Ya da geminin adının uzunluğu izin verilen aralıkta değilse
+            panic!("Geminin adı en az 5 en fazla 20 karakter olabilir.");
+        }
+
+        SpaceShip { id, name, capacity }
+    }
+
+    pub fn description(&self) -> String {
+        format!("({}) {} - Kapasite {}", self.id, self.name, self.capacity)
+    }
 }
