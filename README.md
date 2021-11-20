@@ -859,3 +859,7 @@ case 5'ten
 case 6'dan
 
 ![./assets/screenshot_75.png](./assets/screenshot_75.png)
+
+case 7'den
+
+![./assets/screenshot_76.png](./assets/screenshot_76.png)
