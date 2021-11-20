@@ -19,7 +19,18 @@ fn main() {
         bu kez Create çağrısı ile dosya oluşturulur. Hatta dosya oluşturmak için kullanılan create çağrısı da Result döndüğünden,
         bu işlemin sonucu da pattern matching ile kontrol altında tutulur.
     */
-    case_2_error_kinds();
+    //case_2_error_kinds();
+
+    /*
+
+        Hata Yönetimi - 3
+
+        İlk iki hata yönetimi pratiğinde görüldüğü üzere pattern matching dalları çoğaldığında kod okunurluğu da yazımı da zorlaşıyor.
+        Aslında Result türünün unwrap_or_else fonksiyonu ve closure kullanarak iş daha da basitleştirilebilir.
+
+    */
+
+    case_3_use_unwrap_or_else();
 
     println!("Programın sonu"); // Üst fonksiyondaki bilinçli panic hali gerçekleşirse(olmayan dosyanın açılması durumu) bu satıra zaten gelinmeyecektir.
 }
@@ -38,6 +49,7 @@ fn case_1_explicitly_panic_from_result() {
     };
 }
 
+#[allow(dead_code)]
 fn case_2_error_kinds() {
     // Yine reports isimli text dosyası açmak istiyoruz
     let reader = File::open("reports.txt");
@@ -62,4 +74,20 @@ fn case_2_error_kinds() {
             other_err => panic!("Farklı türden bir hata söz konusu {:?}", other_err), // NotFound haricinden bir hata söz konusu ise burası çalışacak.
         },
     };
+}
+
+fn case_3_use_unwrap_or_else() {
+    // Bu kez pattern matching yerine unwrap_or_else ve closure blokları kullanılıyor.
+    // unwrap_or_else eğer eklendiği fonksiyon başarılı ise hemen sonucu döner. Aksi durum bir hata anlamına gelir parametre olarak açılan kod bloğu çalıştırılır.
+    let _reader = File::open("reports.txt").unwrap_or_else(|e| {
+        if e.kind() == ErrorKind::NotFound {
+            // create fonksiyonu da Result<T,E> döndürdüğünden unwrap_or_else kullanılabilir.
+            // dosya oluşturulabildiyse hemen sonuç döner. Aksi durumda |e| ile başlayan kod bloğu çalıştırılır.
+            File::create("reports.txt").unwrap_or_else(|e| {
+                panic!("Dosya oluşturulması sırasında hata. {:?}", e); // sistemin işleyişini kesiyoruz
+            })
+        } else {
+            panic!("Dosya açılması sırasında hata. {:?}", e); // buraya gelindiyse de sistem işleyişi anında kesilir.
+        }
+    });
 }
