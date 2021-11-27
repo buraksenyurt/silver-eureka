@@ -34,10 +34,44 @@ mod tests {
         webby!(GET "https://www.buraksenyurt.com" -> { Response{code:200} });
         webby!(POST "https://someservice/product/update" -> {Response{code:200}});
     }
+
+    #[test]
+    fn should_smartsum_works_for_n_times() {
+        let mut value = 0;
+        // smartsum isimli makro son parametre olarak gelen kod bloğunu ilgili değer aralığı kadar çalıştırır.
+        // Mantıksız bir örnek oldu tabii.
+        smartsum!(from 5 to 10, {
+            value += 5;
+        });
+        assert_eq!(value, 25);
+    }
+
+    #[test]
+    fn should_makefunc_create_function() {
+        /*
+        makefunc makrosu üç parametre almakta. İlki fonksiyon adı.
+        İkincisi işler bir kod bloğun ve üçüncüsü de fonksiyondan dönecek olan tür.
+        Makromuz bu argümanlara göre bloğu bir fonksiyon haline getirmekte.
+        Sonrasında onu çalıştırabiliyoruz.
+        */
+        makefunc!(
+            summmy,
+            {
+                let mut value = 0;
+                for i in 0..100 {
+                    value += i
+                }
+                return value;
+            },
+            i32
+        );
+        let result = summmy();
+        assert_eq!(result, 4950);
+    }
 }
 
 /*/
-    Makroları modül içerisinde de yapabiliriz.
+    Makroları modül içerisinde de yazabiliriz.
 */
 #[macro_use]
 mod macromania {
@@ -118,6 +152,61 @@ mod macromania {
     }
 
     ///
+    /// from 2 to 5 {value+=1} gibi bir ifadenin çalışmasını sağlayan dummy macro!
+    ///
+    /// ```
+    /// let mut value = 0;
+    /// hello_macros::smartsum!(from 5 to 10, {
+    ///     value += 5;
+    /// });
+    /// assert_eq!(value, 25);
+    /// ```
+    #[macro_export]
+    macro_rules! smartsum {
+        /*
+            Bu makro from 2 to 5 { // kodlar } gibi bir ifadenin çalıştırılabilmesini sağlar.
+            $f block türünden olduğu için bir kod bloğunu makro argümanı olarak kullanabiliriz.
+        */
+        (from $first:tt to $last:tt, $b:block) => {
+            // first ve last argümanları değer aralığında çalışacak bir döngü
+            for _ in $first..$last {
+                $b() // parametre olarak gelen kod bloğu çalıştırılır.
+            }
+        };
+    }
+
+    ///
+    /// Bir kod bloğunu verilen isim dönüş türüne göre fonksiyon haline getiren dummy macro.
+    ///
+    /// ```
+    /// hello_macros::makefunc!(
+    ///         summmy,
+    ///         {
+    ///             let mut value = 0;
+    ///             for i in 0..100 {
+    ///                 value += i
+    ///             }
+    ///             return value;
+    ///         },
+    ///         i32
+    ///         );
+    /// let result = summmy();
+    /// assert_eq!(result, 4950);
+    /// ```
+    #[macro_export]
+    macro_rules! makefunc {
+        /*
+            ident ile metod adının da oluğu tanımlama kısmını ifade ediyoruz.
+            block türü ile kod bloğu alınıyor.
+            tt ile de single token tree söz konusu. Bir dönüş türü için ele alıyoruz.
+        */
+        ($identity:ident,$body:block,$return:tt) => {
+            // aşağıdaki fonksiyona ait bloğun yazılışı icra edilmekte.
+            fn $identity () -> $return $body
+        };
+    }
+
+    ///
     /// Sembolik olarak bir kaynağa HTTP talebi atan dummy macro'dur.
     ///
     /// ```
@@ -130,21 +219,21 @@ mod macromania {
     #[macro_export]
     macro_rules! webby {
         /*
-            Bu kez dört farklı bacak var. Sembolik olarak bir web adresine paket göndermekte yardımcı olacak kodları hazırlayan bir makro olarak düşünelim.
-            Aranan eşleşmelerde GET gibi bir HTTP metodu ile başlanmakta. Ardından web adresine ait yol bilgisi alınıyor ($path)
-            -> sembolünü takiben bir kod bloğu beklediğimizi ifade ediyoruz. Bu argümanlar send metoduna parametre olarak yollanıyorlar.
-            
-         */
-        (GET $path:address -> $b:block) => {
+           Bu kez dört farklı bacak var. Sembolik olarak bir web adresine paket göndermekte yardımcı olacak kodları hazırlayan bir makro olarak düşünelim.
+           Aranan eşleşmelerde GET gibi bir HTTP metodu ile başlanmakta. Ardından web adresine ait yol bilgisi alınıyor.
+           -> sembolünü takiben bir kod bloğu beklediğimizi ifade ediyoruz. Bu argümanlar send metoduna parametre olarak yollanıyorlar.
+
+        */
+        (GET $path:literal -> $b:block) => {
             send("GET", $path, &|| $b)
         };
-        (POST $path:address -> $b:block) => {
+        (POST $path:literal -> $b:block) => {
             send("POST", $path, &|| $b)
         };
-        (PUT $path:address -> $b:block) => {
+        (PUT $path:literal -> $b:block) => {
             send("PUT", $path, &|| $b)
         };
-        (DELETE $path:address -> $b:block) => {
+        (DELETE $path:literal -> $b:block) => {
             send("DELETE", $path, &|| $b)
         };
     }
