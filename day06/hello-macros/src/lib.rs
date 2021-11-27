@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use super::*;
+
     #[test]
     fn should_sum_works_for_two_number() {
         let result = sum!(3.1, 4.5, f32);
@@ -9,6 +10,15 @@ mod tests {
         let result = sum!(8, 9, u8);
         assert_eq!(result, 17);
     }
+
+    #[test]
+    fn should_sumall_works_for_numbers() {
+        let result = sumall!(1, 2, 3, 4, 5, 6);
+        assert_eq!(result, 21);
+
+        let result = sumall!();
+        assert_eq!(result, 0);
+    }
 }
 
 /*/
@@ -16,17 +26,17 @@ mod tests {
 */
 #[macro_use]
 mod macromania {
-    // modül dışında sum makrosunun kullanılabilmesi için macro_export direktifi kullanılır.    
+    // modül dışında sum makrosunun kullanılabilmesi için macro_export direktifi kullanılır.
     // macro_rules! ile declartive tipte makrolar tanımlanabilir. Birde procedural macro'lar var.
 
     ///
     /// İki değerin belirtilen türde toplanmasını sağlayan dummy macro.
-    /// 
+    ///
     /// ```
     /// let result = hello_macros::sum!(3,4,u8);
     /// assert_eq!(result,7);
     /// ```
-    /// 
+    ///
     #[macro_export]
     macro_rules! sum {
         // Aşağıdaki ifadede & ile başlayan yerlerde sentaks enstrümanları işaret edilir.
@@ -35,5 +45,32 @@ mod macromania {
             // a ve b ifadelerinin t türüne dönüştürülerek toplanması işlemi söz konusudur.
             $a as $t + $b as $t
         };
+    }
+
+    ///
+    /// 0 veya n sayıda değeri ardışıl olarak toplayan dummy macro.
+    ///
+    /// ```
+    /// let result = hello_macros::sumall!(1,2,3);
+    /// assert_eq!(result,6);
+    ///
+    /// let result = hello_macros::sumall!();
+    /// assert_eq!(result,0);
+    /// ```
+    #[macro_export]
+    macro_rules! sumall {
+        /*
+            Aşağıdaki eşleştirmeye dikkat edelim.
+            a bir ifade olaraktan aralarında virgül bulunan ve * sebebiyle de n sayıda olabilecek bir sentaksı yakalıyoruz.
+            Buna uygun bir sentaks varsa {} içerisine alınan kod bloğu oluşturuluyor.
+        */
+        ($($a:expr),*)=>{
+            {
+                // Hiç argüman yoksa 0 dönülecek
+                0
+                // Eğer n sayıda argüman varsa aralarına + işaret konularaktan sentaks tamamlanacak.
+                $(+$a)*
+            }
+        }
     }
 }
