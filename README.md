@@ -886,6 +886,13 @@ macro_rules! vec {
 }
 ```
 
-Dikkat edileceği üzere parametre yapısının eşleştiği desene göre farklı bir dal çalışacaktır. Hiç eleman gönderilmediğinde boş bir vektörün oluşturulması söz konusu iken virgül notasyonu ile n sayıda elemean gönderildiğinde boxing kullanılaraktan da bir vecktör nesnesi oluşturulur. Bu noktada tüm dallarda rust_force_expr! isimli bir başka makroya başvurulduğunu da görmekteyiz.
+Dikkat edileceği üzere parametre yapısının eşleştiği desene göre farklı bir dal çalışacaktır. Hiç eleman gönderilmediğinde boş bir vektörün oluşturulması söz konusu iken virgül notasyonu ile n sayıda elemean gönderildiğinde boxing kullanılaraktan da bir vecktör nesnesi oluşturulur. Bu noktada tüm dallarda rust_force_expr! isimli bir başka makroya başvurulduğunu da görmekteyiz. $ sembolü ile başlayan ifadeler aslında sentaks ağacındaki enstrümanları işaret eder. Kullanılabilecek olanları şöyle sıralayabiliriz.
+
+- $item ile fonksiyon, struct veya modül gibi bir enstrümanı ifade edebiliriz.
+- $block ile süslü parantezler içerisine alınmış kod ifadelerini işaret edebiliriz.
+- $stmt ile bir ifadeyi _(statement)_ belirtiriz.
+- $ty ile bir tip belirtilir.
+- $ident ile bir tanımlayıcı _(identifier)_ işaret edilir.
+- Bunlar gibi pat, path, meta, expr, vis, tt gibi çeşitli token türleri vardır.
 
 Kitabın bu bölümünde makrolarla ilgili pratiklere yer verilmekte.
