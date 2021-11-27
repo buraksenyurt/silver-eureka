@@ -198,9 +198,9 @@ mod macromania {
         /*
             ident ile metod adının da oluğu tanımlama kısmını ifade ediyoruz.
             block türü ile kod bloğu alınıyor.
-            tt ile de single token tree söz konusu. Bir dönüş türü için ele alıyoruz.
+            ty ile de bir veri tipini ifade ediyoruz ki dönüş türü için kullanacağız.
         */
-        ($identity:ident,$body:block,$return:tt) => {
+        ($identity:ident,$body:block,$return:ty) => {
             // aşağıdaki fonksiyona ait bloğun yazılışı icra edilmekte.
             fn $identity () -> $return $body
         };
