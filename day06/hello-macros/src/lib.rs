@@ -28,6 +28,12 @@ mod tests {
         let result = funmulti!(1, 2, 3, 4, 5, 6);
         assert_eq!(result, 720);
     }
+
+    #[test]
+    fn should_webby_works() {
+        webby!(GET "https://www.buraksenyurt.com" -> { Response{code:200} });
+        webby!(POST "https://someservice/product/update" -> {Response{code:200}});
+    }
 }
 
 /*/
@@ -93,7 +99,7 @@ mod macromania {
     /// let result = hello_macros::funmulti!(4, 5);
     /// assert_eq!(result, 20);
     /// ```
-    /// 
+    ///
     #[macro_export]
     macro_rules! funmulti {
         /*
@@ -110,4 +116,41 @@ mod macromania {
             $a * funmulti!($($b)*)
         }
     }
+
+    ///
+    /// Sembolik olarak bir kaynağa HTTP talebi atan dummy macro'dur.
+    ///
+    /// ```
+    /// use hello_macros::send;
+    ///
+    /// hello_macros::webby!(GET "https://www.buraksenyurt.com" -> { hello_macros::Response{code:200} });
+    /// hello_macros::webby!(POST "https://someservice/product/update" -> {hello_macros::Response{code:200}});
+    /// ```
+    ///
+    #[macro_export]
+    macro_rules! webby {
+        /*
+            Bu kez dört farklı bacak var. Sembolik olarak bir web adresine paket göndermekte yardımcı olacak kodları hazırlayan bir makro olarak düşünelim.
+            Aranan eşleşmelerde GET gibi bir HTTP metodu ile başlanmakta. Ardından web adresine ait yol bilgisi alınıyor ($path)
+            -> sembolünü takiben bir kod bloğu beklediğimizi ifade ediyoruz. Bu argümanlar send metoduna parametre olarak yollanıyorlar.
+            
+         */
+        (GET $path:address -> $b:block) => {
+            send("GET", $path, &|| $b)
+        };
+        (POST $path:address -> $b:block) => {
+            send("POST", $path, &|| $b)
+        };
+        (PUT $path:address -> $b:block) => {
+            send("PUT", $path, &|| $b)
+        };
+        (DELETE $path:address -> $b:block) => {
+            send("DELETE", $path, &|| $b)
+        };
+    }
 }
+
+pub struct Response {
+    pub code: usize,
+}
+pub fn send(_method: &str, _path: &str, _handler: &dyn Fn() -> Response) {}
