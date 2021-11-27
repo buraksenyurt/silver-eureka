@@ -863,3 +863,29 @@ case 6'dan
 case 7'den
 
 ![./assets/screenshot_76.png](./assets/screenshot_76.png)
+
+## Makrolarla Çalışmak
+
+Kod yazan kodlar veya metaprogramming'in Rust dilindeki karşılığı macro türüdür. Örneklerde sıklıkla kullandığımız makrolar vardı. println!, vec! vb. Bu makrolar aslında değişken sayıda parametre alabilen ve içerdikleri kod şablonlarına bu değerleri yerleştirerek bazı kodları otomatik olarak yazan yapılara sahip. Hatta makrolar sayesinde trait'lerin varsayılan versiyonlarının bir tipe otomatik olarak uygulanması da mümkündür. Örneğin Derive niteliğinde Copy, Clone gibi trait bildirimlerini yaptığımızda bir struct için bu davranışlara ait kodların otomatik olarak hazırlanması makronun işidir. Makroları sadece kod şablonları olarak düşünmemek gerekir. Asıl gücü üretilmek istenen kodun soyut sentaksına dair bir ağaç yapısı sunmasından gelmektedir. Makrolar derleme aşamasında işletilen kod parçalarıdır. Bu sayede programın ilerleyen safhalarında ihtiyaç duyulan kodların derleme aşamasında eklenmesi sağlanabilir. Yani derlenmiş kod parçalarını makrolar ile programa ekleyebiliriz. Parametre sayıları belirsiz olabileceğinden doğal olarak overload karaktersitiği gösterirler. Sentaks eşleştirme desenleri kullanırlar ama metinsel değiştirme değil de sentaks ağaç yapısını kullanırlar. Recursive davranış sergileyebilirler. Makroları kabaca _Rust kodu yazan Rust kodları_ olarak düşünebiliriz. vec! makrosunun rust kod içeriği örneğin aşağıdaki gibidir.
+
+```rust
+#[cfg(not(test))]
+#[macro_export]
+#[stable(feature = "rust1", since = "1.0.0")]
+#[allow_internal_unstable(box_syntax, liballoc_internals)]
+macro_rules! vec {
+    () => (
+        $crate::__rust_force_expr!($crate::vec::Vec::new())
+    );
+    ($elem:expr; $n:expr) => (
+        $crate::__rust_force_expr!($crate::vec::from_elem($elem, $n))
+    );
+    ($($x:expr),+ $(,)?) => (
+        $crate::__rust_force_expr!(<[_]>::into_vec(box [$($x),+]))
+    );
+}
+```
+
+Dikkat edileceği üzere parametre yapısının eşleştiği desene göre farklı bir dal çalışacaktır. Hiç eleman gönderilmediğinde boş bir vektörün oluşturulması söz konusu iken virgül notasyonu ile n sayıda elemean gönderildiğinde boxing kullanılaraktan da bir vecktör nesnesi oluşturulur. Bu noktada tüm dallarda rust_force_expr! isimli bir başka makroya başvurulduğunu da görmekteyiz.
+
+Kitabın bu bölümünde makrolarla ilgili pratiklere yer verilmekte.
