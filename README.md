@@ -901,6 +901,10 @@ Kitabın bu bölümünde makrolarla ilgili pratiklere yer verilmekte.
 cargo new hello-macros --lib
 cd hello-macros
 cargo test
+
+cargo new macros --lib
+cd macros
+cargo test
 ```
 
 hello-macros uygulamasının çıktısı.
