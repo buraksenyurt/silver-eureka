@@ -19,6 +19,15 @@ mod tests {
         let result = sumall!();
         assert_eq!(result, 0);
     }
+
+    #[test]
+    fn should_funmulti_works_for_numbers() {
+        let result = funmulti!(4, 5);
+        assert_eq!(result, 20);
+
+        let result = funmulti!(1, 2, 3, 4, 5, 6);
+        assert_eq!(result, 720);
+    }
 }
 
 /*/
@@ -71,6 +80,34 @@ mod macromania {
                 // Eğer n sayıda argüman varsa aralarına + işaret konularaktan sentaks tamamlanacak.
                 $(+$a)*
             }
+        }
+    }
+
+    ///
+    /// İki veya n adet sayıyı ardışıl olarak çarpan dummy makrodur.
+    ///
+    /// ```
+    /// let result = hello_macros::funmulti!(4, 5);
+    /// assert_eq!(result, 20);
+    ///
+    /// let result = hello_macros::funmulti!(4, 5);
+    /// assert_eq!(result, 20);
+    /// ```
+    /// 
+    #[macro_export]
+    macro_rules! funmulti {
+        /*
+            tt, single token tree anlamındadır.
+            Oluşturulan ifadede funsum makrosu kendisini recursive olarak da çağırmaktadır.
+            İki durum ele alınır. İlki iki değer girildiğinde toplamını bulan ifadeyi oluşturur.
+            İkinci durum da bir a ifadesi ve takip eden n sayıda b ifadesini işaret eden bir token tree söz konusudur.
+            *, n tane anlamına gelir.
+        */
+        ($a:expr,$b:expr) => {
+            $a * $b
+        };
+        ($a:expr,$($b:tt)*)=>{
+            $a * funmulti!($($b)*)
         }
     }
 }
