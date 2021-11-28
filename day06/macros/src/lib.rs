@@ -3,6 +3,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[allow(non_camel_case_types)] // camel case şeklinde kullanmadığımız değişken adlarına izin verip warning'leri kapattık.
     fn should_mock_add_trait_works() {
         let somewhere = Location::new(3, 4, 5);
         /*
@@ -15,6 +16,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(dead_code)]
     fn should_mock_generate_struct_works() {
         /*
             mock! makrosuna verdiğimiz parametrelerle name, level ve id gibi alanları olan Player isimli bir struct kodunun yazılması sağlanıyor.
@@ -30,9 +32,19 @@ mod tests {
         assert_eq!(bobafet.name, "boba fet".to_owned());
         assert_eq!(bobafet.id, 1001);
         assert_eq!(bobafet.level, 40);
+
+        /*
+            Aşağıdaki formasyonda hem yeni bir struct tanımlıyor hem de new fonksiyonu ile örneklenmesini sağlıyoruz.
+        */
+        mock!(Madolorian, name: String, level: u8, id: i32);
+        let blackhead = Madolorian::new("Black Head".to_owned(), 55, 1002);
+        assert_eq!(blackhead.name, "Black Head".to_owned());
+        assert_eq!(blackhead.id, 1002);
+        assert_eq!(blackhead.level, 55);
     }
 }
 
+#[allow(dead_code)]
 pub struct Location {
     x: i32,
     y: i32,
@@ -73,15 +85,31 @@ mod macromania {
 
         /*
             Aşağıdaki kola uygun bir desen ile karşılaşıltığında ise bir struct yazılıyor.
-            İlk parametre struct'ın kimliğini ifade ederken ikinci parametrede sondaki * sembolü sebebiyle
+            İlk parametre struct'ın kimliğini ifade ederken ikinci parametrede sondaki + sembolü sebebiyle
             n sayıda field adı ve tipinin geldiği senaryolar ele alınıyor.
+
+            + 1 veya daha fazla argüman, * ise 0 veya daha fazla argüman için kullanılır.
         */
-        ($struct_name:ident,$($field_name:ident:$type:ty),*)=>{
+        ($struct_name:ident,$($field_name:ident:$type:ty),+)=>{
             // Struct'ın inşa edildiği yer
             // derive ile birkaç trait davranışını varsayılan olarak ekliyoruz
             #[derive(PartialEq,Clone,Debug)]
             struct $struct_name {
-                $(pub $field_name: $type),*
+                // gelen field_name ve type bilgilerini tekrarlı olarak yerleştiriyoruz.
+                // Böylece n sayıda field tanımı ekleneilir.
+                $(pub $field_name: $type),+
+            }
+
+            // Bir struct değişkenini oluştururken sıklıkla uygulanan new fonksiyonunun inşa edildiği yer.
+            impl $struct_name {
+                // Dönüş türü Self. Yani struct'ın kendisi
+                // parametre kısmındaki notasyon + semboli sayesinde 1 veya daha fazla değişkenin kullanılabileceğini ifade ediyor.
+                fn new($($field_name: $type),+) -> Self {
+                    // struct'ın örneklendiği kısım
+                    $struct_name{
+                        $($field_name: $field_name),+
+                    }
+                }
             }
         }
     }
