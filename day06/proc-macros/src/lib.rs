@@ -20,16 +20,39 @@ pub fn serialize(attributes: TokenStream, input: TokenStream) -> TokenStream {
 
     // Case 2: Gelen syntax tree'yi yakalayıp identifier bilgisini almak ve farklı bir TokenStream (get_pi fonksiyonu) döndürmek.
 
-    // input'u Syntax Tree'ye çevirmek için syn modülündeki parse komutundan yararlanılıyor.
-    let syntaxtree: DeriveInput = syn::parse(input).unwrap();
-    let name = &syntaxtree.ident; // makronun uygulandığı tipin tanımlayıcısını(adını) ident ile almaktayız.
-    println!("Tipin adı {}", name);
+    // // input'u Syntax Tree'ye çevirmek için syn modülündeki parse komutundan yararlanılıyor.
+    // let syntaxtree: DeriveInput = syn::parse(input).unwrap();
+    // let name = &syntaxtree.ident; // makronun uygulandığı tipin tanımlayıcısını(adını) ident ile almaktayız.
+    // println!("Tipin adı {}", name);
 
-    // Burada quote! makrosundan yararlanarak TokenStream'i değiştirdik.
+    // // Burada quote! makrosundan yararlanarak TokenStream'i değiştirdik.
+    // // Ve sonuç olarak serialize niteliğinin uygulandığı tip yerine derleyici get_pi fonksiyonunu dahil etti.
+    // let expanded = quote! {
+    //     fn get_pi() -> f32 {
+    //         3.1415
+    //     }
+    // };
+    // TokenStream::from(expanded)
+
+    // Case 3: Makronun uygulandığı tipe yeni fonksiyon eklemek.
+    let syntaxtree: DeriveInput = syn::parse(input).unwrap();
+    let name = &syntaxtree.ident;
+
+    // Çıktı kodunu ürettiğimiz yer
     let expanded = quote! {
-        fn get_pi() -> f32 {
-            3.1415
+
+        // Bir struct'a uygulayacağımızı düşündüğümden uygulandığı struct'a ait kod ağacını olduğu gibi korumak istedim.
+        #syntaxtree
+
+        // Struct'a bir fonksiyon ilavesi yaptığımız yer.
+        impl #name{
+            fn to_json(&self) -> String {
+                // Sembolik bir JSON çıktısı
+                String::from("{'result':'JSON World'}")
+            }
         }
+
     };
+    // Üretilen kod parçasını derleyiciye servis ettiğimiz yer
     TokenStream::from(expanded)
 }
