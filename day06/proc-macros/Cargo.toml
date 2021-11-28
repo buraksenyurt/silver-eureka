@@ -1,0 +1,12 @@
+[package]
+name = "proc-macros"
+version = "0.1.0"
+edition = "2021"
+
+# Aşağıdaki paketler TokenStream'leri kolayca parse etmek için kullanılacaktır.
+[dependencies]
+syn = {version="1.0.80",features=["full","fold"]}
+quote = "1.0.9"
+
+[lib]
+proc-macro = true # Projenin procedural makro oluşturacağını belirtiyoruz.
