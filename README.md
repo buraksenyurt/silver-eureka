@@ -910,3 +910,15 @@ cargo test
 hello-macros uygulamasının çıktısı.
 
 ![./assets/screenshot_77.png](./assets/screenshot_77.png)
+
+Makrolar _Declarative_ ve _Procedural_ olmak üzere iki kategoride değerlendirilirler. _Procedural_ formatta _Attribute-like, Functiona-like ve Derive_ olmak üzere üç alt kategoriye ayrılırlar. Declarative yaklaşımla geliştirilen makroların belli maliyetleri vardır. Binary'yi büyütürüler, derleme zamanını uzatırlar, değiştirme yetenekleri kısıtlıdır vs. Bu gibi sebeplerden procedural makrolar da tercih edilebilir. Procedural makrolar isteğe bağlı girdi alır ve işletilebilir rust kodu üretir. Ayrıca _token stream_ alıp başka bir _token stream_ döndürebilirler. Bir başka deyişle uygulandıkları türe yeni fonksiyonellikler katacak kod parçalarını parse edebilirler. Tüm struct türlerine otomatik json, xml, bson dönüştürme işlevsellikleri ekleyebildiğimizi düşünelim.
+
+```bash
+cargo new proc-macros --lib
+cd proc-macros
+cargo test
+```
+
+Attribute-like makro örneğinin bir çıktısı. Dikkat edileceği üzere makronun uygulandığı struct türünün içeriği ve makroya verilen parametreler compile aşamasında ekrana basılmıştır.
+
+![./assets/screenshot_78.png](./assets/screenshot_78.png)
