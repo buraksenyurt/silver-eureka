@@ -8,6 +8,14 @@ struct Player {
     level: u8,
 }
 
+// Case 4 : Derive Macro
+#[derive(Memory)]
+struct Product {
+    id: i32,
+    title: String,
+    price: f32,
+}
+
 #[test]
 fn should_serialize_works_test() {
     // Case 1: Player struct'ı sorunsuz şekilde oluşur ve ilk compile sırasında serialize makrosundaki case 1 çalışır.
@@ -34,4 +42,16 @@ fn should_serialize_works_test() {
     // serialize makrosu ile derleme aşamasında eklenen bir fonksiyon.
     let jsoned = marine.to_json();
     assert_eq!(jsoned, "{'result':'JSON World'}");
+}
+
+// Case 4: Dervie makrosunun test kodu
+#[test]
+fn should_derive_macro_works() {
+    let monitor = Product {
+        id: 1,
+        title: "Filips 38.1234 inch Cörv Ultra Süper Eyç Di Monitör".to_owned(),
+        price: 1500.99,
+    };
+    let result = monitor.mem_usage(); // mem_usage fonksiyonu Memory isimli makro ile eklenmiştir.
+    assert_eq!(result, 1024);
 }

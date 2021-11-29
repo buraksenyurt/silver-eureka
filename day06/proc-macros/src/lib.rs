@@ -1,7 +1,7 @@
 extern crate proc_macro;
 use proc_macro::{Ident, TokenStream};
 use quote::quote;
-use syn::DeriveInput;
+use syn::{parse_macro_input, DeriveInput};
 
 /*
     Attribute tabanlı makrolarda proc_macro_attribute niteliği ile imzalanan fonksiyonlar söz konusudur.
@@ -54,5 +54,29 @@ pub fn serialize(attributes: TokenStream, input: TokenStream) -> TokenStream {
 
     };
     // Üretilen kod parçasını derleyiciye servis ettiğimiz yer
+    TokenStream::from(expanded)
+}
+
+// Case 4: Custom Derive macro
+// Bu sefer derive türünden bir makro kullanıyoruz.
+// Bunun için tek yapmamız gereken fonksiyonu proc_macro_derive ile donatmak
+
+#[proc_macro_derive(Memory)]
+// Derive türünden makrolarda yine TokenStream girdisi ve çıktısı söz konusudur.
+pub fn memory(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    // Bu sefer girdi kodunu syn crate'içindeki parse_macro_input! ile yakalıyoruz.
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = input.ident; // Türün adını alıp
+
+    // ona mem_usage isimli bir metot ekliyoruz.
+    let expanded = quote! {
+        impl #name {
+            // Dummy bir fonksiyon. Güya yapının bellek kullanımını bulacak gibi düşünelim.
+            fn mem_usage(&self) -> i32 {
+                1024
+           }
+        }
+    };
+
     TokenStream::from(expanded)
 }
