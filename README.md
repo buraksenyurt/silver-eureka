@@ -922,3 +922,7 @@ cargo test
 Attribute-like makro örneğinin bir çıktısı. Dikkat edileceği üzere makronun uygulandığı struct türünün içeriği ve makroya verilen parametreler compile aşamasında ekrana basılmıştır.
 
 ![./assets/screenshot_78.png](./assets/screenshot_78.png)
+
+Case 5'e ait çalışma zamanı çıktısı. Derive macro kullanılan örnekteki Memory fonksiyonuna eklenen kod parçası ile davranışın sadece struct türlerine uygulanması garantilenmiştir.
+
+![./assets/screenshot_79.png](./assets/screenshot_79.png)
