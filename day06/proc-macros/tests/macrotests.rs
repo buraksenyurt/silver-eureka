@@ -16,6 +16,12 @@ struct Product {
     price: f32,
 }
 
+// Case 5 : Sadece struct türü için Memory makrosunun uygulanmasının sağlanması.
+// Oraya eklenen kod parçasına göre Memory makrosu sadece struct türüne uygulanabilir.
+// Görmek için aktifleştirin.
+// #[derive(Memory)]
+// enum Codes {}
+
 #[test]
 fn should_serialize_works_test() {
     // Case 1: Player struct'ı sorunsuz şekilde oluşur ve ilk compile sırasında serialize makrosundaki case 1 çalışır.

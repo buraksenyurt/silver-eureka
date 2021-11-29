@@ -1,7 +1,7 @@
 extern crate proc_macro;
 use proc_macro::{Ident, TokenStream};
 use quote::quote;
-use syn::{parse_macro_input, DeriveInput};
+use syn::{parse_macro_input, Data, DataStruct, DeriveInput, Fields};
 
 /*
     Attribute tabanlı makrolarda proc_macro_attribute niteliği ile imzalanan fonksiyonlar söz konusudur.
@@ -11,7 +11,7 @@ use syn::{parse_macro_input, DeriveInput};
     input ise serialize niteliğinin uygulandığı tipin kod içeriğini taşır.
 */
 #[proc_macro_attribute]
-pub fn serialize(attributes: TokenStream, input: TokenStream) -> TokenStream {
+pub fn serialize(_attributes: TokenStream, input: TokenStream) -> TokenStream {
     // Case 1: Olayı anlamaya çalışıyorken.
 
     // println!("Attributes Stream: \"{}\"", attributes.to_string());
@@ -66,7 +66,18 @@ pub fn serialize(attributes: TokenStream, input: TokenStream) -> TokenStream {
 pub fn memory(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     // Bu sefer girdi kodunu syn crate'içindeki parse_macro_input! ile yakalıyoruz.
     let input = parse_macro_input!(input as DeriveInput);
-    let name = input.ident; // Türün adını alıp
+    let name = input.ident; // Türün adını alıyoruz ki quote! ile kod üretilen yerde mem_usage fonksiyonunu hangi türe uygulayacağımızı anlayalım.
+
+    // Case 5 : Sadece struct türü için Memory makrosunun uygulanmasının sağlanması.
+    // Bu kısımda syn crate içindeki bazı türleri kullanarak makronun uygulnadığı tipin struct olup olmadığına bakıyoruz.
+    // Struct değilse bir panic oluşturuluyor. Bu ilaveye göre örneğin bir Enum türüne Memory makrosu uygulanamaz.
+    let _fields_punct = match input.data {
+        Data::Struct(DataStruct {
+            fields: Fields::Named(fields),
+            ..
+        }) => fields.named,
+        _ => panic!("Hata. mem_usage fonksiyonu sadece struct türüne adapte edilebilir."),
+    };
 
     // ona mem_usage isimli bir metot ekliyoruz.
     let expanded = quote! {
