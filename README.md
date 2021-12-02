@@ -933,38 +933,53 @@ Kitabın bu bölümünde Rust ile diğer dil veya platformların nasıl entegre 
 
 ### C İle Entegrasyon
 
-Rust sonuç itibariyle sistem programlama konusunda öne çıkan ve C ile aynı domain üzerine oturan bir programlama dili. Ben örneği Windows tabanlı bir sistemde denedğim için C derleyicisi ve make programına ihtiyacım var. Aslında sistemimde WSL aktif ve bir Ubuntu sürümü yüklü olduğu için gerekli olaran cc ve make araçlarına ulaşabilirim.
+Rust sonuç itibariyle sistem programlama konusunda öne çıkan ve C ile aynı domain üzerine oturan bir programlama dili. Ben örneği Windows tabanlı bir sistemde denediğim için C derleyicisi ve make programına ihtiyacım var ama WSL aktif ve bir Ubuntu sürümü yüklü olduğu için gerekli olan cc ve make araçlarına oradan ulaşılabilirim.
 
 ![./assets/screenshot_80.png](./assets/screenshot_80.png)
 
-Bu ilk senaryoda Rust kütüphanesinde SHA256 ile encrypt işlemi yapan bir fonksiyon yer alıyor. Bu fonksiyon C ile yazılmış bir uygulama tarafından çağırılıyor. Benzer şekilde rust kütüphanesi içinden de C tarafında tanımlanmış iki fonksiyon çağırılmakta. Böylece iki farklı programlama ortamı arasında nasıl fonksiyon çağrıları yapabileceğimizin bir yolunu görmüş oluyoruz. 
+Senaryodaki Rust kütüphanesinde SHA256 ile encrypt işlemi yapan kobay bir fonksiyon bulunuyor. Bu fonksiyon, C ile yazılmış başka bir uygulama tarafından çağırılıyor. Benzer şekilde rust kütüphanesi içinden de C tarafında tanımlanmış iki fonksiyon çağırılmakta. Böylece C ve Rust çalışma zamanlar arasında nasıl fonksiyon çağrıları yapılabileceğinin bir yolunu öğrenmiş oluyoruz. 
 
 ```bash
-# Windows ortamında WSL ile Ubuntu üstünde kolayca çalışılabilir
-# C Compiler ve builder için versiyon kontrolleri
+# Windows ortamında WSL ile Ubuntu üstünde de çalışılabilir.
+# C Compiler ve builder için versiyon kontrollerini aşağıdaki gibi yapabiliriz.
 cc --version
 make --version
 
-# WSL ortamında cargo ve dolayısıyla rust kullanamayabiliriz. Kurulum için,
-sudo apt install cargo
-
-# Örneğimiz day07 klasörü altında inşa edilecek
+# Örneğimiz day07 klasörü altında inşa ediliyor.
 mkdir integrate-with-c
 cd integrate-with-c
 
-# C kodları için bir klasör oluşturuyoruz
+# C kodları için bir klasör oluşturuyoruz.
 mkdir C
 
-# rust tarafı içinde bir library
+# rust tarafı içinde bir library oluşturuyoruz.
 cargo new app --lib
 
-# rust kodları yazıldıktan sonra release işlemi icra edilir
+# rust kodları yazıldıktan sonra release işlemi icra edilir.
 cargo build --release
+```
 
-# Şimdi C kodlarının yazılması gerekiyor
+Yukarıdaki build işlemi sonrası bulunulan platforma göre binary'ler üretilir. Linux tarafında libkrip.so, Windows tarafında ise libkrip.dll Bu dosyalar C programının bağlanacağı dinamik/statik kütüphanelerdir.
+
+![./assets/screenshot_81.png](./assets/screenshot_81.png)
+
+```bash
+# C program kodlarının yazılmasına başlanabilir.
 cd ..
 cd C
 mkdir src
 touch src/main.c
 touch Makefile
+
+# Derleme işlemler için Makefile içine yazılmış talimatlar işletilecektir.
+make release
+
+# C kodu başarılı bir şekilde derlendikten sonra Linker için bir path bildirimi gerekebilir.
+# Nitekim aşağıdaki komuta göre libkript.so için path bilgisi boş gelmiştir.
+ldd main
+
+# Dynamic Library yolu için LD_LIBRARY_PATH çevre değişkeni parametresini kullanarak bu sorun aşılabilir.
+LD_LIBRARY_PATH=../../app/target/release ./main
 ```
+
+![./assets/screenshot_82.png](./assets/screenshot_82.png)
