@@ -926,3 +926,45 @@ Attribute-like makro örneğinin bir çıktısı. Dikkat edileceği üzere makro
 Case 5'e ait çalışma zamanı çıktısı. Derive macro kullanılan örnekteki Memory fonksiyonuna eklenen kod parçası ile davranışın sadece struct türlerine uygulanması garantilenmiştir.
 
 ![./assets/screenshot_79.png](./assets/screenshot_79.png)
+
+## day07 - Diğer Dillerle Rust'ın Entegrasyonu
+
+Kitabın bu bölümünde Rust ile diğer dil veya platformların nasıl entegre edileceğine dair örneklere yer verilmekte.
+
+### C İle Entegrasyon
+
+Rust sonuç itibariyle sistem programlama konusunda öne çıkan ve C ile aynı domain üzerine oturan bir programlama dili. Ben örneği Windows tabanlı bir sistemde denedğim için C derleyicisi ve make programına ihtiyacım var. Aslında sistemimde WSL aktif ve bir Ubuntu sürümü yüklü olduğu için gerekli olaran cc ve make araçlarına ulaşabilirim.
+
+![./assets/screenshot_80.png](./assets/screenshot_80.png)
+
+Bu ilk senaryoda Rust kütüphanesinde SHA256 ile encrypt işlemi yapan bir fonksiyon yer alıyor. Bu fonksiyon C ile yazılmış bir uygulama tarafından çağırılıyor. Benzer şekilde rust kütüphanesi içinden de C tarafında tanımlanmış iki fonksiyon çağırılmakta. Böylece iki farklı programlama ortamı arasında nasıl fonksiyon çağrıları yapabileceğimizin bir yolunu görmüş oluyoruz. 
+
+```bash
+# Windows ortamında WSL ile Ubuntu üstünde kolayca çalışılabilir
+# C Compiler ve builder için versiyon kontrolleri
+cc --version
+make --version
+
+# WSL ortamında cargo ve dolayısıyla rust kullanamayabiliriz. Kurulum için,
+sudo apt install cargo
+
+# Örneğimiz day07 klasörü altında inşa edilecek
+mkdir integrate-with-c
+cd integrate-with-c
+
+# C kodları için bir klasör oluşturuyoruz
+mkdir C
+
+# rust tarafı içinde bir library
+cargo new app --lib
+
+# rust kodları yazıldıktan sonra release işlemi icra edilir
+cargo build --release
+
+# Şimdi C kodlarının yazılması gerekiyor
+cd ..
+cd C
+mkdir src
+touch src/main.c
+touch Makefile
+```
