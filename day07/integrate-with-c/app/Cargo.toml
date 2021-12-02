@@ -1,7 +1,8 @@
+cargo-features = ["edition2021"]
+
 [package]
 name = "app"
 version = "0.1.0"
-edition = "2021"
 
 # ring, kriptografi işlemleri için kullanılan bir kütüphane
 # libc ise C tarafı ile etkileşimde yardımcı olacak kütüphane
