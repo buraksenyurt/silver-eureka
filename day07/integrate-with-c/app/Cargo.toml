@@ -3,6 +3,11 @@ name = "app"
 version = "0.1.0"
 edition = "2018"
 
+# Burası önemli. Nitekim C tarafında Rust kütüphanesini kullanabilmek için so veya dll çıktısı oluşması gerekiyor.
+[lib]
+name = "krip" # çıktı dosyasının adı
+crate-type = ["cdylib"] # Ubuntu tarafında cdylib, windows/macos tarafında staticlib kullanılmakta.
+
 # ring, kriptografi işlemleri için kullanılan bir kütüphane
 # libc ise C tarafı ile etkileşimde yardımcı olacak kütüphane
 [dependencies]
